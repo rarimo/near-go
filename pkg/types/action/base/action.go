@@ -1,10 +1,9 @@
-package action
+package base
 
 import (
 	"encoding/json"
 	"fmt"
-
-	"github.com/near/borsh-go"
+	"github.com/eteu-technologies/borsh-go"
 	uint128 "lukechampine.com/uint128"
 
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"

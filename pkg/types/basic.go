@@ -1,5 +1,13 @@
 package types
 
+type NetworkID = string
+
+const (
+	NetworkMainnet NetworkID = "mainnet"
+	NetworkTestnet NetworkID = "testnet"
+	NetworkBetanet NetworkID = "betanet"
+)
+
 // Account identifier. Provides access to user's state.
 type AccountID = string
 

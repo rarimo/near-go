@@ -5,6 +5,10 @@ import "gitlab.com/rarify-protocol/near-bridge-go/pkg/client/block"
 // HACK
 func blockIDArrayParams(block block.BlockCharacteristic) []interface{} {
 	params := []interface{}{nil}
+
+	if block == nil {
+		return params
+	}
 	p := map[string]interface{}{}
 
 	block(p)

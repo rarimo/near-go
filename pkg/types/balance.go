@@ -11,7 +11,8 @@ import (
 
 var (
 	tenPower24 = uint128.From64(uint64(math.Pow10(12))).Mul64(uint64(math.Pow10(12)))
-	zeroNEAR   = Balance(uint128.From64(0))
+	ZeroNEAR   = Balance(uint128.From64(0))
+	OneYocto   = Balance(uint128.From64(1))
 )
 
 // Balance holds amount of yoctoNEAR
@@ -49,7 +50,7 @@ func (bal Balance) Div64(div uint64) Balance {
 // TODO
 func NEARToYocto(near uint64) Balance {
 	if near == 0 {
-		return zeroNEAR
+		return ZeroNEAR
 	}
 
 	return Balance(uint128.From64(near).Mul(tenPower24))

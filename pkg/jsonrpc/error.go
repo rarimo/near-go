@@ -9,6 +9,11 @@ import (
 type Error struct {
 	Name  string     `json:"name"`
 	Cause ErrorCause `json:"cause"`
+
+	// Legacy - do not rely on them
+	Code    int             `json:"code"`
+	Message string          `json:"message"`
+	Data    json.RawMessage `json:"data"`
 }
 
 func (err *Error) Error() string {

@@ -1,13 +1,12 @@
 package transaction
 
 import (
-	"github.com/near/borsh-go"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/signature"
-
+	"github.com/eteu-technologies/borsh-go"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action"
+	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/hash"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/key"
+	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/signature"
 )
 
 type Transaction struct {
@@ -16,7 +15,7 @@ type Transaction struct {
 	Nonce      types.Nonce
 	ReceiverID types.AccountID
 	BlockHash  hash.CryptoHash
-	Actions    []action.Action
+	Actions    []base.Action
 }
 
 func (t Transaction) Hash() (txnHash hash.CryptoHash, serialized []byte, err error) {

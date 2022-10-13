@@ -2,9 +2,9 @@ package client
 
 import (
 	"encoding/json"
+	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
 
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/hash"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/key"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/signature"
@@ -21,7 +21,7 @@ type SignedTransactionView struct {
 	PublicKey  key.Base58PublicKey       `json:"public_key"`
 	Nonce      types.Nonce               `json:"nonce"`
 	ReceiverID types.AccountID           `json:"receiver_id"`
-	Actions    []action.Action           `json:"actions"`
+	Actions    []base.Action             `json:"actions"`
 	Signature  signature.Base58Signature `json:"signature"`
 	Hash       hash.CryptoHash           `json:"hash"`
 }

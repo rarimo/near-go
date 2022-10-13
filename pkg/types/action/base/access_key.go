@@ -1,11 +1,11 @@
-package action
+package base
 
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/eteu-technologies/borsh-go"
 	"gitlab.com/distributed_lab/logan/v3/errors"
 
-	"github.com/near/borsh-go"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
 )
 
