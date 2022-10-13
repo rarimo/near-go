@@ -27,14 +27,24 @@ var (
 		false: "RNFT",
 	}
 
-	ftName = map[bool]string{
-		true:  "Wrapped Rarimo Fungible Test Token",
-		false: "Rarimo Fungible Test Token",
+	ftName = map[bool]map[bool]string{
+		true: { // native
+			true: "Wrapped Near Testnet",
+		},
+		false: { // ft
+			true:  "Wrapped Rarimo Fungible Test Token",
+			false: "Rarimo Fungible Test Token",
+		},
 	}
 
-	ftSymbol = map[bool]string{
-		true:  "WRFT",
-		false: "RFT",
+	ftSymbol = map[bool]map[bool]string{
+		true: { // native
+			true: "wNEAR",
+		},
+		false: {
+			true:  "WRFT",
+			false: "RFT",
+		},
 	}
 )
 

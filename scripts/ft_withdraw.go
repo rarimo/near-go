@@ -18,7 +18,7 @@ import (
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/origin"
 )
 
-func FtWithdraw(ctx context.Context, cli client.Client, txHash string, sender, receiver, token, amount, bridge, privateKey string, isWrapped bool) string {
+func FtWithdraw(ctx context.Context, cli client.Client, txHash string, sender, receiver, token, amount, bridge, privateKey string, isWrapped bool, isNative bool) string {
 	amnt, err := types.BalanceFromString(amount)
 	if err != nil {
 		panic(err)
@@ -33,7 +33,7 @@ func FtWithdraw(ctx context.Context, cli client.Client, txHash string, sender, r
 		Data: operation.NewTransferFullMetaOperation(
 			hexutil.Encode([]byte(token)),
 			"",
-			fmt.Sprint(amount), ftName[isWrapped], ftSymbol[isWrapped], "", ftDecimals).GetContent(),
+			fmt.Sprint(amount), ftName[isNative][isWrapped], ftSymbol[isNative][isWrapped], "", ftDecimals).GetContent(),
 	}
 
 	mt := merkle.NewTree(crypto.Keccak256, content1, content2, content3, targetContent, content4, content5, content6, content7, content8, content9)

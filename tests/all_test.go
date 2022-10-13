@@ -89,6 +89,7 @@ func TestAll(t *testing.T) {
 		cfg.BridgeAddress,
 		cfg.SignerPrivateKey,
 		true,
+		false,
 	)
 	printExplorerURL(t, "Withdraw wrapped FT", ftWithdrawHash)
 
@@ -101,7 +102,7 @@ func TestAll(t *testing.T) {
 		cfg.BridgeAddress,
 		true,
 	)
-	printExplorerURL(t, "Burn wrapped NFT", ftDepositBackwardHash)
+	printExplorerURL(t, "Burn wrapped FT", ftDepositBackwardHash)
 
 	ftWithdrawBackwardHash := scripts.FtWithdraw(
 		ctx,
@@ -113,6 +114,7 @@ func TestAll(t *testing.T) {
 		cfg.Amount,
 		cfg.BridgeAddress,
 		cfg.SignerPrivateKey,
+		false,
 		false,
 	)
 	printExplorerURL(t, "Unlock original FT", ftWithdrawBackwardHash)
@@ -128,17 +130,15 @@ func TestAll(t *testing.T) {
 	)
 	printExplorerURL(t, "Deposited Native", nativeDepositHash)
 
-	nativeWithdrawHash := scripts.FtWithdraw(
+	nativeWithdrawHash := scripts.NativeWithdraw(
 		ctx,
 		client,
 		nativeDepositHash,
 		cfg.AccountID,
 		cfg.AccountID,
-		cfg.NativeAddressWrapped,
 		cfg.Amount,
 		cfg.BridgeAddress,
 		cfg.SignerPrivateKey,
-		true,
 	)
 	printExplorerURL(t, "Withdraw wrapped Native", nativeWithdrawHash)
 
@@ -151,7 +151,7 @@ func TestAll(t *testing.T) {
 		cfg.BridgeAddress,
 		true,
 	)
-	printExplorerURL(t, "Burn wrapped NFT", ftDepositBackwardHash)
+	printExplorerURL(t, "Burn wrapped Native", ftDepositBackwardHash)
 
 	nativeWithdrawBackwardHash := scripts.NativeWithdraw(
 		ctx,
@@ -163,5 +163,5 @@ func TestAll(t *testing.T) {
 		cfg.BridgeAddress,
 		cfg.SignerPrivateKey,
 	)
-	printExplorerURL(t, "Unlock original FT", nativeWithdrawBackwardHash)
+	printExplorerURL(t, "Unlock Native", nativeWithdrawBackwardHash)
 }
