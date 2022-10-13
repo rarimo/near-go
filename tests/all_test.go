@@ -36,7 +36,7 @@ func TestAll(t *testing.T) {
 		cfg.NftAddressWrapped,
 		cfg.TokenID,
 		cfg.BridgeAddress,
-		cfg.PrivateKey, // ????
+		cfg.SignerPrivateKey,
 		true,
 	)
 	printExplorerURL(t, "Withdraw wrapped NFT", nftWithdrawHash)
@@ -61,7 +61,7 @@ func TestAll(t *testing.T) {
 		cfg.NftAddressOriginal,
 		cfg.TokenID,
 		cfg.BridgeAddress,
-		cfg.PrivateKey,
+		cfg.SignerPrivateKey,
 		false,
 	)
 	printExplorerURL(t, "Unlock original NFT", nftWithdrawBackwardHash)
@@ -87,7 +87,7 @@ func TestAll(t *testing.T) {
 		cfg.NftAddressWrapped,
 		cfg.Amount,
 		cfg.BridgeAddress,
-		cfg.PrivateKey,
+		cfg.SignerPrivateKey,
 		true,
 	)
 	printExplorerURL(t, "Withdraw wrapped FT", ftWithdrawHash)
@@ -112,7 +112,7 @@ func TestAll(t *testing.T) {
 		cfg.NftAddressOriginal,
 		cfg.Amount,
 		cfg.BridgeAddress,
-		cfg.PrivateKey,
+		cfg.SignerPrivateKey,
 		false,
 	)
 	printExplorerURL(t, "Unlock original FT", ftWithdrawBackwardHash)
