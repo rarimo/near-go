@@ -4,7 +4,7 @@ import (
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
 )
 
-type NftTransferArgs struct {
+type NftDepositArgs struct {
 	ReceiverId types.AccountID `json:"receiver_id,required"`
 	TokenID    string          `json:"token_id,required"`
 	Msg        TransferArgs    `json:"msg,required"`

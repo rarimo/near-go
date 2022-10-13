@@ -13,5 +13,8 @@ const (
 	FtStorageDepositMethod = "storage_deposit"
 	FtMintMethod           = "ft_mint"
 
+	NativeDepositMethod  = "native_deposit"
+	NativeWithdrawMethod = "native_withdraw"
+
 	NewMethod = "new"
 )

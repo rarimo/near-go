@@ -10,7 +10,7 @@ import (
 
 func NftDeposit(ctx context.Context, cli client.Client, sender, receiver, token, tokenID, bridge string, isWrapped bool) string {
 	depositResp, err := cli.TransactionSend(ctx, sender, token, []base.Action{
-		action.NewNftTransferCall(action.NftTransferArgs{
+		action.NewNftDepositCall(action.NftDepositArgs{
 			ReceiverId: bridge,
 			TokenID:    tokenID,
 			Msg: action.TransferArgs{
@@ -19,8 +19,8 @@ func NftDeposit(ctx context.Context, cli client.Client, sender, receiver, token,
 				Chain:     types.NetworkTestnet,
 				IsWrapped: isWrapped,
 			},
-		}, GetGasPrice(ctx, cli), types.OneYocto),
-		//action.NewNftTransferCall(action.NftTransferArgs{
+		}, GetGasPrice(ctx, cli)),
+		//action.NewNftDepositCall(action.NftDepositArgs{
 		//	ReceiverId: cfg.BridgeAddress,
 		//	TokenID:    "2",
 		//	Msg: action.TransferArgs{

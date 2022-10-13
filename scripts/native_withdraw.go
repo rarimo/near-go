@@ -18,7 +18,7 @@ import (
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/origin"
 )
 
-func FtWithdraw(ctx context.Context, cli client.Client, txHash string, sender, receiver, token, amount, bridge, privateKey string, isWrapped bool) string {
+func NativeWithdraw(ctx context.Context, cli client.Client, txHash string, sender, receiver, amount, bridge, privateKey string) string {
 	amnt, err := types.BalanceFromString(amount)
 	if err != nil {
 		panic(err)
@@ -29,14 +29,14 @@ func FtWithdraw(ctx context.Context, cli client.Client, txHash string, sender, r
 		Origin:         origin.NewDefaultOrigin(txHash, types.NetworkTestnet, "eventID").GetOrigin(),
 		Receiver:       []byte(receiver),
 		TargetNetwork:  types.NetworkTestnet,
-		TargetContract: []byte(token),
-		Data: operation.NewTransferFullMetaOperation(
-			hexutil.Encode([]byte(token)),
+		TargetContract: []byte(bridge),
+		Data: operation.NewTransferOperation(
 			"",
-			fmt.Sprint(amount), ftName[isWrapped], ftSymbol[isWrapped], "", ftDecimals).GetContent(),
+			"",
+			fmt.Sprint(amount), "").GetContent(),
 	}
 
-	mt := merkle.NewTree(crypto.Keccak256, content1, content2, content3, targetContent, content4, content5, content6, content7, content8, content9)
+	mt := merkle.NewTree(crypto.Keccak256, content1, targetContent, content2)
 	path, _ := mt.Path(targetContent)
 
 	prvKey, err := base58.Decode(privateKey)
@@ -66,12 +66,9 @@ func FtWithdraw(ctx context.Context, cli client.Client, txHash string, sender, r
 
 	fmt.Println("Recovered pub key " + base58.Encode(recoveredKey[1:]))
 
-	act := action.FtWithdrawArgs{
-		Token:      token,
+	act := action.NativeWithdrawArgs{
 		Amount:     amnt,
 		ReceiverID: receiver,
-		Chain:      types.NetworkTestnet,
-		IsWrapped:  isWrapped,
 		Origin:     hexutil.Encode(targetContent.Origin[:]),
 		Path:       make([][32]byte, len(path)),
 		Signatures: [][]byte{signature[:64]},
@@ -84,7 +81,7 @@ func FtWithdraw(ctx context.Context, cli client.Client, txHash string, sender, r
 	}
 
 	withdrawResp, err := cli.TransactionSend(ctx, sender, bridge, []base.Action{
-		action.NewFtWithdrawCall(act, GetGasPrice(ctx, cli)),
+		action.NewNativeWithdrawCall(act, GetGasPrice(ctx, cli), amnt),
 	})
 	if err != nil {
 		panic(err)

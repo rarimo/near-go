@@ -10,17 +10,18 @@ import (
 )
 
 type Config struct {
-	RpcURL             string `fig:"rpc_url,required"`
-	PrivateKey         string `fig:"private_key,required"`
-	SignerPrivateKey   string `fig:"signer_private_key,required"`
-	AccountID          string `fig:"account_id,required"`
-	BridgeAddress      string `fig:"bridge_address,required"`
-	FtAddressOriginal  string `fig:"ft_address_original,required"`
-	FtAddressWrapped   string `fig:"ft_address_wrapped,required"`
-	NftAddressOriginal string `fig:"nft_address_original,required"`
-	NftAddressWrapped  string `fig:"nft_address_wrapped,required"`
-	TokenID            string `fig:"token_id"`
-	Amount             string `fig:"amount"`
+	RpcURL               string `fig:"rpc_url,required"`
+	PrivateKey           string `fig:"private_key,required"`
+	SignerPrivateKey     string `fig:"signer_private_key,required"`
+	AccountID            string `fig:"account_id,required"`
+	BridgeAddress        string `fig:"bridge_address,required"`
+	FtAddressOriginal    string `fig:"ft_address_original,required"`
+	FtAddressWrapped     string `fig:"ft_address_wrapped,required"`
+	NftAddressOriginal   string `fig:"nft_address_original,required"`
+	NftAddressWrapped    string `fig:"nft_address_wrapped,required"`
+	NativeAddressWrapped string `fig:"native_address_wrapped,required"`
+	TokenID              string `fig:"token_id"`
+	Amount               string `fig:"amount"`
 }
 
 func NewConfig(ctx context.Context, getter kv.Getter) (Config, context.Context, client.Client) {

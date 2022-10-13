@@ -18,18 +18,6 @@ import (
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/origin"
 )
 
-const NftMetadataReference = "https://bafkreiemhgx6bgesd4vvqngjted2hxm3wnpay3yul5337ccu7eggyyjrue.ipfs.nftstorage.link/"
-
-var nftName = map[bool]string{
-	true:  "Wrapped Rarimo Bridge NFT Test Collection",
-	false: "Rarimo Bridge NFT Test Collection",
-}
-
-var nftSymbol = map[bool]string{
-	true:  "wRNFT",
-	false: "RNFT",
-}
-
 func NftWithdraw(ctx context.Context, cli client.Client, txHash string, sender, receiver, token, tokenID, bridge, privateKey string, isWrapped bool) string {
 	targetContent := xcrypto.HashContent{
 		// TODO: fix event id
@@ -40,7 +28,7 @@ func NftWithdraw(ctx context.Context, cli client.Client, txHash string, sender, 
 		Data: operation.NewTransferFullMetaOperation(
 			hexutil.Encode([]byte(token)),
 			hexutil.Encode([]byte(tokenID)),
-			"", nftName[isWrapped], nftSymbol[isWrapped], NftMetadataReference, 0).GetContent(),
+			"", nftName[isWrapped], nftSymbol[isWrapped], nftMetadataReference, 0).GetContent(),
 	}
 
 	mt := merkle.NewTree(crypto.Keccak256, content1, targetContent, content2)
@@ -84,7 +72,7 @@ func NftWithdraw(ctx context.Context, cli client.Client, txHash string, sender, 
 		Signatures: [][]byte{signature[:64]},
 		RecoveryID: 1,
 		TokenMetadata: &action.NftMetadata{
-			Reference: NftMetadataReference,
+			Reference: nftMetadataReference,
 		},
 	}
 
@@ -94,7 +82,7 @@ func NftWithdraw(ctx context.Context, cli client.Client, txHash string, sender, 
 	}
 
 	withdrawResp, err := cli.TransactionSend(ctx, sender, bridge, []base.Action{
-		action.NewNftWithdrawCall(act, GetGasPrice(ctx, cli), types.ZeroNEAR),
+		action.NewNftWithdrawCall(act, GetGasPrice(ctx, cli)),
 	})
 	if err != nil {
 		panic(err)

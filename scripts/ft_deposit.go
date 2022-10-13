@@ -14,7 +14,7 @@ func FtDeposit(ctx context.Context, cli client.Client, sender, receiver, token, 
 		panic(err)
 	}
 	depositResp, err := cli.TransactionSend(ctx, sender, token, []base.Action{
-		action.NewFtTransferCall(action.FtTransferArgs{
+		action.NewFtDepositCall(action.FtDepositArgs{
 			ReceiverId: bridge,
 			Amount:     amnt,
 			Msg: action.TransferArgs{
@@ -23,7 +23,7 @@ func FtDeposit(ctx context.Context, cli client.Client, sender, receiver, token, 
 				Chain:     types.NetworkTestnet,
 				IsWrapped: isWrapped,
 			},
-		}, GetGasPrice(ctx, cli), types.OneYocto),
+		}, GetGasPrice(ctx, cli)),
 	})
 	if err != nil {
 		panic(err)
