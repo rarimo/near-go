@@ -42,9 +42,21 @@ func (bal Balance) String() string {
 	return uint128.Uint128(bal).String()
 }
 
+func (bal Balance) Uint64() uint64 {
+	return uint128.Uint128(bal).Big().Uint64()
+}
+
 // Convenience funcs
 func (bal Balance) Div64(div uint64) Balance {
 	return Balance(uint128.Uint128(bal).Div64(div))
+}
+
+func (bal Balance) Equals(other Balance) bool {
+	return uint128.Uint128(bal).Equals(uint128.Uint128(other))
+}
+
+func (bal Balance) Empty() bool {
+	return uint128.Uint128(bal).IsZero()
 }
 
 // TODO

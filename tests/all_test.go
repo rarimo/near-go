@@ -7,17 +7,22 @@ import (
 	"testing"
 )
 
-func printExplorerURL(t *testing.T, hash string, msg string) {
+func printExplorerURL(t *testing.T, msg string, hash string, receiptID *string) {
 	t.Logf("%s: https://explorer.testnet.near.org/transactions/%s", msg, hash)
+	if receiptID != nil {
+		t.Logf("%s bridge receipt: https://explorer.testnet.near.org/transactions/%s#%s", msg, hash, *receiptID)
+	}
 }
 
+var chainID = "Near"
+
 func TestAll(t *testing.T) {
-	cfg, ctx, client := NewConfig(context.Background(), kv.MustFromEnv())
+	cfg := NewConfig(context.Background(), kv.MustFromEnv())
 
 	// NFT
-	nftDepositHash := scripts.NftDeposit(
-		ctx,
-		client,
+	nftDepositHash, depositedEventID := scripts.NftDeposit(
+		cfg.Ctx,
+		cfg.Client,
 		cfg.AccountID,
 		cfg.AccountID,
 		cfg.NftAddressOriginal,
@@ -25,24 +30,28 @@ func TestAll(t *testing.T) {
 		cfg.BridgeAddress,
 		false,
 	)
-	printExplorerURL(t, "Deposited NFT", nftDepositHash)
+	printExplorerURL(t, "Deposited NFT", nftDepositHash, &depositedEventID)
 
 	nftWithdrawHash := scripts.NftWithdraw(
-		ctx,
-		client,
+		cfg.Ctx,
+		cfg.Client,
 		nftDepositHash,
+		depositedEventID,
 		cfg.AccountID,
 		cfg.AccountID,
+		chainID,
+		chainID,
 		cfg.NftAddressWrapped,
 		cfg.TokenID,
 		cfg.BridgeAddress,
 		cfg.SignerPrivateKey,
 		true,
 	)
-	printExplorerURL(t, "Withdraw wrapped NFT", nftWithdrawHash)
+	printExplorerURL(t, "Withdraw wrapped NFT", nftWithdrawHash, nil)
 
-	nftDepositBackwardHash := scripts.NftDeposit(ctx,
-		client,
+	nftDepositBackwardHash, nftDepositBackwardEventID := scripts.NftDeposit(
+		cfg.Ctx,
+		cfg.Client,
 		cfg.AccountID,
 		cfg.AccountID,
 		cfg.NftAddressWrapped,
@@ -50,118 +59,128 @@ func TestAll(t *testing.T) {
 		cfg.BridgeAddress,
 		true,
 	)
-	printExplorerURL(t, "Burn wrapped NFT", nftDepositBackwardHash)
+	printExplorerURL(t, "Burn Deposited NFT", nftDepositBackwardHash, &nftDepositBackwardEventID)
 
 	nftWithdrawBackwardHash := scripts.NftWithdraw(
-		ctx,
-		client,
+		cfg.Ctx,
+		cfg.Client,
 		nftDepositBackwardHash,
+		nftDepositBackwardEventID,
 		cfg.AccountID,
 		cfg.AccountID,
+		chainID,
+		chainID,
 		cfg.NftAddressOriginal,
 		cfg.TokenID,
 		cfg.BridgeAddress,
 		cfg.SignerPrivateKey,
 		false,
 	)
-	printExplorerURL(t, "Unlock original NFT", nftWithdrawBackwardHash)
+	printExplorerURL(t, "Unlock original NFT", nftWithdrawBackwardHash, nil)
 
-	// FT
-	ftDepositHash := scripts.FtDeposit(ctx,
-		client,
-		cfg.AccountID,
-		cfg.AccountID,
-		cfg.FtAddressOriginal,
-		cfg.Amount,
-		cfg.BridgeAddress,
-		false,
-	)
-	printExplorerURL(t, "Deposited FT", ftDepositHash)
-
-	ftWithdrawHash := scripts.FtWithdraw(
-		ctx,
-		client,
-		ftDepositHash,
-		cfg.AccountID,
-		cfg.AccountID,
-		cfg.FtAddressWrapped,
-		cfg.Amount,
-		cfg.BridgeAddress,
-		cfg.SignerPrivateKey,
-		true,
-		false,
-	)
-	printExplorerURL(t, "Withdraw wrapped FT", ftWithdrawHash)
-
-	ftDepositBackwardHash := scripts.FtDeposit(ctx,
-		client,
-		cfg.AccountID,
-		cfg.AccountID,
-		cfg.FtAddressWrapped,
-		cfg.Amount,
-		cfg.BridgeAddress,
-		true,
-	)
-	printExplorerURL(t, "Burn wrapped FT", ftDepositBackwardHash)
-
-	ftWithdrawBackwardHash := scripts.FtWithdraw(
-		ctx,
-		client,
-		ftDepositBackwardHash,
-		cfg.AccountID,
-		cfg.AccountID,
-		cfg.FtAddressOriginal,
-		cfg.Amount,
-		cfg.BridgeAddress,
-		cfg.SignerPrivateKey,
-		false,
-		false,
-	)
-	printExplorerURL(t, "Unlock original FT", ftWithdrawBackwardHash)
-
-	// Native
-	nativeDepositHash := scripts.NativeDeposit(
-		ctx,
-		client,
-		cfg.AccountID,
-		cfg.AccountID,
-		cfg.Amount,
-		cfg.BridgeAddress,
-	)
-	printExplorerURL(t, "Deposited Native", nativeDepositHash)
-
-	nativeWithdrawHash := scripts.NativeWithdraw(
-		ctx,
-		client,
-		nativeDepositHash,
-		cfg.AccountID,
-		cfg.AccountID,
-		cfg.Amount,
-		cfg.BridgeAddress,
-		cfg.SignerPrivateKey,
-	)
-	printExplorerURL(t, "Withdraw wrapped Native", nativeWithdrawHash)
-
-	nativeDepositBackwardHash := scripts.FtDeposit(ctx,
-		client,
-		cfg.AccountID,
-		cfg.AccountID,
-		cfg.NativeAddressWrapped,
-		cfg.Amount,
-		cfg.BridgeAddress,
-		true,
-	)
-	printExplorerURL(t, "Burn wrapped Native", ftDepositBackwardHash)
-
-	nativeWithdrawBackwardHash := scripts.NativeWithdraw(
-		ctx,
-		client,
-		nativeDepositBackwardHash,
-		cfg.AccountID,
-		cfg.AccountID,
-		cfg.Amount,
-		cfg.BridgeAddress,
-		cfg.SignerPrivateKey,
-	)
-	printExplorerURL(t, "Unlock Native", nativeWithdrawBackwardHash)
+	//// FT
+	//ftDepositHash := scripts.FtDeposit(
+	//	cfg.Ctx,
+	//	cfg.Client,
+	//	cfg.AccountID,
+	//	cfg.AccountID,
+	//	cfg.FtAddressOriginal,
+	//	cfg.Amount,
+	//	cfg.BridgeAddress,
+	//	false,
+	//)
+	//printExplorerURL(t, "Deposited FT", ftDepositHash)
+	//
+	//ftWithdrawHash := scripts.FtWithdraw(
+	//	cfg.Ctx,
+	//	cfg.Client,
+	//	ftDepositHash,
+	//	cfg.AccountID,
+	//	cfg.AccountID,
+	//	chainID,
+	//	cfg.FtAddressWrapped,
+	//	cfg.Amount,
+	//	cfg.BridgeAddress,
+	//	cfg.SignerPrivateKey,
+	//	true,
+	//	false,
+	//)
+	//printExplorerURL(t, "Withdraw wrapped FT", ftWithdrawHash)
+	//
+	//ftDepositBackwardHash := scripts.FtDeposit(
+	//	cfg.Ctx,
+	//	cfg.Client,
+	//	cfg.AccountID,
+	//	cfg.AccountID,
+	//	cfg.FtAddressWrapped,
+	//	cfg.Amount,
+	//	cfg.BridgeAddress,
+	//	true,
+	//)
+	//printExplorerURL(t, "Burn wrapped FT", ftDepositBackwardHash)
+	//
+	//ftWithdrawBackwardHash := scripts.FtWithdraw(
+	//	cfg.Ctx,
+	//	cfg.Client,
+	//	ftDepositBackwardHash,
+	//	cfg.AccountID,
+	//	cfg.AccountID,
+	//	chainID,
+	//	cfg.FtAddressOriginal,
+	//	cfg.Amount,
+	//	cfg.BridgeAddress,
+	//	cfg.SignerPrivateKey,
+	//	false,
+	//	false,
+	//)
+	//printExplorerURL(t, "Unlock original FT", ftWithdrawBackwardHash)
+	//
+	//// Native
+	//nativeDepositHash := scripts.NativeDeposit(
+	//	cfg.Ctx,
+	//	cfg.Client,
+	//	cfg.AccountID,
+	//	cfg.AccountID,
+	//	cfg.Amount,
+	//	cfg.BridgeAddress,
+	//)
+	//printExplorerURL(t, "Deposited Native", nativeDepositHash)
+	//
+	//nativeWithdrawHash := scripts.NativeWithdraw(
+	//	cfg.Ctx,
+	//	cfg.Client,
+	//	nativeDepositHash,
+	//	cfg.AccountID,
+	//	cfg.AccountID,
+	//	chainID,
+	//	cfg.Amount,
+	//	cfg.BridgeAddress,
+	//	cfg.SignerPrivateKey,
+	//)
+	//printExplorerURL(t, "Withdraw wrapped Native", nativeWithdrawHash)
+	//
+	//nativeDepositBackwardHash := scripts.FtDeposit(
+	//	cfg.Ctx,
+	//	cfg.Client,
+	//	cfg.AccountID,
+	//	cfg.AccountID,
+	//	cfg.NativeAddressWrapped,
+	//	cfg.Amount,
+	//	cfg.BridgeAddress,
+	//	true,
+	//)
+	//printExplorerURL(t, "Burn wrapped Native", ftDepositBackwardHash)
+	//
+	//nativeWithdrawBackwardHash := scripts.NativeWithdraw(
+	//	cfg.Ctx,
+	//	cfg.Client,
+	//	nativeDepositBackwardHash,
+	//	cfg.AccountID,
+	//	cfg.AccountID,
+	//	chainID,
+	//	cfg.Amount,
+	//	cfg.BridgeAddress,
+	//	cfg.SignerPrivateKey,
+	//)
+	//printExplorerURL(t, "Unlock Native", nativeWithdrawBackwardHash)
 }

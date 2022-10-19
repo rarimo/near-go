@@ -17,13 +17,8 @@ func FtDeposit(ctx context.Context, cli client.Client, sender, receiver, token, 
 		action.NewFtDepositCall(action.FtDepositArgs{
 			ReceiverId: bridge,
 			Amount:     amnt,
-			Msg: action.TransferArgs{
-				Token:     token,
-				Receiver:  receiver,
-				Chain:     types.NetworkTestnet,
-				IsWrapped: isWrapped,
-			},
-		}, GetGasPrice(ctx, cli)),
+			Msg:        action.NewTransferArgs(token, sender, receiver, targetNetwork, isWrapped, nil, nil),
+		}, MaxGas),
 	})
 	if err != nil {
 		panic(err)

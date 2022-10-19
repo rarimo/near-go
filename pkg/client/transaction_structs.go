@@ -10,6 +10,14 @@ import (
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/signature"
 )
 
+type LogEventType = string
+
+const (
+	LogEventTypeNftDeposited    LogEventType = "nft_deposited"
+	LogEventTypeFtDeposited     LogEventType = "ft_deposited"
+	LogEventTypeNativeDeposited LogEventType = "native_deposited"
+)
+
 type TransactionStatus struct {
 	SuccessValue     string          `json:"SuccessValue"`
 	SuccessReceiptID string          `json:"SuccessReceiptId"`
@@ -52,6 +60,23 @@ type ExecutionOutcomeView struct {
 	TokensBurnt types.Balance     `json:"tokens_burnt"`
 	ExecutorID  types.AccountID   `json:"executor_id"`
 	Status      TransactionStatus `json:"status"`
+}
+
+type LogEvent struct {
+	Standard string                  `json:"standard,required"`
+	Version  string                  `json:"version,required"`
+	Event    LogEventType            `json:"event,required"`
+	Data     []LogEventDepositedData `json:"data,required"`
+}
+
+type LogEventDepositedData struct {
+	Token types.AccountID `json:"token,required"`
+	// Empty if fungible token
+	TokenID *string `json:"token_id,omitempty"`
+	// Empty if non fungible token
+	Amount    *types.Balance `json:"amount,omitempty"`
+	Chain     string         `json:"chain,required"`
+	IsWrapped bool           `json:"is_wrapped,required"`
 }
 
 type MerklePathItem struct {

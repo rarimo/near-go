@@ -2,150 +2,125 @@ package scripts
 
 import (
 	"crypto/rand"
-	"fmt"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
-
-	xcrypto "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
+	"encoding/base64"
+	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/origin"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/bundle"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/data"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/origin"
 )
 
 const (
-	targetNetwork        = types.NetworkTestnet
-	ftDecimals           = 8
-	nftMetadataReference = "https://bafkreiemhgx6bgesd4vvqngjted2hxm3wnpay3yul5337ccu7eggyyjrue.ipfs.nftstorage.link/"
+	targetNetwork            = "Near"
+	nftMetadataReference     = "https://bafkreiaociirm4drxdf7ldvkemoxu3fsnvt4z4urtu35ss3xysl3gmw25q.ipfs.nftstorage.link/"
+	nftMetadataReferenceHash = "DhIRFnBxuMv1jqojHXpssm1nzPKRnTfZS3fEl7My2uw="
+	nftMedia                 = "https://bafkreiblbldzupel5ci36xhaw2kpci4q53yvjnq55ueqawep6nigjggcze.ipfs.nftstorage.link/"
+	nftMediaHash             = "KwrHmjyL6JG/XOC2lPEjkO7xVLYd7QkAWI/zUGSYwsk="
 )
 
-var (
-	nftName = map[bool]string{
-		true:  "Wrapped Rarimo Bridge NFT Test Collection",
-		false: "Rarimo Bridge NFT Test Collection",
-	}
+var MaxGas uint64 = 300000000000000
 
-	nftSymbol = map[bool]string{
-		true:  "wRNFT",
-		false: "RNFT",
-	}
-
-	ftName = map[bool]map[bool]string{
-		true: { // native
-			true: "Wrapped Near Testnet",
-		},
-		false: { // ft
-			true:  "Wrapped Rarimo Fungible Test Token",
-			false: "Rarimo Fungible Test Token",
-		},
-	}
-
-	ftSymbol = map[bool]map[bool]string{
-		true: { // native
-			true: "wNEAR",
-		},
-		false: {
-			true:  "WRFT",
-			false: "RFT",
-		},
-	}
-)
+var nftMetadata = map[bool]*action.NftMetadata{
+	true: {
+		Title:         "Wrapped Rarimo Bridge NFT#1",
+		Description:   "Wrapped Rarimo Bridge Test Collection NFT#1",
+		Media:         nftMedia,
+		MediaHash:     mustDecodeBase64(nftMediaHash),
+		Reference:     nftMetadataReference,
+		ReferenceHash: mustDecodeBase64(nftMetadataReferenceHash),
+		Copies:        1,
+	},
+	false: {
+		Title:         "Rarimo Bridge NFT#1",
+		Description:   "Rarimo Bridge Test Collection NFT#1",
+		Media:         nftMedia,
+		MediaHash:     mustDecodeBase64(nftMediaHash),
+		Reference:     nftMetadataReference,
+		ReferenceHash: mustDecodeBase64(nftMetadataReferenceHash),
+		Copies:        1,
+	},
+}
 
 var (
-	content1 = xcrypto.HashContent{
-		Origin:         origin.NewDefaultOrigin("txHash1", "networkFrom1", "eventId1").GetOrigin(),
+	content1 = operation.TransferContent{
+		Origin:         origin.NewDefaultOriginBuilder().SetTxHash("txHash1").SetOpId("eventId1").SetCurrentNetwork("networkFrom1").Build().GetOrigin(),
 		Receiver:       getRandSlice(),
 		TargetNetwork:  targetNetwork,
 		TargetContract: getRandSlice(),
-		Data: operation.NewTransferOperation(
-			"",
-			"",
-			fmt.Sprint("1"), "").GetContent(),
+		Data:           data.NewTransferDataBuilder().SetId("1").Build().GetContent(),
+		Bundle:         bundle.NewDefaultBundleBuilder().SetBundle("").SetSalt("").Build().GetBundle(),
 	}
 
-	content2 = xcrypto.HashContent{
-		Origin:         origin.NewDefaultOrigin("txHash2", "networkFrom2", "eventId2").GetOrigin(),
+	content2 = operation.TransferContent{
+		Origin:         origin.NewDefaultOriginBuilder().SetTxHash("txHash2").SetOpId("networkFrom2").SetCurrentNetwork("networkFrom2").Build().GetOrigin(),
 		Receiver:       getRandSlice(),
 		TargetNetwork:  targetNetwork,
 		TargetContract: getRandSlice(),
-		Data: operation.NewTransferOperation(
-			"",
-			"",
-			fmt.Sprint("1"), "").GetContent(),
+		Data:           data.NewTransferDataBuilder().SetId("1").Build().GetContent(),
+		Bundle:         bundle.NewDefaultBundleBuilder().SetBundle("").SetSalt("").Build().GetBundle(),
 	}
 
-	content3 = xcrypto.HashContent{
-		Origin:         origin.NewDefaultOrigin("txHash3", "networkFrom3", "eventId3").GetOrigin(),
+	content3 = operation.TransferContent{
+		Origin:         origin.NewDefaultOriginBuilder().SetTxHash("txHash3").SetOpId("networkFrom3").SetCurrentNetwork("networkFrom3").Build().GetOrigin(),
 		Receiver:       getRandSlice(),
 		TargetNetwork:  targetNetwork,
 		TargetContract: getRandSlice(),
-		Data: operation.NewTransferOperation(
-			"",
-			"",
-			fmt.Sprint("1"), "").GetContent(),
+		Data:           data.NewTransferDataBuilder().SetId("1").Build().GetContent(),
+		Bundle:         bundle.NewDefaultBundleBuilder().SetBundle("").SetSalt("").Build().GetBundle(),
 	}
 
-	content4 = xcrypto.HashContent{
-		Origin:         origin.NewDefaultOrigin("txHash3", "networkFrom3", "eventId3").GetOrigin(),
+	content4 = operation.TransferContent{
+		Origin:         origin.NewDefaultOriginBuilder().SetTxHash("txHash4").SetOpId("networkFrom4").SetCurrentNetwork("networkFrom4").Build().GetOrigin(),
 		Receiver:       getRandSlice(),
 		TargetNetwork:  targetNetwork,
 		TargetContract: getRandSlice(),
-		Data: operation.NewTransferOperation(
-			"",
-			"",
-			fmt.Sprint("1"), "").GetContent(),
+		Data:           data.NewTransferDataBuilder().SetId("1").Build().GetContent(),
+		Bundle:         bundle.NewDefaultBundleBuilder().SetBundle("").SetSalt("").Build().GetBundle(),
 	}
 
-	content5 = xcrypto.HashContent{
-		Origin:         origin.NewDefaultOrigin("txHash5", "networkFrom5", "eventId5").GetOrigin(),
+	content5 = operation.TransferContent{
+		Origin:         origin.NewDefaultOriginBuilder().SetTxHash("txHash5").SetOpId("networkFrom5").SetCurrentNetwork("networkFrom5").Build().GetOrigin(),
 		Receiver:       getRandSlice(),
 		TargetNetwork:  targetNetwork,
 		TargetContract: getRandSlice(),
-		Data: operation.NewTransferOperation(
-			"",
-			"",
-			fmt.Sprint("1"), "").GetContent(),
+		Data:           data.NewTransferDataBuilder().SetId("1").Build().GetContent(),
+		Bundle:         bundle.NewDefaultBundleBuilder().SetBundle("").SetSalt("").Build().GetBundle(),
 	}
 
-	content6 = xcrypto.HashContent{
-		Origin:         origin.NewDefaultOrigin("txHash6", "networkFrom6", "eventId6").GetOrigin(),
+	content6 = operation.TransferContent{
+		Origin:         origin.NewDefaultOriginBuilder().SetTxHash("txHash6").SetOpId("networkFrom6").SetCurrentNetwork("networkFrom6").Build().GetOrigin(),
 		Receiver:       getRandSlice(),
 		TargetNetwork:  targetNetwork,
 		TargetContract: getRandSlice(),
-		Data: operation.NewTransferOperation(
-			"",
-			"",
-			fmt.Sprint("1"), "").GetContent(),
+		Data:           data.NewTransferDataBuilder().SetId("1").Build().GetContent(),
+		Bundle:         bundle.NewDefaultBundleBuilder().SetBundle("").SetSalt("").Build().GetBundle(),
 	}
 
-	content7 = xcrypto.HashContent{
-		Origin:         origin.NewDefaultOrigin("txHash7", "networkFrom7", "eventId7").GetOrigin(),
+	content7 = operation.TransferContent{
+		Origin:         origin.NewDefaultOriginBuilder().SetTxHash("txHash7").SetOpId("networkFrom7").SetCurrentNetwork("networkFrom7").Build().GetOrigin(),
 		Receiver:       getRandSlice(),
 		TargetNetwork:  targetNetwork,
 		TargetContract: getRandSlice(),
-		Data: operation.NewTransferOperation(
-			"",
-			"",
-			fmt.Sprint("1"), "").GetContent(),
+		Data:           data.NewTransferDataBuilder().SetId("1").Build().GetContent(),
+		Bundle:         bundle.NewDefaultBundleBuilder().SetBundle("").SetSalt("").Build().GetBundle(),
 	}
 
-	content8 = xcrypto.HashContent{
-		Origin:         origin.NewDefaultOrigin("txHash8", "networkFrom8", "eventId8").GetOrigin(),
+	content8 = operation.TransferContent{
+		Origin:         origin.NewDefaultOriginBuilder().SetTxHash("txHash8").SetOpId("networkFrom8").SetCurrentNetwork("networkFrom8").Build().GetOrigin(),
 		Receiver:       getRandSlice(),
 		TargetNetwork:  targetNetwork,
 		TargetContract: getRandSlice(),
-		Data: operation.NewTransferOperation(
-			"",
-			"",
-			fmt.Sprint("1"), "").GetContent(),
+		Data:           data.NewTransferDataBuilder().SetId("1").Build().GetContent(),
+		Bundle:         bundle.NewDefaultBundleBuilder().SetBundle("").SetSalt("").Build().GetBundle(),
 	}
 
-	content9 = xcrypto.HashContent{
-		Origin:         origin.NewDefaultOrigin("txHash9", "networkFrom9", "eventId9").GetOrigin(),
+	content9 = operation.TransferContent{
+		Origin:         origin.NewDefaultOriginBuilder().SetTxHash("txHash9").SetOpId("networkFrom9").SetCurrentNetwork("networkFrom9").Build().GetOrigin(),
 		Receiver:       getRandSlice(),
 		TargetNetwork:  targetNetwork,
 		TargetContract: getRandSlice(),
-		Data: operation.NewTransferOperation(
-			"",
-			"",
-			fmt.Sprint("1"), "").GetContent(),
+		Data:           data.NewTransferDataBuilder().SetId("1").Build().GetContent(),
+		Bundle:         bundle.NewDefaultBundleBuilder().SetBundle("").SetSalt("").Build().GetBundle(),
 	}
 )
 
@@ -153,4 +128,12 @@ func getRandSlice() []byte {
 	var hash [32]byte
 	rand.Read(hash[:])
 	return hash[:]
+}
+
+func mustDecodeBase64(s string) []byte {
+	b, err := base64.StdEncoding.DecodeString(s)
+	if err != nil {
+		panic(err)
+	}
+	return b
 }

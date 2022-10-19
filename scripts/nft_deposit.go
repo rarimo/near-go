@@ -3,36 +3,29 @@ package scripts
 import (
 	"context"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
 )
 
-func NftDeposit(ctx context.Context, cli client.Client, sender, receiver, token, tokenID, bridge string, isWrapped bool) string {
-	depositResp, err := cli.TransactionSend(ctx, sender, token, []base.Action{
+func NftDeposit(ctx context.Context, cli client.Client, sender, receiver, token, tokenID, bridge string, isWrapped bool) (string, string) {
+	depositResp, err := cli.TransactionSendAwait(ctx, sender, token, []base.Action{
 		action.NewNftDepositCall(action.NftDepositArgs{
 			ReceiverId: bridge,
 			TokenID:    tokenID,
-			Msg: action.TransferArgs{
-				Token:     token,
-				Receiver:  receiver,
-				Chain:     types.NetworkTestnet,
-				IsWrapped: isWrapped,
-			},
-		}, GetGasPrice(ctx, cli)),
-		//action.NewNftDepositCall(action.NftDepositArgs{
-		//	ReceiverId: cfg.BridgeAddress,
-		//	TokenID:    "2",
-		//	Msg: action.TransferArgs{
-		//		Token:     cfg.NftAddressOriginal,
-		//		Receiver:  cfg.AccountID,
-		//		Chain:     types.NetworkTestnet,
-		//		IsWrapped: false,
-		//	},
-		//}, types.YoctoToNEAR(gas.GasPrice), types.OneYocto),
-	})
+			Msg:        action.NewTransferArgs(token, sender, receiver, targetNetwork, isWrapped, nil, &[32]byte{}),
+		}, MaxGas/2),
+	}, client.WithLatestBlock())
 	if err != nil {
 		panic(err)
 	}
-	return depositResp.String()
+
+	eventID, err := GetDepositedReceiptID(depositResp, client.LogEventTypeNftDeposited, bridge, token, &tokenID, nil)
+	if err != nil {
+		panic(err)
+	}
+	if eventID == nil {
+		panic("eventID is nil")
+	}
+
+	return depositResp.Transaction.Hash.String(), eventID.String()
 }

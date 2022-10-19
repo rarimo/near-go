@@ -13,26 +13,40 @@ import (
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
-	xcrypto "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/origin"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/bundle"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/data"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/origin"
 )
 
-func NftWithdraw(ctx context.Context, cli client.Client, txHash string, sender, receiver, token, tokenID, bridge, privateKey string, isWrapped bool) string {
-	targetContent := xcrypto.HashContent{
-		// TODO: fix event id
-		Origin:         origin.NewDefaultOrigin(txHash, types.NetworkTestnet, "eventID").GetOrigin(),
+func NftWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender, receiver, chainFrom, chainTo, token, tokenID, bridge, privateKey string, isWrapped bool) string {
+	//fmt.Println("Token: " + hexutil.Encode([]byte(token)))
+	//fmt.Println("Token ID: " + hexutil.Encode([]byte(tokenID)))
+	//fmt.Println("nftMediaHash: " + hexutil.Encode([]byte(nftMediaHash)))
+
+	builder := data.NewTransferDataBuilder().
+		SetAddress(hexutil.Encode([]byte(token))).
+		SetId(hexutil.Encode([]byte(tokenID))).
+		SetName(nftMetadata[isWrapped].Title).
+		SetImageURI(nftMedia).
+		SetImageHash(hexutil.Encode(mustDecodeBase64(nftMediaHash)))
+
+	c := builder.Build().GetContent()
+
+	targetContent := operation.TransferContent{
+		Origin:         origin.NewDefaultOriginBuilder().SetTxHash(txHash).SetOpId(eventID).SetCurrentNetwork(chainFrom).Build().GetOrigin(),
+		TargetNetwork:  chainTo,
 		Receiver:       []byte(receiver),
-		TargetNetwork:  types.NetworkTestnet,
-		TargetContract: []byte(token),
-		Data: operation.NewTransferFullMetaOperation(
-			hexutil.Encode([]byte(token)),
-			hexutil.Encode([]byte(tokenID)),
-			"", nftName[isWrapped], nftSymbol[isWrapped], nftMetadataReference, 0).GetContent(),
+		TargetContract: []byte(bridge),
+		Data:           c,
+		Bundle:         bundle.NewDefaultBundleBuilder().SetBundle("").SetSalt("").Build().GetBundle(),
 	}
 
-	mt := merkle.NewTree(crypto.Keccak256, content1, targetContent, content2)
-	path, _ := mt.Path(targetContent)
+	mt := merkle.NewTree(crypto.Keccak256, targetContent, content1, content2)
+	path, ok := mt.Path(targetContent)
+	if !ok {
+		panic("path not found")
+	}
 
 	prvKey, err := base58.Decode(privateKey)
 	if err != nil {
@@ -53,6 +67,7 @@ func NftWithdraw(ctx context.Context, cli client.Client, txHash string, sender, 
 	}
 
 	fmt.Printf("Signature %s\n", base58.Encode(signature[:64]))
+	fmt.Printf("Root msg %s\n", base58.Encode(mt.Root()))
 
 	recoveredKey, err := secp256k1.RecoverPubkey(mt.Root(), signature)
 	if err != nil {
@@ -62,30 +77,39 @@ func NftWithdraw(ctx context.Context, cli client.Client, txHash string, sender, 
 	fmt.Println("Recovered pub key " + base58.Encode(recoveredKey[1:]))
 
 	act := action.NftWithdrawArgs{
-		Token:      token,
-		TokenID:    tokenID,
-		ReceiverID: receiver,
-		Chain:      types.NetworkTestnet,
-		IsWrapped:  isWrapped,
-		Origin:     hexutil.Encode(targetContent.Origin[:]),
-		Path:       make([][32]byte, len(path)),
-		Signatures: [][]byte{signature[:64]},
-		RecoveryID: 1,
-		TokenMetadata: &action.NftMetadata{
-			Reference: nftMetadataReference,
-		},
+		Token:         token,
+		TokenID:       tokenID,
+		ReceiverID:    receiver,
+		Chain:         targetNetwork,
+		IsWrapped:     isWrapped,
+		Origin:        hexutil.Encode(targetContent.Origin[:]),
+		Path:          make([][32]byte, len(path)),
+		Signatures:    []string{hexutil.Encode(signature[:64])},
+		RecoveryID:    signature[64],
+		TokenMetadata: nftMetadata[isWrapped],
 	}
 
-	fmt.Println("Content hash: " + base58.Encode(targetContent.CalculateHash()))
 	for i, hash := range path {
 		copy(act.Path[i][:], hash)
 	}
 
-	withdrawResp, err := cli.TransactionSend(ctx, sender, bridge, []base.Action{
-		action.NewNftWithdrawCall(act, GetGasPrice(ctx, cli)),
-	})
+	fmt.Println("Content hash: " + base58.Encode(targetContent.CalculateHash()))
+
+	deposit := types.OneYocto
+	if isWrapped {
+		deposit = types.NEARToYocto(1)
+	}
+
+	withdrawResp, err := cli.TransactionSendAwait(
+		ctx,
+		sender,
+		bridge,
+		[]base.Action{action.NewNftWithdrawCall(act, MaxGas, deposit)},
+		client.WithLatestBlock(),
+	)
+
 	if err != nil {
 		panic(err)
 	}
-	return withdrawResp.String()
+	return withdrawResp.Transaction.Hash.String()
 }

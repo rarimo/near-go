@@ -13,27 +13,29 @@ import (
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
-	xcrypto "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/origin"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/bundle"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/data"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/origin"
 )
 
-func FtWithdraw(ctx context.Context, cli client.Client, txHash string, sender, receiver, token, amount, bridge, privateKey string, isWrapped bool, isNative bool) string {
+func FtWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender, receiver, chainFrom, chainTo, token, amount, bridge, privateKey string, isWrapped bool) string {
 	amnt, err := types.BalanceFromString(amount)
 	if err != nil {
 		panic(err)
 	}
 
-	targetContent := xcrypto.HashContent{
-		// TODO: fix event id
-		Origin:         origin.NewDefaultOrigin(txHash, types.NetworkTestnet, "eventID").GetOrigin(),
+	builder := data.NewTransferDataBuilder().
+		SetAddress(token).
+		SetAmount(amnt.String())
+
+	targetContent := &operation.TransferContent{
+		Origin:         origin.NewDefaultOriginBuilder().SetTxHash(txHash).SetOpId(eventID).SetCurrentNetwork(chainFrom).Build().GetOrigin(),
+		TargetNetwork:  chainTo,
 		Receiver:       []byte(receiver),
-		TargetNetwork:  types.NetworkTestnet,
 		TargetContract: []byte(token),
-		Data: operation.NewTransferFullMetaOperation(
-			hexutil.Encode([]byte(token)),
-			"",
-			fmt.Sprint(amount), ftName[isNative][isWrapped], ftSymbol[isNative][isWrapped], "", ftDecimals).GetContent(),
+		Data:           builder.Build().GetContent(),
+		Bundle:         bundle.NewDefaultBundleBuilder().SetBundle("").SetSalt("").Build().GetBundle(),
 	}
 
 	mt := merkle.NewTree(crypto.Keccak256, content1, content2, content3, targetContent, content4, content5, content6, content7, content8, content9)
@@ -70,7 +72,7 @@ func FtWithdraw(ctx context.Context, cli client.Client, txHash string, sender, r
 		Token:      token,
 		Amount:     amnt,
 		ReceiverID: receiver,
-		Chain:      types.NetworkTestnet,
+		Chain:      targetNetwork,
 		IsWrapped:  isWrapped,
 		Origin:     hexutil.Encode(targetContent.Origin[:]),
 		Path:       make([][32]byte, len(path)),
@@ -84,7 +86,7 @@ func FtWithdraw(ctx context.Context, cli client.Client, txHash string, sender, r
 	}
 
 	withdrawResp, err := cli.TransactionSend(ctx, sender, bridge, []base.Action{
-		action.NewFtWithdrawCall(act, GetGasPrice(ctx, cli)),
+		action.NewFtWithdrawCall(act, MaxGas),
 	})
 	if err != nil {
 		panic(err)

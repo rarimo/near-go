@@ -38,7 +38,7 @@ type PeerInfo struct {
 
 // PeerChainInfo contains peer chain information. This is derived from PeerCHainInfoV2 in nearcore
 type PeerChainInfo struct {
-	// Chain Id and hash of genesis block.
+	// ChainTo Id and hash of genesis block.
 	GenesisID GenesisID `json:"genesis_id"`
 	// Last known chain height of the peer.
 	Height types.BlockHeight `json:"height"`
@@ -65,7 +65,7 @@ type KnownProducer struct {
 type MetricRecorder = json.RawMessage
 
 type GenesisID struct {
-	// Chain Id
+	// ChainTo Id
 	ChainID string `json:"chain_id"`
 	// Hash of genesis block
 	Hash hash.CryptoHash `json:"hash"`

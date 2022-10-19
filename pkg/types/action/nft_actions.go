@@ -9,6 +9,6 @@ func NewNftDepositCall(params NftDepositArgs, gas types.Gas) base.Action {
 	return base.NewFunctionCall(NftTransferMethod, mustMarshalArgs(params), gas, types.OneYocto)
 }
 
-func NewNftWithdrawCall(params NftWithdrawArgs, gas types.Gas) base.Action {
-	return base.NewFunctionCall(NftWithdrawMethod, mustMarshalArgs(params), gas, types.ZeroNEAR)
+func NewNftWithdrawCall(params NftWithdrawArgs, gas types.Gas, deposit types.Balance) base.Action {
+	return base.NewFunctionCall(NftWithdrawMethod, mustMarshalArgs(params), gas, deposit)
 }

@@ -17,7 +17,7 @@ func NativeDeposit(ctx context.Context, cli client.Client, sender, receiver, amo
 		action.NewNativeDepositCall(action.NativeDepositArgs{
 			ReceiverId: receiver,
 			Amount:     amnt,
-		}, GetGasPrice(ctx, cli), amnt),
+		}, MaxGas, amnt),
 	})
 	if err != nil {
 		panic(err)

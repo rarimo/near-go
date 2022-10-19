@@ -13,27 +13,26 @@ import (
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
-	xcrypto "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/origin"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/bundle"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/data"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/origin"
 )
 
-func NativeWithdraw(ctx context.Context, cli client.Client, txHash string, sender, receiver, amount, bridge, privateKey string) string {
+func NativeWithdraw(ctx context.Context, cli client.Client, txHash, eventID string, sender, receiver, chainFrom, chainTo, amount, bridge, privateKey string) string {
 	amnt, err := types.BalanceFromString(amount)
 	if err != nil {
 		panic(err)
 	}
 
-	targetContent := xcrypto.HashContent{
-		// TODO: fix event id
-		Origin:         origin.NewDefaultOrigin(txHash, types.NetworkTestnet, "eventID").GetOrigin(),
-		Receiver:       []byte(receiver),
-		TargetNetwork:  types.NetworkTestnet,
-		TargetContract: []byte(bridge),
-		Data: operation.NewTransferOperation(
-			"",
-			"",
-			fmt.Sprint(amount), "").GetContent(),
+	builder := data.NewTransferDataBuilder().SetAmount(amnt.String())
+
+	targetContent := &operation.TransferContent{
+		Origin:        origin.NewDefaultOriginBuilder().SetTxHash(txHash).SetOpId(eventID).SetCurrentNetwork(chainFrom).Build().GetOrigin(),
+		TargetNetwork: chainTo,
+		Receiver:      []byte(receiver),
+		Data:          builder.Build().GetContent(),
+		Bundle:        bundle.NewDefaultBundleBuilder().SetBundle("").SetSalt("").Build().GetBundle(),
 	}
 
 	mt := merkle.NewTree(crypto.Keccak256, content1, targetContent, content2)
@@ -71,6 +70,7 @@ func NativeWithdraw(ctx context.Context, cli client.Client, txHash string, sende
 		ReceiverID: receiver,
 		Origin:     hexutil.Encode(targetContent.Origin[:]),
 		Path:       make([][32]byte, len(path)),
+		Chain:      targetNetwork,
 		Signatures: [][]byte{signature[:64]},
 		RecoveryID: 1,
 	}
@@ -81,7 +81,7 @@ func NativeWithdraw(ctx context.Context, cli client.Client, txHash string, sende
 	}
 
 	withdrawResp, err := cli.TransactionSend(ctx, sender, bridge, []base.Action{
-		action.NewNativeWithdrawCall(act, GetGasPrice(ctx, cli), amnt),
+		action.NewNativeWithdrawCall(act, MaxGas, amnt),
 	})
 	if err != nil {
 		panic(err)
