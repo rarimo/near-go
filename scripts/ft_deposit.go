@@ -8,20 +8,30 @@ import (
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
 )
 
-func FtDeposit(ctx context.Context, cli client.Client, sender, receiver, token, amount, bridge string, isWrapped bool) string {
+func FtDeposit(ctx context.Context, cli client.Client, sender, receiver, token, amount, bridge string, isWrapped bool) (string, string) {
 	amnt, err := types.BalanceFromString(amount)
 	if err != nil {
 		panic(err)
 	}
-	depositResp, err := cli.TransactionSend(ctx, sender, token, []base.Action{
+
+	depositResp, err := cli.TransactionSendAwait(ctx, sender, token, []base.Action{
 		action.NewFtDepositCall(action.FtDepositArgs{
 			ReceiverId: bridge,
 			Amount:     amnt,
-			Msg:        action.NewTransferArgs(token, sender, receiver, targetNetwork, isWrapped, nil, nil),
+			Msg:        action.NewTransferArgs(token, sender, receiver, targetNetwork, isWrapped),
 		}, MaxGas),
 	})
 	if err != nil {
 		panic(err)
 	}
-	return depositResp.String()
+
+	eventID, err := GetDepositedReceiptID(depositResp, client.LogEventTypeFtDeposited, bridge, token, nil, &amnt)
+	if err != nil {
+		panic(err)
+	}
+	if eventID == nil {
+		panic("eventID is nil")
+	}
+
+	return depositResp.Transaction.Hash.String(), eventID.String()
 }

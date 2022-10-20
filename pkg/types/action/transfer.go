@@ -11,24 +11,17 @@ type TransferArgs struct {
 	Receiver   types.AccountID `json:"receiver,required"`
 	ChainTo    string          `json:"chain_to,required"`
 	IsWrapped  bool            `json:"is_wrapped,required"`
-	BundleData []byte          `json:"bundle_data,omitempty"`
-	BundleSalt [32]byte        `json:"bundle_salt,omitempty"`
+	BundleData string          `json:"bundle_data,omitempty"`
+	BundleSalt string          `json:"bundle_salt,omitempty"`
 }
 
-func NewTransferArgs(token string, sender, receiver types.AccountID, chainTo string, isWrapped bool, bundleData []byte, bundleSalt *[32]byte) string {
+func NewTransferArgs(token string, sender, receiver types.AccountID, chainTo string, isWrapped bool) string {
 	args := TransferArgs{
 		Token:     token,
 		Sender:    sender,
 		Receiver:  receiver,
 		ChainTo:   chainTo,
 		IsWrapped: isWrapped,
-	}
-
-	if bundleData != nil {
-		args.BundleData = bundleData
-	}
-	if bundleSalt != nil {
-		args.BundleSalt = *bundleSalt
 	}
 
 	result, err := json.Marshal(&args)

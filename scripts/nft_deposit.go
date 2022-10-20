@@ -12,7 +12,7 @@ func NftDeposit(ctx context.Context, cli client.Client, sender, receiver, token,
 		action.NewNftDepositCall(action.NftDepositArgs{
 			ReceiverId: bridge,
 			TokenID:    tokenID,
-			Msg:        action.NewTransferArgs(token, sender, receiver, targetNetwork, isWrapped, nil, &[32]byte{}),
+			Msg:        action.NewTransferArgs(token, sender, receiver, targetNetwork, isWrapped),
 		}, MaxGas/2),
 	}, client.WithLatestBlock())
 	if err != nil {

@@ -8,12 +8,13 @@ import (
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
 )
 
-func NativeDeposit(ctx context.Context, cli client.Client, sender, receiver, amount, bridge string) string {
+func NativeDeposit(ctx context.Context, cli client.Client, sender, receiver, amount, bridge string) (string, string) {
 	amnt, err := types.BalanceFromString(amount)
 	if err != nil {
 		panic(err)
 	}
-	depositResp, err := cli.TransactionSend(ctx, sender, bridge, []base.Action{
+
+	depositResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []base.Action{
 		action.NewNativeDepositCall(action.NativeDepositArgs{
 			ReceiverId: receiver,
 			Amount:     amnt,
@@ -22,5 +23,13 @@ func NativeDeposit(ctx context.Context, cli client.Client, sender, receiver, amo
 	if err != nil {
 		panic(err)
 	}
-	return depositResp.String()
+
+	eventID, err := GetDepositedReceiptID(depositResp, client.LogEventTypeNativeDeposited, bridge, bridge, nil, &amnt)
+	if err != nil {
+		panic(err)
+	}
+	if eventID == nil {
+		panic("eventID is nil")
+	}
+	return depositResp.Transaction.Hash.String(), eventID.String()
 }
