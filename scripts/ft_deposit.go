@@ -6,26 +6,28 @@ import (
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
+	"lukechampine.com/uint128"
 )
 
-func FtDeposit(ctx context.Context, cli client.Client, sender, receiver, token, amount, bridge string, isWrapped bool) (string, string) {
-	amnt, err := types.BalanceFromString(amount)
+func FtDeposit(ctx context.Context, cli client.Client, sender, receiver, token string, amount string, bridge string, isWrapped bool) (string, string) {
+	av, err := uint128.FromString(amount)
 	if err != nil {
 		panic(err)
 	}
+	amn := types.Balance(av)
 
 	depositResp, err := cli.TransactionSendAwait(ctx, sender, token, []base.Action{
 		action.NewFtDepositCall(action.FtDepositArgs{
 			ReceiverId: bridge,
-			Amount:     amnt,
+			Amount:     amn,
 			Msg:        action.NewTransferArgs(token, sender, receiver, targetNetwork, isWrapped),
 		}, MaxGas),
-	})
+	}, client.WithLatestBlock())
 	if err != nil {
 		panic(err)
 	}
 
-	eventID, err := GetDepositedReceiptID(depositResp, client.LogEventTypeFtDeposited, bridge, token, nil, &amnt)
+	eventID, err := GetDepositedReceiptID(depositResp, client.LogEventTypeFtDeposited, bridge, token, nil, &amn)
 	if err != nil {
 		panic(err)
 	}

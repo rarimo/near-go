@@ -1,6 +1,8 @@
 package action
 
-import "gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
+import (
+	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
+)
 
 type FtDepositArgs struct {
 	ReceiverId types.AccountID `json:"receiver_id,required"`

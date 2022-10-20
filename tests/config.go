@@ -6,6 +6,7 @@ import (
 	"gitlab.com/distributed_lab/kit/kv"
 	"gitlab.com/distributed_lab/logan/v3/errors"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client"
+	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/key"
 )
 
@@ -15,14 +16,14 @@ type Config struct {
 	RpcURL               string          `fig:"rpc_url,required"`
 	PrivateKey           string          `fig:"private_key,required"`
 	SignerPrivateKey     string          `fig:"signer_private_key,required"`
-	AccountID            string          `fig:"account_id,required"`
-	BridgeAddress        string          `fig:"bridge_address,required"`
-	FtAddressOriginal    string          `fig:"ft_address_original,required"`
-	FtAddressWrapped     string          `fig:"ft_address_wrapped,required"`
-	NftAddressOriginal   string          `fig:"nft_address_original,required"`
-	NftAddressWrapped    string          `fig:"nft_address_wrapped,required"`
-	NativeAddressWrapped string          `fig:"native_address_wrapped,required"`
 	TokenID              string          `fig:"token_id"`
+	AccountID            types.AccountID `fig:"account_id,required"`
+	BridgeAddress        types.AccountID `fig:"bridge_address,required"`
+	FtAddressOriginal    types.AccountID `fig:"ft_address_original,required"`
+	FtAddressWrapped     types.AccountID `fig:"ft_address_wrapped,required"`
+	NftAddressOriginal   types.AccountID `fig:"nft_address_original,required"`
+	NftAddressWrapped    types.AccountID `fig:"nft_address_wrapped,required"`
+	NativeAddressWrapped types.AccountID `fig:"native_address_wrapped,required"`
 	Amount               string          `fig:"amount"`
 }
 

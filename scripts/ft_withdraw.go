@@ -2,20 +2,26 @@ package scripts
 
 import (
 	"context"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/data"
+	"lukechampine.com/uint128"
 )
 
 func FtWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender, receiver, chainFrom, chainTo, token, amount, bridge, privateKey string, isWrapped bool) string {
-	amnt, err := types.BalanceFromString(amount)
+	av, err := uint128.FromString(amount)
 	if err != nil {
 		panic(err)
 	}
+	amnt := types.Balance(av)
 
-	content := data.NewTransferDataBuilder().SetAddress(token).SetAmount(amnt.String()).Build().GetContent()
+	content := data.NewTransferDataBuilder().
+		SetAddress(hexutil.Encode([]byte(token))).
+		SetAmount(amnt.String()).Build().
+		GetContent()
 
 	origin, signature, path, recoveryID := getContent(
 		privateKey,
@@ -42,11 +48,17 @@ func FtWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender,
 		},
 	}
 
-	withdrawResp, err := cli.TransactionSend(ctx, sender, bridge, []base.Action{
-		action.NewFtWithdrawCall(act, MaxGas),
-	})
+	deposit := types.OneYocto
+
+	if isWrapped {
+		deposit = types.ZeroNEAR
+	}
+
+	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []base.Action{
+		action.NewFtWithdrawCall(act, MaxGas, deposit),
+	}, client.WithLatestBlock())
 	if err != nil {
 		panic(err)
 	}
-	return withdrawResp.String()
+	return withdrawResp.Transaction.Hash.String()
 }
