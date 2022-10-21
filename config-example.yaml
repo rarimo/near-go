@@ -10,4 +10,4 @@ tests:
   nft_address_wrapped: "non_fungible_token_wrapped.example.testnet"
   native_address_wrapped: "native_token_wrapped.example.testnet"
   token_id: "1"
-  amount: "0.05"
+  amount: "2"
