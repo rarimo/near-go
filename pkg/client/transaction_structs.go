@@ -70,7 +70,7 @@ type LogEvent struct {
 }
 
 type LogEventDepositedData struct {
-	Token types.AccountID `json:"token,required"`
+	Token *types.AccountID `json:"token,required"`
 	// Empty if fungible token
 	TokenID *string `json:"token_id,omitempty"`
 	// Empty if non fungible token

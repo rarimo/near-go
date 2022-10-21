@@ -19,7 +19,7 @@ func NftDeposit(ctx context.Context, cli client.Client, sender, receiver, token,
 		panic(err)
 	}
 
-	eventID, err := GetDepositedReceiptID(depositResp, client.LogEventTypeNftDeposited, bridge, token, &tokenID, nil)
+	eventID, err := GetDepositedReceiptID(depositResp, client.LogEventTypeNftDeposited, bridge, &token, &tokenID, nil)
 	if err != nil {
 		panic(err)
 	}

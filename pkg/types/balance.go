@@ -6,7 +6,7 @@ import (
 	"math"
 	"math/big"
 
-	uint128 "lukechampine.com/uint128"
+	"lukechampine.com/uint128"
 )
 
 var (
@@ -46,7 +46,6 @@ func (bal Balance) Uint64() uint64 {
 	return uint128.Uint128(bal).Big().Uint64()
 }
 
-// Convenience funcs
 func (bal Balance) Div64(div uint64) Balance {
 	return Balance(uint128.Uint128(bal).Div64(div))
 }
@@ -59,7 +58,6 @@ func (bal Balance) Empty() bool {
 	return uint128.Uint128(bal).IsZero()
 }
 
-// TODO
 func NEARToYocto(near uint64) Balance {
 	if near == 0 {
 		return ZeroNEAR
@@ -68,7 +66,6 @@ func NEARToYocto(near uint64) Balance {
 	return Balance(uint128.From64(near).Mul(tenPower24))
 }
 
-// TODO
 func YoctoToNEAR(yocto Balance) uint64 {
 	div := uint128.Uint128(yocto).Div(tenPower24)
 	if h := div.Hi; h != 0 {
@@ -91,14 +88,6 @@ func scaleToYocto(f *big.Float) (r *big.Int) {
 	return
 }
 
-// TODO
-func BalanceFromFloat(f float64) (bal Balance) {
-	bigf := big.NewFloat(f)
-	bal = Balance(uint128.FromBig(scaleToYocto(bigf)))
-	return
-}
-
-// TODO
 func BalanceFromString(s string) (bal Balance, err error) {
 	var bigf *big.Float
 	bigf, _, err = big.ParseFloat(s, 10, 128, big.ToZero)

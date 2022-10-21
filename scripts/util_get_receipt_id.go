@@ -14,7 +14,7 @@ var (
 	eventPrefix          = "EVENT_JSON:"
 )
 
-func GetDepositedReceiptID(tx client.FinalExecutionOutcomeView, eventType client.LogEventType, bridge string, token string, tokenID *string, amount *types.Balance) (*hash.CryptoHash, error) {
+func GetDepositedReceiptID(tx client.FinalExecutionOutcomeView, eventType client.LogEventType, bridge string, token *string, tokenID *string, amount *types.Balance) (*hash.CryptoHash, error) {
 	var receiptID *hash.CryptoHash
 
 	for _, receipt := range tx.ReceiptsOutcome {
@@ -44,7 +44,7 @@ func GetDepositedReceiptID(tx client.FinalExecutionOutcomeView, eventType client
 			// bridge log always will have only one data object
 			logData := log.Data[0]
 
-			if logData.Token != token {
+			if token != nil && logData.Token != nil && *token != *logData.Token {
 				continue
 			}
 			if tokenID != nil && logData.TokenID != nil && *tokenID != *logData.TokenID {

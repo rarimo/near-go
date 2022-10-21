@@ -27,7 +27,7 @@ func FtDeposit(ctx context.Context, cli client.Client, sender, receiver, token s
 		panic(err)
 	}
 
-	eventID, err := GetDepositedReceiptID(depositResp, client.LogEventTypeFtDeposited, bridge, token, nil, &amn)
+	eventID, err := GetDepositedReceiptID(depositResp, client.LogEventTypeFtDeposited, bridge, &token, nil, &amn)
 	if err != nil {
 		panic(err)
 	}

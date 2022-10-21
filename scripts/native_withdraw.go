@@ -31,6 +31,7 @@ func NativeWithdraw(ctx context.Context, cli client.Client, txHash, eventID stri
 	act := action.NativeWithdrawArgs{
 		Amount: amnt,
 		WithdrawArgs: action.WithdrawArgs{
+			Chain:      chainTo,
 			ReceiverID: receiver,
 			Origin:     origin,
 			Path:       path,
@@ -39,11 +40,11 @@ func NativeWithdraw(ctx context.Context, cli client.Client, txHash, eventID stri
 		},
 	}
 
-	withdrawResp, err := cli.TransactionSend(ctx, sender, bridge, []base.Action{
-		action.NewNativeWithdrawCall(act, MaxGas, amnt),
-	})
+	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []base.Action{
+		action.NewNativeWithdrawCall(act, MaxGas, types.OneYocto),
+	}, client.WithLatestBlock())
 	if err != nil {
 		panic(err)
 	}
-	return withdrawResp.String()
+	return withdrawResp.Transaction.Hash.String()
 }

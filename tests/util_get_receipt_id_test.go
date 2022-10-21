@@ -274,7 +274,7 @@ func TestUtilGetReceiptId(t *testing.T) {
 		resp,
 		client.LogEventTypeNftDeposited,
 		cfg.BridgeAddress,
-		cfg.NftAddressOriginal,
+		&cfg.NftAddressOriginal,
 		&cfg.TokenID,
 		nil,
 	)

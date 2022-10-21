@@ -64,7 +64,6 @@ func getContent(
 	}
 
 	fmt.Printf("Signature %s\n", base58.Encode(sign[:64]))
-	fmt.Printf("Root msg %s\n", base58.Encode(mt.Root()))
 
 	recoveredKey, err := secp256k1.RecoverPubkey(mt.Root(), sign)
 	if err != nil {
@@ -81,6 +80,5 @@ func getContent(
 	}
 
 	fmt.Println("Content hash: " + base58.Encode(targetContent.CalculateHash()))
-
 	return
 }
