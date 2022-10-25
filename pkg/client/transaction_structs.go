@@ -92,3 +92,8 @@ type ExecutionOutcomeWithIdView struct {
 	ID        hash.CryptoHash      `json:"id"`
 	Outcome   ExecutionOutcomeView `json:"outcome"`
 }
+
+type ExecutionOutcomeWithReceipt struct {
+	ExecutionOutcome ExecutionOutcomeWithIdView `json:"execution_outcome"`
+	Receipt          *ReceiptView               `json:"receipt"`
+}
