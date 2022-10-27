@@ -778,14 +778,6 @@ gitlab.com/distributed_lab/logan v3.8.1+incompatible/go.mod h1:25oL/FPFXmyYzWeA6
 gitlab.com/distributed_lab/running v0.0.0-20200706131153-4af0e83eb96c/go.mod h1:4TnADX84dQjQMRHKIMPCVL0L97rD/Jxv0xDbrN6aKzk=
 gitlab.com/rarify-protocol/go-merkle v0.0.0-20220831221733-8f4135fe9f1f h1:BodYvdcDw7hFsgYf6OEnixmckKGoqyILTZoqwQetmZs=
 gitlab.com/rarify-protocol/go-merkle v0.0.0-20220831221733-8f4135fe9f1f/go.mod h1:n+k8vkNffvSzX41qNeBQYvlBaFFUPEo8WJP/Ie+fXSQ=
-gitlab.com/rarify-protocol/rarimo-core v0.0.0-20221004183231-2748ef323cf5 h1:IMOjH8h6ryQ9PgtA0pFZNmPSTBSsKvVg7OqUl0HA1+8=
-gitlab.com/rarify-protocol/rarimo-core v0.0.0-20221004183231-2748ef323cf5/go.mod h1:97Lq3SN1pPkvw4laTFDRx055BgracjGwfQRLws31m5c=
-gitlab.com/rarify-protocol/rarimo-core v0.0.0-20221016121111-79e726d83ec5 h1:eP9kPV/6Km0vGIvRrT3bF1gitldez71ISHa5u/Im6WM=
-gitlab.com/rarify-protocol/rarimo-core v0.0.0-20221016121111-79e726d83ec5/go.mod h1:VGr7OC7E4eEdLA6MUBIGfWaSnfGJMmO8dYzXel/rkYw=
-gitlab.com/rarify-protocol/rarimo-core v0.0.0-20221018004656-1c04d4c30f67 h1:bk6s/oCStX2obXgVtfChSeHCbyzJMFDT6/v4c8ab93g=
-gitlab.com/rarify-protocol/rarimo-core v0.0.0-20221018004656-1c04d4c30f67/go.mod h1:VGr7OC7E4eEdLA6MUBIGfWaSnfGJMmO8dYzXel/rkYw=
-gitlab.com/rarify-protocol/rarimo-core v0.0.0-20221018145116-6195d65cf96b h1:Fs8NWLhqyyAezMYCr+JXDjqGfDB4fzS9V8ousgbJN4I=
-gitlab.com/rarify-protocol/rarimo-core v0.0.0-20221018145116-6195d65cf96b/go.mod h1:VGr7OC7E4eEdLA6MUBIGfWaSnfGJMmO8dYzXel/rkYw=
 gitlab.com/rarify-protocol/rarimo-core v0.0.0-20221019113320-8694aca64c03 h1:+EkSBv/jLVgqrTyHoNF8VVCAV4k1opgSF3Kns/QOqAU=
 gitlab.com/rarify-protocol/rarimo-core v0.0.0-20221019113320-8694aca64c03/go.mod h1:VGr7OC7E4eEdLA6MUBIGfWaSnfGJMmO8dYzXel/rkYw=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
