@@ -3,6 +3,7 @@ package client
 import (
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/hash"
+	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/key"
 )
 
 type ShardView struct {
@@ -36,10 +37,12 @@ type ShardStateChangeCauseView struct {
 }
 
 type ShardStateChangeChangeView struct {
-	AccountID     types.AccountID    `json:"account_id"`
-	Amount        types.Balance      `json:"amount"`
-	Locked        types.Balance      `json:"locked"`
-	CodeHash      hash.CryptoHash    `json:"code_hash"`
-	StorageUsage  types.StorageUsage `json:"storage_usage"`
-	StoragePaidAt types.BlockHeight  `json:"storage_paid_at"`
+	AccountID     types.AccountID      `json:"account_id"`
+	AccessKey     *AccessKeyView       `json:"access_key,omitempty"`
+	PublicKey     *key.Base58PublicKey `json:"public_key,omitempty"`
+	Amount        *types.Balance       `json:"amount,omitempty"`
+	Locked        *types.Balance       `json:"locked,omitempty"`
+	CodeHash      *hash.CryptoHash     `json:"code_hash,omitempty"`
+	StorageUsage  *types.StorageUsage  `json:"storage_usage,omitempty"`
+	StoragePaidAt *types.BlockHeight   `json:"storage_paid_at,omitempty"`
 }
