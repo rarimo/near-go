@@ -73,7 +73,7 @@ func (a *AccessKeyPermission) UnmarshalJSON(b []byte) error {
 		return nil
 	}
 
-	var value string
+	value := string(b)
 
 	if value == "FullAccess" {
 		*a = NewFullAccessPermission()
