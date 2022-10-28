@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/eteu-technologies/borsh-go"
 	"gitlab.com/distributed_lab/logan/v3/errors"
+	"strings"
 
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
 )
@@ -73,7 +74,7 @@ func (a *AccessKeyPermission) UnmarshalJSON(b []byte) error {
 		return nil
 	}
 
-	var value string
+	value := strings.ReplaceAll(string(b), "\"", "")
 
 	if value == "FullAccess" {
 		*a = NewFullAccessPermission()

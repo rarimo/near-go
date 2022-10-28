@@ -19,6 +19,8 @@ type Client struct {
 	nextReqId uint64
 }
 
+var RequestTimeoutError = errors.New("request timeout")
+
 func NewClient(rpcUrl string) (*Client, error) {
 	_, err := url.Parse(rpcUrl)
 	if err != nil {
@@ -56,6 +58,9 @@ func (c *Client) CallRPC(ctx context.Context, method string, params interface{})
 	request.Header.Add("Content-Type", "application/json")
 
 	response, err := c.client.Do(request)
+	if response.StatusCode == http.StatusRequestTimeout {
+		return nil, RequestTimeoutError
+	}
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to do request")
 	}
