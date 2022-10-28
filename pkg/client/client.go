@@ -64,9 +64,8 @@ func (c *Client) callRpcWithRetry(ctx context.Context, method string, params int
 		if res.Error != nil {
 			err = res.Error
 		}
-		if err == nil {
-			log.Info("successfully got result from rpc")
-			return res, nil
+		if errors.Cause(err) != jsonrpc.RequestTimeoutError {
+			return res, err
 		}
 
 		select {
