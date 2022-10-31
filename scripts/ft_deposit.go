@@ -3,18 +3,12 @@ package scripts
 import (
 	"context"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
-	"lukechampine.com/uint128"
 )
 
 func FtDeposit(ctx context.Context, cli client.Client, sender, receiver, token string, amount string, bridge string, isWrapped bool) (string, string) {
-	av, err := uint128.FromString(amount)
-	if err != nil {
-		panic(err)
-	}
-	amn := types.Balance(av)
+	amn := parseAmount(amount)
 
 	depositResp, err := cli.TransactionSendAwait(ctx, sender, token, []base.Action{
 		action.NewFtDepositCall(action.FtDepositArgs{
