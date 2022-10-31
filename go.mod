@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/eteu-technologies/borsh-go v0.3.2
+	github.com/eteu-technologies/golang-uint128 v1.1.1-eteu
 	github.com/ethereum/go-ethereum v1.9.25
 	github.com/mr-tron/base58 v1.2.0
 	github.com/stretchr/testify v1.7.1
@@ -12,14 +13,12 @@ require (
 	gitlab.com/distributed_lab/logan v3.8.1+incompatible
 	gitlab.com/rarify-protocol/go-merkle v0.0.0-20220831221733-8f4135fe9f1f
 	gitlab.com/rarify-protocol/rarimo-core v0.0.0-20221019113320-8694aca64c03
-	lukechampine.com/uint128 v1.2.0
 )
 
 require (
 	github.com/btcsuite/btcd v0.22.0-beta // indirect
 	github.com/cosmos/cosmos-sdk v0.45.5 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/eteu-technologies/golang-uint128 v1.1.1-eteu // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/gogo/protobuf v1.3.3 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect

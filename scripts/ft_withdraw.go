@@ -2,21 +2,18 @@ package scripts
 
 import (
 	"context"
+	"github.com/eteu-technologies/golang-uint128"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/data"
-	"lukechampine.com/uint128"
+	"math/big"
 )
 
 func FtWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender, receiver, chainFrom, chainTo, token, amount, bridge, privateKey string, isWrapped bool) string {
-	av, err := uint128.FromString(amount)
-	if err != nil {
-		panic(err)
-	}
-	amnt := types.Balance(av)
+	amnt := parseAmount(amount)
 
 	content := data.NewTransferDataBuilder().
 		SetAddress(hexutil.Encode([]byte(token))).
@@ -61,4 +58,14 @@ func FtWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender,
 		panic(err)
 	}
 	return withdrawResp.Transaction.Hash.String()
+}
+
+func parseAmount(amount string) types.Balance {
+	bigAmount, ok := big.NewInt(0).SetString(amount, 10)
+	if !ok {
+		panic("invalid amount")
+	}
+
+	av := uint128.FromBig(bigAmount)
+	return types.Balance(av)
 }

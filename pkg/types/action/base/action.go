@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/eteu-technologies/borsh-go"
-	uint128 "lukechampine.com/uint128"
+	uint128 "github.com/eteu-technologies/golang-uint128"
 
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/key"
