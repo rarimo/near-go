@@ -61,7 +61,7 @@ func (c *Client) callRpcWithRetry(ctx context.Context, method string, params int
 		res, err = c.RPCClient.CallRPC(ctx, method, params)
 		// If JSON-RPC error happens, conveniently set it as err to avoid duplicating code
 		// XXX: using plain assignment makes `err != nil` true for some reason
-		if res.Error != nil {
+		if res != nil && res.Error != nil {
 			err = res.Error
 		}
 		if errors.Cause(err) != jsonrpc.RequestTimeoutError {
