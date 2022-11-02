@@ -12,8 +12,8 @@ type NftDepositArgs struct {
 
 type NftWithdrawArgs struct {
 	WithdrawArgs
-	Token         types.AccountID `json:"token,required"`
-	TokenID       string          `json:"token_id,required"`
-	TokenMetadata *NftMetadata    `json:"token_metadata,omitempty"`
-	IsWrapped     bool            `json:"is_wrapped,required"`
+	Token         types.AccountID        `json:"token,required"`
+	TokenID       string                 `json:"token_id,required"`
+	TokenMetadata *types.NftMetadataView `json:"token_metadata,omitempty"`
+	IsWrapped     bool                   `json:"is_wrapped,required"`
 }
