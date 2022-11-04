@@ -58,6 +58,10 @@ func (bal Balance) Empty() bool {
 	return uint128.Uint128(bal).IsZero()
 }
 
+func (bal Balance) Big() *big.Int {
+	return uint128.Uint128(bal).Big()
+}
+
 func NEARToYocto(near uint64) Balance {
 	if near == 0 {
 		return ZeroNEAR

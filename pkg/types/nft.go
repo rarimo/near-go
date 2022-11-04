@@ -1,8 +1,17 @@
-package action
+package types
 
-import "time"
+import (
+	"time"
+)
 
-type NftMetadata struct {
+type NftView struct {
+	TokenID            string               `json:"token_id"`
+	OwnerID            string               `json:"owner_id"`
+	Metadata           *NftMetadataView     `json:"metadata"`
+	ApprovedAccountIds *map[AccountID]int64 `json:"approved_account_ids"`
+}
+
+type NftMetadataView struct {
 	// ex. "Arch Nemesis: Mail Carrier" or "Parcel #5055"
 	Title string `json:"title,omitempty"`
 	// free-form description
