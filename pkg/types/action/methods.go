@@ -1,11 +1,11 @@
 package action
 
 const (
-	NftTransferMethod       = "nft_transfer_call"
-	NftWithdrawMethod       = "nft_withdraw"
-	NftTokensForOwnerMethod = "nft_tokens_for_owner"
-	NftMetadataMethod       = "nft_metadata"
-	NftMintMethod           = "nft_mint"
+	NftTransferMethod         = "nft_transfer_call"
+	NftWithdrawMethod         = "nft_withdraw"
+	NftTokensForOwnerMethod   = "nft_tokens_for_owner"
+	NftContractMetadataMethod = "nft_metadata"
+	NftGetMethod              = "nft_token"
 
 	FtTransferMethod       = "ft_transfer_call"
 	FtWithdrawMethod       = "ft_withdraw"
