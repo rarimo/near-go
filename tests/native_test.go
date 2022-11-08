@@ -1,13 +1,11 @@
 package tests
 
 import (
-	"gitlab.com/distributed_lab/kit/kv"
-	"gitlab.com/rarify-protocol/near-bridge-go/scripts"
-)
-
-import (
 	"context"
 	"testing"
+
+	"gitlab.com/distributed_lab/kit/kv"
+	"gitlab.com/rarify-protocol/near-bridge-go/scripts"
 )
 
 func TestNative(t *testing.T) {

@@ -2,9 +2,10 @@ package tests
 
 import (
 	"context"
+	"testing"
+
 	"gitlab.com/distributed_lab/kit/kv"
 	"gitlab.com/rarify-protocol/near-bridge-go/scripts"
-	"testing"
 )
 
 func TestFt(t *testing.T) {

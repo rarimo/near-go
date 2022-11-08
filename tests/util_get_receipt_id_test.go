@@ -3,11 +3,12 @@ package tests
 import (
 	"context"
 	"encoding/json"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"gitlab.com/distributed_lab/kit/kv"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client"
 	"gitlab.com/rarify-protocol/near-bridge-go/scripts"
-	"testing"
 )
 
 var response = json.RawMessage(`{
