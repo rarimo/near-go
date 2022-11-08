@@ -6,7 +6,7 @@ import (
 	"math"
 	"math/big"
 
-	"github.com/eteu-technologies/golang-uint128"
+	"lukechampine.com/uint128"
 )
 
 var (

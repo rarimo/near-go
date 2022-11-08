@@ -2,14 +2,15 @@ package scripts
 
 import (
 	"context"
-	"github.com/eteu-technologies/golang-uint128"
+	"math/big"
+
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action"
 	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/data"
-	"math/big"
+	"lukechampine.com/uint128"
 )
 
 func FtWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender, receiver, chainFrom, chainTo, token, amount, bridge, privateKey string, isWrapped bool) string {
