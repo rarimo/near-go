@@ -13,7 +13,7 @@ import (
 func NftWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender, receiver, chainFrom, chainTo, token, tokenID, bridge, privateKey string, isWrapped bool) string {
 	content := data.NewTransferDataBuilder().
 		SetAddress(hexutil.Encode([]byte(token))).
-		SetId(hexutil.Encode([]byte(tokenID))).
+		SetId(hexutil.Encode(to32Bytes([]byte(tokenID)))).
 		SetName(nftMetadata[isWrapped].Title).
 		SetImageURI(nftMedia).
 		SetImageHash(hexutil.Encode(mustDecodeBase64(nftMediaHash))).
@@ -63,4 +63,14 @@ func NftWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender
 		panic(err)
 	}
 	return withdrawResp.Transaction.Hash.String()
+}
+
+func to32Bytes(arr []byte) []byte {
+	if len(arr) == 32 || len(arr) == 0 {
+		return arr
+	}
+
+	result := make([]byte, 32-len(arr))
+	return append(result, arr...)
+
 }
