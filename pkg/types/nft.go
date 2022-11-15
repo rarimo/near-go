@@ -37,3 +37,20 @@ type NftMetadataView struct {
 	// Base64-encoded sha256 hash of JSON from reference field. Required if `reference` is included.
 	ReferenceHash []byte `json:"reference_hash,omitempty"`
 }
+
+type NftContractMetadataView struct {
+	// required, essentially a version like "nft-1.0.0"
+	Spec string `json:"spec"`
+	// required, ex. "Mosaics"
+	Name string `json:"name"`
+	// required, ex. "MOSIAC"
+	Symbol string `json:"symbol"`
+	// Data URL
+	Icon *string `json:"icon"`
+	// Centralized gateway known to have reliable access to decentralized storage assets referenced by `reference` or `media` URLs
+	BaseURI *string `json:"base_uri,omitempty"`
+	// URL to an off-chain JSON file with more info.
+	Reference *string `json:"reference,omitempty"`
+	// Base64-encoded sha256 hash of JSON from reference field. Required if `reference` is included.
+	ReferenceHash []byte `json:"reference_hash,omitempty"`
+}
