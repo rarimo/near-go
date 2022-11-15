@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"gitlab.com/distributed_lab/logan/v3/errors"
+	"io"
 	"net/http"
 	"net/url"
 	"sync/atomic"
@@ -66,6 +67,41 @@ func (c *Client) CallRPC(ctx context.Context, method string, params interface{})
 	}
 
 	return parseRPCBody(response)
+}
+
+func (c *Client) CallRPCRaw(ctx context.Context, method string, params interface{}) ([]byte, error) {
+	reqId := fmt.Sprintf("%d", c.nextId())
+	body, err := json.Marshal(Request{
+		EndpointSetup{RpcVersion, reqId, method},
+		params,
+	})
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to marshal request")
+	}
+
+	request, err := http.NewRequestWithContext(ctx, http.MethodPost, c.URL, bytes.NewBuffer(body))
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to create request")
+	}
+
+	request.Header.Add("Content-Type", "application/json")
+
+	response, err := c.client.Do(request)
+	if response.StatusCode == http.StatusRequestTimeout {
+		return nil, RequestTimeoutError
+	}
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to do request")
+	}
+
+	defer response.Body.Close()
+
+	content, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to read response body")
+	}
+
+	return content, nil
 }
 
 func parseRPCBody(r *http.Response) (*Response, error) {
