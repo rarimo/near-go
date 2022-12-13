@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 
-	uint128 "lukechampine.com/uint128"
-
+	"github.com/near/borsh-go"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types/key"
+	uint128 "lukechampine.com/uint128"
 )
 
 type Action struct {

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/near/borsh-go"
 	"gitlab.com/distributed_lab/logan/v3/errors"
 
 	"gitlab.com/rarimo/near-bridge-go/pkg/types"

@@ -1,10 +1,11 @@
 module gitlab.com/rarimo/near-bridge-go
 
-go 1.19
+go 1.18
 
 require (
 	github.com/ethereum/go-ethereum v1.10.26
 	github.com/mr-tron/base58 v1.2.0
+	github.com/near/borsh-go v0.3.1
 	github.com/stretchr/testify v1.8.0
 	gitlab.com/distributed_lab/figure v2.1.0+incompatible
 	gitlab.com/distributed_lab/kit v1.11.1

@@ -3,6 +3,7 @@ package transaction
 import (
 	"encoding/base64"
 
+	"github.com/near/borsh-go"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types/hash"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types/key"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types/signature"

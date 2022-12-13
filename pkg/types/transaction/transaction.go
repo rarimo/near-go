@@ -1,6 +1,7 @@
 package transaction
 
 import (
+	"github.com/near/borsh-go"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types/action/base"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types/hash"
