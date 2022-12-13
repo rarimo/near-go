@@ -3,11 +3,11 @@ package base
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/eteu-technologies/borsh-go"
-	"gitlab.com/distributed_lab/logan/v3/errors"
 	"strings"
 
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
+	"gitlab.com/distributed_lab/logan/v3/errors"
+
+	"gitlab.com/rarimo/near-bridge-go/pkg/types"
 )
 
 type AccessKeyPermission struct {

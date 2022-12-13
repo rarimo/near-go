@@ -2,11 +2,10 @@ package transaction
 
 import (
 	"encoding/base64"
-	"github.com/eteu-technologies/borsh-go"
 
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/hash"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/key"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/signature"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/hash"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/key"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/signature"
 )
 
 type SignedTransaction struct {

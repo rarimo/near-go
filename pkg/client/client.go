@@ -3,11 +3,12 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"time"
+
 	"gitlab.com/distributed_lab/logan/v3"
 	"gitlab.com/distributed_lab/logan/v3/errors"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client/block"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/jsonrpc"
-	"time"
+	"gitlab.com/rarimo/near-bridge-go/pkg/client/block"
+	"gitlab.com/rarimo/near-bridge-go/pkg/jsonrpc"
 )
 
 type Client struct {

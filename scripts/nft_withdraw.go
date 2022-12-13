@@ -2,12 +2,13 @@ package scripts
 
 import (
 	"context"
+
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/data"
+	"gitlab.com/rarimo/near-bridge-go/pkg/client"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/action/base"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/data"
 )
 
 func NftWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender, receiver, chainFrom, chainTo, token, tokenID, bridge, privateKey string, isWrapped bool) string {

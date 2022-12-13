@@ -3,11 +3,12 @@ package scripts
 import (
 	"crypto/rand"
 	"encoding/base64"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/bundle"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/data"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/origin"
+
+	"gitlab.com/rarimo/near-bridge-go/pkg/types"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/bundle"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/data"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/origin"
 )
 
 const (

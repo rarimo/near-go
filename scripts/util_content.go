@@ -3,14 +3,15 @@ package scripts
 import (
 	"crypto/elliptic"
 	"fmt"
+
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 	"github.com/mr-tron/base58"
-	merkle "gitlab.com/rarify-protocol/go-merkle"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/bundle"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/origin"
+	merkle "gitlab.com/rarimo/go-merkle"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/bundle"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/origin"
 )
 
 func getContent(

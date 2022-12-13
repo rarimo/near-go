@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/key"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/key"
 )
 
 type AccessKey struct {

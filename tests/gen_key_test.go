@@ -1,9 +1,10 @@
 package tests
 
 import (
-	"github.com/mr-tron/base58"
-	"gitlab.com/rarify-protocol/near-bridge-go/scripts"
 	"testing"
+
+	"github.com/mr-tron/base58"
+	"gitlab.com/rarimo/near-bridge-go/scripts"
 )
 
 func TestGenKey(t *testing.T) {

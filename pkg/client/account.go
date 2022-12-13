@@ -3,9 +3,9 @@ package client
 import (
 	"context"
 
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client/block"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/jsonrpc"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
+	"gitlab.com/rarimo/near-bridge-go/pkg/client/block"
+	"gitlab.com/rarimo/near-bridge-go/pkg/jsonrpc"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types"
 )
 
 // AccountView https://docs.near.org/docs/api/rpc#view-account

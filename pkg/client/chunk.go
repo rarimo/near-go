@@ -3,7 +3,7 @@ package client
 import (
 	"context"
 
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/hash"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/hash"
 )
 
 // ChunkDetails https://docs.near.org/docs/api/rpc#chunk-details

@@ -1,7 +1,7 @@
 package action
 
 import (
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types"
 )
 
 type FtDepositArgs struct {

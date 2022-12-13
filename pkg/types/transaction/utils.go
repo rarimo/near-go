@@ -1,6 +1,6 @@
 package transaction
 
-import "gitlab.com/rarify-protocol/near-bridge-go/pkg/types/key"
+import "gitlab.com/rarimo/near-bridge-go/pkg/types/key"
 
 func SignAndSerializeTransaction(keyPair key.KeyPair, txn Transaction) (blob string, err error) {
 	var stxn SignedTransaction

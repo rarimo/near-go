@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"gitlab.com/distributed_lab/kit/kv"
-	"gitlab.com/rarify-protocol/near-bridge-go/scripts"
+	"gitlab.com/rarimo/near-bridge-go/scripts"
 )
 
 func TestNative(t *testing.T) {

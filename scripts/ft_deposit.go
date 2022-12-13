@@ -2,9 +2,10 @@ package scripts
 
 import (
 	"context"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
+
+	"gitlab.com/rarimo/near-bridge-go/pkg/client"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/action/base"
 )
 
 func FtDeposit(ctx context.Context, cli client.Client, sender, receiver, token string, amount string, bridge string, isWrapped bool) (string, string) {

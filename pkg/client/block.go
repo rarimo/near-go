@@ -3,8 +3,8 @@ package client
 import (
 	"context"
 
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client/block"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/jsonrpc"
+	"gitlab.com/rarimo/near-bridge-go/pkg/client/block"
+	"gitlab.com/rarimo/near-bridge-go/pkg/jsonrpc"
 )
 
 // BlockDetails https://docs.near.org/docs/api/rpc#block-details

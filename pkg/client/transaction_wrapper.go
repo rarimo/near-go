@@ -3,13 +3,14 @@ package client
 import (
 	"context"
 	"errors"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
 
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client/block"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/hash"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/key"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/transaction"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/action/base"
+
+	"gitlab.com/rarimo/near-bridge-go/pkg/client/block"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/hash"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/key"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/transaction"
 )
 
 type transactionCtx struct {

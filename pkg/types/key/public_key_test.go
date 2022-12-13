@@ -3,7 +3,7 @@ package key_test
 import (
 	"testing"
 
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/key"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/key"
 )
 
 func TestED25519Key(t *testing.T) {

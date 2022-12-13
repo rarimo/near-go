@@ -4,11 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"gitlab.com/distributed_lab/kit/kv"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client/block"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action"
 	"testing"
+
+	"gitlab.com/distributed_lab/kit/kv"
+	"gitlab.com/rarimo/near-bridge-go/pkg/client/block"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
 )
 
 func TestNftContractMetadata(t *testing.T) {

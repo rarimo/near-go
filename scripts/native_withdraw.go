@@ -2,11 +2,12 @@ package scripts
 
 import (
 	"context"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/data"
+
+	"gitlab.com/rarimo/near-bridge-go/pkg/client"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/action/base"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/data"
 )
 
 func NativeWithdraw(ctx context.Context, cli client.Client, txHash, eventID string, sender, receiver, chainFrom, chainTo, amount, bridge, privateKey string) string {

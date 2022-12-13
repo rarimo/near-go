@@ -1,6 +1,6 @@
 package action
 
-import "gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
+import "gitlab.com/rarimo/near-bridge-go/pkg/types"
 
 type WithdrawArgs struct {
 	ReceiverID types.AccountID `json:"receiver_id,required"`

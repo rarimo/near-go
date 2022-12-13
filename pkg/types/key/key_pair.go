@@ -9,7 +9,7 @@ import (
 
 	"github.com/mr-tron/base58"
 
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/signature"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/signature"
 )
 
 type KeyPair struct {

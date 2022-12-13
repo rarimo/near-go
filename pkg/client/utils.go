@@ -1,6 +1,6 @@
 package client
 
-import "gitlab.com/rarify-protocol/near-bridge-go/pkg/client/block"
+import "gitlab.com/rarimo/near-bridge-go/pkg/client/block"
 
 // HACK
 func blockIDArrayParams(block block.BlockCharacteristic) []interface{} {

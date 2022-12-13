@@ -7,8 +7,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"gitlab.com/distributed_lab/kit/kv"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client"
-	"gitlab.com/rarify-protocol/near-bridge-go/scripts"
+	"gitlab.com/rarimo/near-bridge-go/pkg/client"
+	"gitlab.com/rarimo/near-bridge-go/scripts"
 )
 
 var response = json.RawMessage(`{

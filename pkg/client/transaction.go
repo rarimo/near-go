@@ -3,8 +3,8 @@ package client
 import (
 	"context"
 
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/hash"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/hash"
 )
 
 // RPCTransactionSend https://docs.near.org/docs/api/rpc#send-transaction-async

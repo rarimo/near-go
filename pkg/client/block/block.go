@@ -1,7 +1,7 @@
 package block
 
 import (
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/hash"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/hash"
 )
 
 // BlockCharacteristic is a function type aiding with specifying a block

@@ -2,11 +2,12 @@ package scripts
 
 import (
 	"encoding/json"
-	"gitlab.com/distributed_lab/logan/v3/errors"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/hash"
 	"strings"
+
+	"gitlab.com/distributed_lab/logan/v3/errors"
+	"gitlab.com/rarimo/near-bridge-go/pkg/client"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/hash"
 )
 
 var (

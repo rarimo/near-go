@@ -2,10 +2,11 @@ package scripts
 
 import (
 	"context"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
+
+	"gitlab.com/rarimo/near-bridge-go/pkg/client"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/action/base"
 )
 
 func NativeDeposit(ctx context.Context, cli client.Client, sender, receiver, chainTo, amount, bridge string) (string, string) {

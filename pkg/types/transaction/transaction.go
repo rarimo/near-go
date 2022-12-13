@@ -1,12 +1,11 @@
 package transaction
 
 import (
-	"github.com/eteu-technologies/borsh-go"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/hash"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/key"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/signature"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/action/base"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/hash"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/key"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/signature"
 )
 
 type Transaction struct {

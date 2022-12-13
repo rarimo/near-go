@@ -1,8 +1,8 @@
 package action
 
 import (
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types"
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/types/action/base"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/action/base"
 )
 
 func NewNativeDepositCall(params NativeDepositArgs, gas types.Gas, deposit types.Balance) base.Action {

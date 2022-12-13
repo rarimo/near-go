@@ -3,7 +3,7 @@ package client
 import (
 	"context"
 
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client/block"
+	"gitlab.com/rarimo/near-bridge-go/pkg/client/block"
 )
 
 // ProtocolConfig https://docs.near.org/api/rpc/protocol#protocol-config

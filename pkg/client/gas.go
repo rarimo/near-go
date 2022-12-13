@@ -3,7 +3,7 @@ package client
 import (
 	"context"
 
-	"gitlab.com/rarify-protocol/near-bridge-go/pkg/client/block"
+	"gitlab.com/rarimo/near-bridge-go/pkg/client/block"
 )
 
 // https://docs.near.org/docs/api/rpc#gas-price
