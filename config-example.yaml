@@ -1,0 +1,13 @@
+tests:
+  rpc_url: "https://rpc.testnet.near.org"
+  private_key: "ed25519:..."
+  signer_private_key: "..."
+  account_id: "example.testnet"
+  bridge_address: "bridge.example.testnet"
+  ft_address_original: "fungible_token_original.example.testnet"
+  ft_address_wrapped: "fungible_token_wrapped.example.testnet"
+  nft_address_original: "non_fungible_token_original.example.testnet"
+  nft_address_wrapped: "non_fungible_token_wrapped.example.testnet"
+  native_address_wrapped: "native_token_wrapped.example.testnet"
+  token_id: "1"
+  amount: "2"
