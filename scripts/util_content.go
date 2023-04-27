@@ -40,7 +40,7 @@ func getContent(
 
 	originHash = hexutil.Encode(targetContent.Origin[:])
 
-	mt := merkle.NewTree(crypto.Keccak256, content1, content2, content3, targetContent, content4, content5, content6, content7, content8, content9)
+	mt := merkle.NewTree(crypto.Keccak256, targetContent)
 	path, ok := mt.Path(targetContent)
 	if !ok {
 		panic("path not found")

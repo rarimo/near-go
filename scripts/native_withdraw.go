@@ -6,7 +6,6 @@ import (
 	"gitlab.com/rarimo/near-bridge-go/pkg/client"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/action/base"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/data"
 )
 
@@ -34,14 +33,16 @@ func NativeWithdraw(ctx context.Context, cli client.Client, txHash, eventID stri
 		WithdrawArgs: action.WithdrawArgs{
 			Chain:      chainTo,
 			ReceiverID: receiver,
-			Origin:     origin,
-			Path:       path,
-			Signatures: []string{signature},
-			RecoveryID: recoveryID,
+			SignArgs: action.SignArgs{
+				Origin:     origin,
+				Path:       path,
+				Signature:  signature,
+				RecoveryID: recoveryID,
+			},
 		},
 	}
 
-	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []base.Action{
+	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []action.Action{
 		action.NewNativeWithdrawCall(act, MaxGas, types.OneYocto),
 	}, client.WithLatestBlock())
 	if err != nil {

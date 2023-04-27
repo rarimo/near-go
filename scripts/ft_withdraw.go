@@ -8,7 +8,6 @@ import (
 	"gitlab.com/rarimo/near-bridge-go/pkg/client"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/action/base"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/data"
 	"lukechampine.com/uint128"
 )
@@ -39,10 +38,12 @@ func FtWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender,
 		WithdrawArgs: action.WithdrawArgs{
 			ReceiverID: receiver,
 			Chain:      chainTo,
-			Origin:     origin,
-			Path:       path,
-			Signatures: []string{signature},
-			RecoveryID: recoveryID,
+			SignArgs: action.SignArgs{
+				Origin:     origin,
+				Path:       path,
+				Signature:  signature,
+				RecoveryID: recoveryID,
+			},
 		},
 	}
 
@@ -52,7 +53,7 @@ func FtWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender,
 		deposit = types.ZeroNEAR
 	}
 
-	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []base.Action{
+	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []action.Action{
 		action.NewFtWithdrawCall(act, MaxGas, deposit),
 	}, client.WithLatestBlock())
 	if err != nil {

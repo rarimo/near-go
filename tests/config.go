@@ -25,6 +25,7 @@ type Config struct {
 	NftAddressOriginal   types.AccountID `fig:"nft_address_original,required"`
 	NftAddressWrapped    types.AccountID `fig:"nft_address_wrapped,required"`
 	NativeAddressWrapped types.AccountID `fig:"native_address_wrapped,required"`
+	FeerAddress          types.AccountID `fig:"feer_address,required"`
 	Amount               string          `fig:"amount"`
 }
 

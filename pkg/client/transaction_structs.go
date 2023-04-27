@@ -2,8 +2,7 @@ package client
 
 import (
 	"encoding/json"
-
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/action/base"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
 
 	"gitlab.com/rarimo/near-bridge-go/pkg/types"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types/hash"
@@ -30,7 +29,7 @@ type SignedTransactionView struct {
 	PublicKey  key.Base58PublicKey       `json:"public_key"`
 	Nonce      types.Nonce               `json:"nonce"`
 	ReceiverID types.AccountID           `json:"receiver_id"`
-	Actions    []base.Action             `json:"actions"`
+	Actions    []action.Action           `json:"actions"`
 	Signature  signature.Base58Signature `json:"signature"`
 	Hash       hash.CryptoHash           `json:"hash"`
 }

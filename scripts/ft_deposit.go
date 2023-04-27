@@ -5,13 +5,12 @@ import (
 
 	"gitlab.com/rarimo/near-bridge-go/pkg/client"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/action/base"
 )
 
 func FtDeposit(ctx context.Context, cli client.Client, sender, receiver, token string, amount string, bridge string, isWrapped bool) (string, string) {
 	amn := parseAmount(amount)
 
-	depositResp, err := cli.TransactionSendAwait(ctx, sender, token, []base.Action{
+	depositResp, err := cli.TransactionSendAwait(ctx, sender, token, []action.Action{
 		action.NewFtDepositCall(action.FtDepositArgs{
 			ReceiverId: bridge,
 			Amount:     amn,

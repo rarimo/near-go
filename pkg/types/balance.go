@@ -102,3 +102,12 @@ func BalanceFromString(s string) (bal Balance, err error) {
 	bal = Balance(uint128.FromBig(scaleToYocto(bigf)))
 	return
 }
+
+func MustBalanceFromString(s string) Balance {
+	bal, err := BalanceFromString(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return bal
+}

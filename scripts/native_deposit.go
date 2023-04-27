@@ -6,7 +6,6 @@ import (
 	"gitlab.com/rarimo/near-bridge-go/pkg/client"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/action/base"
 )
 
 func NativeDeposit(ctx context.Context, cli client.Client, sender, receiver, chainTo, amount, bridge string) (string, string) {
@@ -15,7 +14,7 @@ func NativeDeposit(ctx context.Context, cli client.Client, sender, receiver, cha
 		panic(err)
 	}
 
-	depositResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []base.Action{
+	depositResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []action.Action{
 		action.NewNativeDepositCall(action.NativeDepositArgs{
 			ReceiverId: receiver,
 			Chain:      chainTo,

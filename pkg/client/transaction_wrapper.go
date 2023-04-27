@@ -3,8 +3,7 @@ package client
 import (
 	"context"
 	"errors"
-
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/action/base"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
 
 	"gitlab.com/rarimo/near-bridge-go/pkg/client/block"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types"
@@ -21,7 +20,7 @@ type transactionCtx struct {
 
 type TransactionOpt func(context.Context, *transactionCtx) error
 
-func (c *Client) prepareTransaction(ctx context.Context, from, to types.AccountID, actions []base.Action, txnOpts ...TransactionOpt) (ctx2 context.Context, blob string, err error) {
+func (c *Client) prepareTransaction(ctx context.Context, from, to types.AccountID, actions []action.Action, txnOpts ...TransactionOpt) (ctx2 context.Context, blob string, err error) {
 	ctx2 = context.WithValue(ctx, clientCtx, c)
 	txn := transaction.Transaction{
 		SignerID:   from,
@@ -67,7 +66,7 @@ func (c *Client) prepareTransaction(ctx context.Context, from, to types.AccountI
 }
 
 // TransactionSend https://docs.near.org/docs/api/rpc#send-transaction-async
-func (c *Client) TransactionSend(ctx context.Context, from, to types.AccountID, actions []base.Action, txnOpts ...TransactionOpt) (res hash.CryptoHash, err error) {
+func (c *Client) TransactionSend(ctx context.Context, from, to types.AccountID, actions []action.Action, txnOpts ...TransactionOpt) (res hash.CryptoHash, err error) {
 	ctx2, blob, err := c.prepareTransaction(ctx, from, to, actions, txnOpts...)
 	if err != nil {
 		return
@@ -76,7 +75,7 @@ func (c *Client) TransactionSend(ctx context.Context, from, to types.AccountID, 
 }
 
 // TransactionSendAwait https://docs.near.org/docs/api/rpc#send-transaction-await
-func (c *Client) TransactionSendAwait(ctx context.Context, from, to types.AccountID, actions []base.Action, txnOpts ...TransactionOpt) (res FinalExecutionOutcomeView, err error) {
+func (c *Client) TransactionSendAwait(ctx context.Context, from, to types.AccountID, actions []action.Action, txnOpts ...TransactionOpt) (res FinalExecutionOutcomeView, err error) {
 	ctx2, blob, err := c.prepareTransaction(ctx, from, to, actions, txnOpts...)
 	if err != nil {
 		return
