@@ -21,6 +21,13 @@ const (
 	TokenType_FT               = "FT"
 )
 
+type FeerTransferType string
+
+const (
+	FeerTransferType_Fee     FeerTransferType = "Fee"
+	FeerTransferType_Deposit FeerTransferType = "Deposit"
+)
+
 type FeeToken struct {
 	TokenAddr *types.AccountID `json:"token_addr,required"`
 	TokenType TokenType        `json:"token_type,required"`
@@ -61,4 +68,22 @@ func NewFeeTokenUpdateCall(params FeeManageOperationArgs, gas types.Gas) Action 
 
 func NewFeeTokenRemoveCall(params FeeManageOperationArgs, gas types.Gas) Action {
 	return NewFunctionCall(FeerRemoveFeeToken, mustMarshalArgs(params), gas, types.ZeroNEAR)
+}
+
+type FeerDepositArgs struct {
+	FeeTokenAddr *types.AccountID `json:"fee_token_addr,required"`
+	TokenAddr    *types.AccountID `json:"token_addr,omitempty"`
+	TokenType    TokenType        `json:"token_type,omitempty"`
+	TransferType FeerTransferType `json:"transfer_type,required"`
+	Receiver     string           `json:"receiver,required"`
+	ChainTo      string           `json:"chain_to,required"`
+	IsWrapped    bool             `json:"is_wrapped,required"`
+	BundleData   *string          `json:"bundle_data,omitempty"`
+	BundleSalt   *string          `json:"bundle_salt,omitempty"`
+}
+
+func NewFeeChargeNativeCall(params FeerDepositArgs, amount types.Balance, gas types.Gas) Action {
+	return NewFunctionCall(FeerChargeNative, mustMarshalArgs(map[string]FeerDepositArgs{
+		"deposit": params,
+	}), gas, amount)
 }

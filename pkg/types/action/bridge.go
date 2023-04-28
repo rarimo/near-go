@@ -45,13 +45,13 @@ func NewTransferArgs(token string, sender, receiver types.AccountID, chainTo str
 	return string(result)
 }
 
-type FtDepositArgs struct {
+type FtTransferArgs struct {
 	ReceiverId types.AccountID `json:"receiver_id,required"`
 	Amount     types.Balance   `json:"amount,required"`
-	Msg        string          `json:"msg,required"` // TransferArgs
+	Msg        string          `json:"msg,required"` // TransferArgs | FeeDepositArgs
 }
 
-func NewFtDepositCall(params FtDepositArgs, gas types.Gas) Action {
+func NewFtTransferCall(params FtTransferArgs, gas types.Gas) Action {
 	return NewFunctionCall(FtTransferMethod, mustMarshalArgs(params), gas, types.OneYocto)
 }
 
@@ -66,13 +66,13 @@ func NewFtWithdrawCall(params FtWithdrawArgs, gas types.Gas, deposit types.Balan
 	return NewFunctionCall(FtWithdrawMethod, mustMarshalArgs(params), gas, deposit)
 }
 
-type NftDepositArgs struct {
+type NftTransferArgs struct {
 	ReceiverId types.AccountID `json:"receiver_id,required"`
 	TokenID    string          `json:"token_id,required"`
-	Msg        string          `json:"msg,required"` // TransferArgs
+	Msg        string          `json:"msg,required"` // // TransferArgs | FeeDepositArgs
 }
 
-func NewNftDepositCall(params NftDepositArgs, gas types.Gas) Action {
+func NewNftTransferCall(params NftTransferArgs, gas types.Gas) Action {
 	return NewFunctionCall(NftTransferMethod, mustMarshalArgs(params), gas, types.OneYocto)
 }
 

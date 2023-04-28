@@ -11,7 +11,7 @@ func FtDeposit(ctx context.Context, cli client.Client, sender, receiver, token s
 	amn := parseAmount(amount)
 
 	depositResp, err := cli.TransactionSendAwait(ctx, sender, token, []action.Action{
-		action.NewFtDepositCall(action.FtDepositArgs{
+		action.NewFtTransferCall(action.FtTransferArgs{
 			ReceiverId: bridge,
 			Amount:     amn,
 			Msg:        action.NewTransferArgs(token, sender, receiver, targetNetwork, isWrapped),
