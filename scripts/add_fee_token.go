@@ -3,7 +3,9 @@ package scripts
 import (
 	"context"
 	"gitlab.com/rarimo/near-bridge-go/pkg/client"
+	"gitlab.com/rarimo/near-bridge-go/pkg/types"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
+	"lukechampine.com/uint128"
 )
 
 func ManageFeeToken(ctx context.Context, operationType action.FeeManageOperationType, cli client.Client, sender, receiver, bridgeAddr, privateKey string, token action.FeeToken) string {
@@ -42,6 +44,10 @@ func ManageFeeToken(ctx context.Context, operationType action.FeeManageOperation
 
 	if operationType == action.FeeUpdateFeeToken {
 		actions = append(actions, action.NewFeeTokenUpdateCall(op, MaxGas))
+	}
+
+	if operationType == action.FeeWithdraw {
+		actions = append(actions, action.NewFeeTokenWithdrawCall(op, sender, types.Balance(uint128.From64(1000)), MaxGas))
 	}
 
 	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, receiver, actions, client.WithLatestBlock())

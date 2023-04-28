@@ -70,6 +70,15 @@ func NewFeeTokenRemoveCall(params FeeManageOperationArgs, gas types.Gas) Action 
 	return NewFunctionCall(FeerRemoveFeeToken, mustMarshalArgs(params), gas, types.ZeroNEAR)
 }
 
+func NewFeeTokenWithdrawCall(params FeeManageOperationArgs, receiver types.AccountID, amount types.Balance, gas types.Gas) Action {
+	opts := map[string]interface{}{
+		"op":       params.Operation,
+		"receiver": receiver,
+		"amount":   amount,
+	}
+	return NewFunctionCall(FeerWithdraw, mustMarshalArgs(opts), gas, types.ZeroNEAR)
+}
+
 type FeerDepositArgs struct {
 	FeeTokenAddr *types.AccountID `json:"fee_token_addr,required"`
 	TokenAddr    *types.AccountID `json:"token_addr,omitempty"`
