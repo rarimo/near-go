@@ -7,30 +7,23 @@ import (
 	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
 )
 
-func NativeChargeCommission(ctx context.Context, cli client.Client, sender, receiver, amount string, feer string) (string, string) {
-	amn := parseAmount(amount)
-
-	tokenAddr := "ft_test.napalmpapalam.testnet"
-
-	rawLog := action.FeerDepositArgs{
-		TokenAddr: &tokenAddr,
-		TokenType: action.TokenType_Native,
-		Receiver:  receiver,
-		ChainTo:   "Near",
-		IsWrapped: false,
+func NativeChargeCommission(ctx context.Context, cli client.Client, tokenAddr, sender, receiver, amount string, feer string) (string, string) {
+	feeLog := action.FeerDepositArgs{
+		TokenAddr:    &tokenAddr,
+		TokenType:    action.TokenType_Native,
+		TransferType: action.FeerTransferType_Fee,
+		Receiver:     receiver,
+		ChainTo:      targetNetwork,
+		IsWrapped:    false,
 	}
 
-	feeLog := rawLog
-	rawDepositLog := rawLog
-	feeLog.TransferType = action.FeerTransferType_Fee
-	rawDepositLog.TransferType = action.FeerTransferType_Deposit
-
+	rawDepositLog := feeLog.WithTransferType(action.FeerTransferType_Deposit)
 	depositLog, _ := json.Marshal(rawDepositLog)
 
 	depositResp, err := cli.TransactionSendAwait(ctx, sender, tokenAddr, []action.Action{
 		action.NewFtTransferCall(action.FtTransferArgs{
 			ReceiverId: feer,
-			Amount:     amn,
+			Amount:     parseAmount(amount),
 			Msg:        string(depositLog),
 		}, MaxGas),
 	}, client.WithLatestBlock())

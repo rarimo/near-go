@@ -1,3 +1,6 @@
+//go:build manual_test
+// +build manual_test
+
 package tests
 
 import (
@@ -13,6 +16,7 @@ func TestChargeNativeCommission(t *testing.T) {
 	feeHash, depositHash := scripts.NativeChargeCommission(
 		cfg.Ctx,
 		cfg.Client,
+		cfg.FtAddress,
 		cfg.AccountID,
 		cfg.AccountID,
 		"2100",

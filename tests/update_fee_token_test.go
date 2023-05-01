@@ -1,3 +1,6 @@
+//go:build manual_test
+// +build manual_test
+
 package tests
 
 import (
@@ -12,7 +15,6 @@ import (
 
 func TestUpdateFeeToken(t *testing.T) {
 	cfg := NewConfig(context.Background(), kv.MustFromEnv())
-	tokenAddr := "ft_test_fee.napalmpapalam.testnet"
 
 	hash := scripts.ManageFeeToken(
 		cfg.Ctx,
@@ -23,7 +25,7 @@ func TestUpdateFeeToken(t *testing.T) {
 		cfg.BridgeAddress,
 		cfg.SignerPrivateKey,
 		action.FeeToken{
-			TokenAddr: &tokenAddr,
+			TokenAddr: &cfg.FeeTokenAddress,
 			TokenType: action.TokenType_FT,
 			Fee:       types.Balance(uint128.From64(10000)),
 		},

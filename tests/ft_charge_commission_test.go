@@ -1,3 +1,6 @@
+//go:build manual_test
+// +build manual_test
+
 package tests
 
 import (
@@ -13,6 +16,8 @@ func TestFtChargeCommission(t *testing.T) {
 	feeHash, depositHash := scripts.FtChargeCommission(
 		cfg.Ctx,
 		cfg.Client,
+		cfg.FeeTokenAddress,
+		cfg.FtAddress,
 		cfg.AccountID,
 		cfg.AccountID,
 		"2000",

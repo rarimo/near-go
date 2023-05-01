@@ -1,6 +1,8 @@
 package action
 
 import (
+	"encoding/json"
+	"gitlab.com/distributed_lab/logan/v3/errors"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types"
 )
 
@@ -29,9 +31,9 @@ const (
 )
 
 type FeeToken struct {
-	TokenAddr *types.AccountID `json:"token_addr,required"`
-	TokenType TokenType        `json:"token_type,required"`
-	Fee       types.Balance    `json:"fee,required"`
+	TokenAddr *types.AccountID `json:"token_addr"`
+	TokenType TokenType        `json:"token_type"`
+	Fee       types.Balance    `json:"fee"`
 }
 
 type FeeManageOperation struct {
@@ -44,9 +46,9 @@ type FeeManageOperationArgs struct {
 }
 
 type FeeTokenWithBorsh struct {
-	TokenAddr *types.AccountID `json:"token_addr,required"`
-	TokenType string           `json:"token_type,required"`
-	Fee       types.Balance    `json:"fee,required"`
+	TokenAddr *types.AccountID `json:"token_addr"`
+	TokenType string           `json:"token_type"`
+	Fee       types.Balance    `json:"fee"`
 }
 
 type FeeManageOperationWithBorsh struct {
@@ -80,15 +82,38 @@ func NewFeeTokenWithdrawCall(params FeeManageOperationArgs, receiver types.Accou
 }
 
 type FeerDepositArgs struct {
-	FeeTokenAddr *types.AccountID `json:"fee_token_addr,required"`
+	FeeTokenAddr *types.AccountID `json:"fee_token_addr"`
 	TokenAddr    *types.AccountID `json:"token_addr,omitempty"`
 	TokenType    TokenType        `json:"token_type,omitempty"`
-	TransferType FeerTransferType `json:"transfer_type,required"`
-	Receiver     string           `json:"receiver,required"`
-	ChainTo      string           `json:"chain_to,required"`
-	IsWrapped    bool             `json:"is_wrapped,required"`
+	TransferType FeerTransferType `json:"transfer_type"`
+	Receiver     string           `json:"receiver"`
+	ChainTo      string           `json:"chain_to"`
+	IsWrapped    bool             `json:"is_wrapped"`
 	BundleData   *string          `json:"bundle_data,omitempty"`
 	BundleSalt   *string          `json:"bundle_salt,omitempty"`
+}
+
+func (f FeerDepositArgs) String() (string, error) {
+	bytes, err := json.Marshal(f)
+	if err != nil {
+		return "", errors.Wrap(err, "failed to marshal feer deposit args")
+	}
+
+	return string(bytes), nil
+}
+
+func (f FeerDepositArgs) WithTransferType(transferType FeerTransferType) FeerDepositArgs {
+	return FeerDepositArgs{
+		FeeTokenAddr: f.FeeTokenAddr,
+		TokenAddr:    f.TokenAddr,
+		TokenType:    f.TokenType,
+		TransferType: transferType,
+		Receiver:     f.Receiver,
+		ChainTo:      f.ChainTo,
+		IsWrapped:    f.IsWrapped,
+		BundleData:   f.BundleData,
+		BundleSalt:   f.BundleSalt,
+	}
 }
 
 func NewFeeChargeNativeCall(params FeerDepositArgs, amount types.Balance, gas types.Gas) Action {

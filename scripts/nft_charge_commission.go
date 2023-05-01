@@ -3,21 +3,17 @@ package scripts
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"gitlab.com/rarimo/near-bridge-go/pkg/client"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
 )
 
-func NftChargeCommission(ctx context.Context, cli client.Client, sender, receiver, tokenId string, feer string) (string, string) {
-	feeTokenAddr := "ft_test_fee.napalmpapalam.testnet"
-	tokenAddr := "nft_test.napalmpapalam.testnet"
-
+func NftChargeCommission(ctx context.Context, cli client.Client, feeTokenAddr, tokenAddr, sender, receiver, tokenId string, feer string) (string, string) {
 	rawLog := action.FeerDepositArgs{
 		FeeTokenAddr: &feeTokenAddr,
 		TokenAddr:    &tokenAddr,
 		TokenType:    action.TokenType_NFT,
 		Receiver:     receiver,
-		ChainTo:      "Near",
+		ChainTo:      targetNetwork,
 		IsWrapped:    false,
 	}
 
@@ -37,7 +33,7 @@ func NftChargeCommission(ctx context.Context, cli client.Client, sender, receive
 		}, MaxGas),
 	}, client.WithLatestBlock())
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 
 	feeResp, err := cli.TransactionSendAwait(ctx, sender, feeTokenAddr, []action.Action{
@@ -48,7 +44,7 @@ func NftChargeCommission(ctx context.Context, cli client.Client, sender, receive
 		}, MaxGas),
 	}, client.WithLatestBlock())
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 
 	return feeResp.Transaction.Hash.String(), depositResp.Transaction.Hash.String()

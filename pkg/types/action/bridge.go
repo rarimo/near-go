@@ -2,53 +2,56 @@ package action
 
 import (
 	"encoding/json"
+	"gitlab.com/distributed_lab/logan/v3/errors"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types"
 )
 
 type SignArgs struct {
-	Origin     string     `json:"origin,required"`
-	Path       [][32]byte `json:"path,required"`
-	Signature  string     `json:"signature,required"`
-	RecoveryID byte       `json:"recovery_id,required"`
+	Origin     string     `json:"origin"`
+	Path       [][32]byte `json:"path"`
+	Signature  string     `json:"signature"`
+	RecoveryID byte       `json:"recovery_id"`
 }
 
 type WithdrawArgs struct {
 	SignArgs
-	ReceiverID types.AccountID `json:"receiver_id,required"`
-	Chain      string          `json:"chain,required"`
+	ReceiverID types.AccountID `json:"receiver_id"`
+	Chain      string          `json:"chain"`
 }
 
 type TransferArgs struct {
-	Token      types.AccountID `json:"token,required"`
-	Sender     types.AccountID `json:"sender,required"`
-	Receiver   types.AccountID `json:"receiver,required"`
-	ChainTo    string          `json:"chain_to,required"`
-	IsWrapped  bool            `json:"is_wrapped,required"`
+	Token      types.AccountID `json:"token"`
+	Sender     types.AccountID `json:"sender"`
+	Receiver   types.AccountID `json:"receiver"`
+	ChainTo    string          `json:"chain_to"`
+	IsWrapped  bool            `json:"is_wrapped"`
 	BundleData string          `json:"bundle_data,omitempty"`
 	BundleSalt string          `json:"bundle_salt,omitempty"`
 }
 
-func NewTransferArgs(token string, sender, receiver types.AccountID, chainTo string, isWrapped bool) string {
-	args := TransferArgs{
+func (t *TransferArgs) String() (string, error) {
+	bytes, err := json.Marshal(t)
+	if err != nil {
+		return "", errors.Wrap(err, "failed to marshal transfer args")
+	}
+
+	return string(bytes), nil
+}
+
+func NewTransferArgs(token string, sender, receiver types.AccountID, chainTo string, isWrapped bool) *TransferArgs {
+	return &TransferArgs{
 		Token:     token,
 		Sender:    sender,
 		Receiver:  receiver,
 		ChainTo:   chainTo,
 		IsWrapped: isWrapped,
 	}
-
-	result, err := json.Marshal(&args)
-	if err != nil {
-		panic(err)
-	}
-
-	return string(result)
 }
 
 type FtTransferArgs struct {
-	ReceiverId types.AccountID `json:"receiver_id,required"`
-	Amount     types.Balance   `json:"amount,required"`
-	Msg        string          `json:"msg,required"` // TransferArgs | FeeDepositArgs
+	ReceiverId types.AccountID `json:"receiver_id"`
+	Amount     types.Balance   `json:"amount"`
+	Msg        string          `json:"msg"` // TransferArgs | FeeDepositArgs
 }
 
 func NewFtTransferCall(params FtTransferArgs, gas types.Gas) Action {
@@ -57,9 +60,9 @@ func NewFtTransferCall(params FtTransferArgs, gas types.Gas) Action {
 
 type FtWithdrawArgs struct {
 	WithdrawArgs
-	Token     types.AccountID `json:"token,required"`
-	Amount    types.Balance   `json:"amount,required"`
-	IsWrapped bool            `json:"is_wrapped,required"`
+	Token     types.AccountID `json:"token"`
+	Amount    types.Balance   `json:"amount"`
+	IsWrapped bool            `json:"is_wrapped"`
 }
 
 func NewFtWithdrawCall(params FtWithdrawArgs, gas types.Gas, deposit types.Balance) Action {
@@ -67,9 +70,9 @@ func NewFtWithdrawCall(params FtWithdrawArgs, gas types.Gas, deposit types.Balan
 }
 
 type NftTransferArgs struct {
-	ReceiverId types.AccountID `json:"receiver_id,required"`
-	TokenID    string          `json:"token_id,required"`
-	Msg        string          `json:"msg,required"` // // TransferArgs | FeeDepositArgs
+	ReceiverId types.AccountID `json:"receiver_id"`
+	TokenID    string          `json:"token_id"`
+	Msg        string          `json:"msg"` // // TransferArgs | FeeDepositArgs
 }
 
 func NewNftTransferCall(params NftTransferArgs, gas types.Gas) Action {
@@ -78,10 +81,10 @@ func NewNftTransferCall(params NftTransferArgs, gas types.Gas) Action {
 
 type NftWithdrawArgs struct {
 	WithdrawArgs
-	Token         types.AccountID        `json:"token,required"`
-	TokenID       string                 `json:"token_id,required"`
+	Token         types.AccountID        `json:"token"`
+	TokenID       string                 `json:"token_id"`
 	TokenMetadata *types.NftMetadataView `json:"token_metadata,omitempty"`
-	IsWrapped     bool                   `json:"is_wrapped,required"`
+	IsWrapped     bool                   `json:"is_wrapped"`
 }
 
 func NewNftWithdrawCall(params NftWithdrawArgs, gas types.Gas, deposit types.Balance) Action {
@@ -89,8 +92,8 @@ func NewNftWithdrawCall(params NftWithdrawArgs, gas types.Gas, deposit types.Bal
 }
 
 type NativeDepositArgs struct {
-	ReceiverId types.AccountID `json:"receiver_id,required"`
-	Chain      string          `json:"chain,required"`
+	ReceiverId types.AccountID `json:"receiver_id"`
+	Chain      string          `json:"chain"`
 }
 
 func NewNativeDepositCall(params NativeDepositArgs, gas types.Gas, deposit types.Balance) Action {
@@ -99,7 +102,7 @@ func NewNativeDepositCall(params NativeDepositArgs, gas types.Gas, deposit types
 
 type NativeWithdrawArgs struct {
 	WithdrawArgs
-	Amount types.Balance `json:"amount,required"`
+	Amount types.Balance `json:"amount"`
 }
 
 func NewNativeWithdrawCall(params NativeWithdrawArgs, gas types.Gas, deposit types.Balance) Action {

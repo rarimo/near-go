@@ -2,39 +2,45 @@ package scripts
 
 import (
 	"context"
-	"encoding/json"
 	"gitlab.com/rarimo/near-bridge-go/pkg/client"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
 )
 
-func FtChargeCommission(ctx context.Context, cli client.Client, sender, receiver, amount string, feer string) (string, string) {
-	amn := parseAmount(amount)
-
-	feeTokenAddr := "ft_test_fee.napalmpapalam.testnet"
-	tokenAddr := "ft_test.napalmpapalam.testnet"
-
-	rawLog := action.FeerDepositArgs{
+func FtChargeCommission(
+	ctx context.Context,
+	cli client.Client,
+	feeTokenAddr,
+	tokenAddr,
+	sender,
+	receiver,
+	amount,
+	feer string,
+) (string, string) {
+	rawFeeLog := action.FeerDepositArgs{
 		FeeTokenAddr: &feeTokenAddr,
 		TokenAddr:    &tokenAddr,
 		TokenType:    action.TokenType_FT,
+		TransferType: action.FeerTransferType_Fee,
 		Receiver:     receiver,
-		ChainTo:      "Near",
+		ChainTo:      targetNetwork,
 		IsWrapped:    false,
 	}
 
-	rawFeeLog := rawLog
-	rawDepositLog := rawLog
-	rawFeeLog.TransferType = action.FeerTransferType_Fee
-	rawDepositLog.TransferType = action.FeerTransferType_Deposit
+	feeLog, err := rawFeeLog.String()
+	if err != nil {
+		panic(err)
+	}
 
-	feeLog, _ := json.Marshal(rawFeeLog)
-	depositLog, _ := json.Marshal(rawDepositLog)
+	depositLog, err := rawFeeLog.WithTransferType(action.FeerTransferType_Deposit).String()
+	if err != nil {
+		panic(err)
+	}
 
 	depositResp, err := cli.TransactionSendAwait(ctx, sender, tokenAddr, []action.Action{
 		action.NewFtTransferCall(action.FtTransferArgs{
 			ReceiverId: feer,
-			Amount:     amn,
-			Msg:        string(depositLog),
+			Amount:     parseAmount(amount),
+			Msg:        depositLog,
 		}, MaxGas),
 	}, client.WithLatestBlock())
 	if err != nil {
@@ -45,7 +51,7 @@ func FtChargeCommission(ctx context.Context, cli client.Client, sender, receiver
 		action.NewFtTransferCall(action.FtTransferArgs{
 			ReceiverId: feer,
 			Amount:     parseAmount("1000"),
-			Msg:        string(feeLog),
+			Msg:        feeLog,
 		}, MaxGas),
 	}, client.WithLatestBlock())
 	if err != nil {

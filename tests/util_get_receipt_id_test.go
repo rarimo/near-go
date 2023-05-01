@@ -1,3 +1,6 @@
+//go:build manual_test
+// +build manual_test
+
 package tests
 
 import (
@@ -275,7 +278,7 @@ func TestUtilGetReceiptId(t *testing.T) {
 		resp,
 		client.LogEventTypeNftDeposited,
 		cfg.BridgeAddress,
-		&cfg.NftAddressOriginal,
+		&cfg.NftAddress,
 		&cfg.TokenID,
 		nil,
 	)

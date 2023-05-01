@@ -1,3 +1,6 @@
+//go:build manual_test
+// +build manual_test
+
 package tests
 
 import (
@@ -13,6 +16,8 @@ func TestNftChargeCommission(t *testing.T) {
 	feeHash, depositHash := scripts.NftChargeCommission(
 		cfg.Ctx,
 		cfg.Client,
+		cfg.FeeTokenAddress,
+		cfg.NftAddress,
 		cfg.AccountID,
 		cfg.AccountID,
 		"6",

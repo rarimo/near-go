@@ -32,21 +32,16 @@ func ManageFeeToken(ctx context.Context, operationType action.FeeManageOperation
 		},
 	}
 
-	actions := make([]action.Action, 0)
+	actions := make([]action.Action, 0, 1)
 
-	if operationType == action.FeeAddFeeToken {
+	switch operationType {
+	case action.FeeAddFeeToken:
 		actions = append(actions, action.NewFeeTokenAddCall(op, MaxGas))
-	}
-
-	if operationType == action.FeeRemoveFeeToken {
+	case action.FeeRemoveFeeToken:
 		actions = append(actions, action.NewFeeTokenRemoveCall(op, MaxGas))
-	}
-
-	if operationType == action.FeeUpdateFeeToken {
+	case action.FeeUpdateFeeToken:
 		actions = append(actions, action.NewFeeTokenUpdateCall(op, MaxGas))
-	}
-
-	if operationType == action.FeeWithdraw {
+	case action.FeeWithdraw:
 		actions = append(actions, action.NewFeeTokenWithdrawCall(op, sender, types.Balance(uint128.From64(1000)), MaxGas))
 	}
 

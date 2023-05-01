@@ -31,8 +31,8 @@ func getFeeManageOperationSignArgs(operationType action.FeeManageOperationType, 
 		"",
 		receiver,
 		bridgeAddr,
-		"Near",
-		"Near",
+		targetNetwork,
+		targetNetwork,
 		content,
 	)
 }

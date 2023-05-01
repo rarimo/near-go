@@ -10,11 +10,17 @@ import (
 func FtDeposit(ctx context.Context, cli client.Client, sender, receiver, token string, amount string, bridge string, isWrapped bool) (string, string) {
 	amn := parseAmount(amount)
 
+	transferArgs := action.NewTransferArgs(token, sender, receiver, targetNetwork, isWrapped)
+	msg, err := transferArgs.String()
+	if err != nil {
+		panic(err)
+	}
+
 	depositResp, err := cli.TransactionSendAwait(ctx, sender, token, []action.Action{
 		action.NewFtTransferCall(action.FtTransferArgs{
 			ReceiverId: bridge,
 			Amount:     amn,
-			Msg:        action.NewTransferArgs(token, sender, receiver, targetNetwork, isWrapped),
+			Msg:        msg,
 		}, MaxGas),
 	}, client.WithLatestBlock())
 	if err != nil {
