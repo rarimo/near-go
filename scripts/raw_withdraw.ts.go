@@ -7,14 +7,13 @@ import (
 	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
 )
 
-func RawNFTWithdraw(ctx context.Context, cli *client.Client, sender, bridge, token, tokenID, receiver, chainTo, origin, signature string, path [][32]byte, recoveryID uint8, isWrapped bool) string {
+func RawNFTWithdraw(ctx context.Context, cli *client.Client, sender, bridge, token, tokenID, receiver, origin, signature string, path [][32]byte, recoveryID uint8, isWrapped bool) string {
 	act := action.NftWithdrawArgs{
 		Token:     token,
 		TokenID:   tokenID,
 		IsWrapped: isWrapped,
 		WithdrawArgs: action.WithdrawArgs{
 			ReceiverID: receiver,
-			Chain:      chainTo,
 			SignArgs: action.SignArgs{
 				Origin:     origin,
 				Path:       path,
@@ -27,7 +26,7 @@ func RawNFTWithdraw(ctx context.Context, cli *client.Client, sender, bridge, tok
 	deposit := types.OneYocto
 	if isWrapped {
 		act.TokenMetadata = nftMetadata[isWrapped]
-		deposit = types.NEARToYocto(0.2)
+		deposit = parseAmount("200000000000000000000000")
 	}
 
 	withdrawResp, err := cli.TransactionSendAwait(
@@ -43,7 +42,7 @@ func RawNFTWithdraw(ctx context.Context, cli *client.Client, sender, bridge, tok
 	return withdrawResp.Transaction.Hash.String()
 }
 
-func RawFTWithdraw(ctx context.Context, cli *client.Client, sender, bridge, token, amount, receiver, chainTo, origin, signature string, path [][32]byte, recoveryID uint8, isWrapped bool) string {
+func RawFTWithdraw(ctx context.Context, cli *client.Client, sender, bridge, token, amount, receiver, origin, signature string, path [][32]byte, recoveryID uint8, isWrapped bool) string {
 	amnt := parseAmount(amount)
 
 	act := action.FtWithdrawArgs{
@@ -52,7 +51,6 @@ func RawFTWithdraw(ctx context.Context, cli *client.Client, sender, bridge, toke
 		IsWrapped: isWrapped,
 		WithdrawArgs: action.WithdrawArgs{
 			ReceiverID: receiver,
-			Chain:      chainTo,
 			SignArgs: action.SignArgs{
 				Origin:     origin,
 				Path:       path,
@@ -65,7 +63,7 @@ func RawFTWithdraw(ctx context.Context, cli *client.Client, sender, bridge, toke
 	deposit := types.OneYocto
 
 	if isWrapped {
-		deposit = types.ZeroNEAR
+		deposit = parseAmount("1250000000000000000000")
 	}
 
 	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []action.Action{
@@ -77,13 +75,12 @@ func RawFTWithdraw(ctx context.Context, cli *client.Client, sender, bridge, toke
 	return withdrawResp.Transaction.Hash.String()
 }
 
-func RawNativeWithdraw(ctx context.Context, cli *client.Client, sender, bridge, amount, receiver, chainTo, origin, signature string, path [][32]byte, recoveryID uint8) string {
+func RawNativeWithdraw(ctx context.Context, cli *client.Client, sender, bridge, amount, receiver, origin, signature string, path [][32]byte, recoveryID uint8) string {
 	amnt := parseAmount(amount)
 
 	act := action.NativeWithdrawArgs{
 		Amount: amnt,
 		WithdrawArgs: action.WithdrawArgs{
-			Chain:      chainTo,
 			ReceiverID: receiver,
 			SignArgs: action.SignArgs{
 				Origin:     origin,

@@ -1,6 +1,3 @@
-//go:build manual_test
-// +build manual_test
-
 package tests
 
 import (
@@ -11,6 +8,13 @@ import (
 	"gitlab.com/rarimo/near-bridge-go/scripts"
 	"testing"
 )
+
+func printExplorerURL(t *testing.T, msg string, hash string, receiptID *string) {
+	t.Logf("%s: https://explorer.testnet.near.org/transactions/%s", msg, hash)
+	if receiptID != nil {
+		t.Logf("%s bridge receipt: https://explorer.testnet.near.org/transactions/%s#%s", msg, hash, *receiptID)
+	}
+}
 
 func getClient() (context.Context, *client.Client) {
 	keyPair, err := key.NewBase58KeyPair("ed25519:privatekey")
@@ -38,7 +42,6 @@ func TestRawNftWithdraw(t *testing.T) {
 		"nft.rarimo.testnet",
 		"1",
 		"napalmpapalam.testnet",
-		"Near",
 		"origin",
 		"0x",
 		[][32]byte{},
@@ -59,7 +62,6 @@ func TestRawFtWithdraw(t *testing.T) {
 		"ft.rarimo.testnet",
 		"10000",
 		"napalmpapalam.testnet",
-		"Near",
 		"ethereum",
 		"0x",
 		[][32]byte{},
@@ -79,7 +81,6 @@ func TestRawNativeWithdraw(t *testing.T) {
 		"bridge.rarimo.testnet",
 		"10000",
 		"napalmpapalam.testnet",
-		"Near",
 		"ethereum",
 		"0x",
 		[][32]byte{},

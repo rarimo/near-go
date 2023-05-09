@@ -37,7 +37,6 @@ func FtWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender,
 		IsWrapped: isWrapped,
 		WithdrawArgs: action.WithdrawArgs{
 			ReceiverID: receiver,
-			Chain:      chainTo,
 			SignArgs: action.SignArgs{
 				Origin:     origin,
 				Path:       path,
