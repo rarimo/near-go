@@ -13,7 +13,7 @@ import (
 )
 
 func getClient() (context.Context, *client.Client) {
-	keyPair, err := key.NewBase58KeyPair("privatekey")
+	keyPair, err := key.NewBase58KeyPair("ed25519:privatekey")
 	if err != nil {
 		panic(errors.Wrap(err, "failed to get key pair"))
 	}
