@@ -13,6 +13,7 @@ var (
 	tenPower24 = uint128.From64(uint64(math.Pow10(12))).Mul64(uint64(math.Pow10(12)))
 	ZeroNEAR   = Balance(uint128.From64(0))
 	OneYocto   = Balance(uint128.From64(1))
+	One        = big.NewInt(0).Exp(big.NewInt(10), big.NewInt(24), nil)
 )
 
 // Balance holds amount of yoctoNEAR
@@ -79,27 +80,22 @@ func YoctoToNEAR(yocto Balance) uint64 {
 	return div.Lo
 }
 
-func scaleToYocto(f *big.Float) (r *big.Int) {
-	// Convert reference 1 NEAR to big.Float
-	base := new(big.Float).SetPrec(128).SetInt(uint128.Uint128(NEARToYocto(1)).Big())
-
-	// Multiply base using the supplied float
-	// XXX: small precision issues here will haunt me forever
-	bigf2 := new(big.Float).SetPrec(128).SetMode(big.ToZero).Mul(base, f)
-
-	// Convert it to big.Int
-	r, _ = bigf2.Int(nil)
-	return
-}
-
 func BalanceFromString(s string) (bal Balance, err error) {
-	var bigf *big.Float
-	bigf, _, err = big.ParseFloat(s, 10, 128, big.ToZero)
-	if err != nil {
-		return
+	var f, o, r big.Rat
+
+	_, ok := f.SetString(s)
+	if !ok {
+		return bal, fmt.Errorf("cannot parse amount: %s", s)
 	}
 
-	bal = Balance(uint128.FromBig(scaleToYocto(bigf)))
+	o.SetInt(One)
+	r.Mul(&f, &o)
+
+	is := r.FloatString(0)
+	amount := big.NewInt(0)
+	amount.SetString(is, 10)
+
+	bal = Balance(uint128.FromBig(amount))
 	return
 }
 
