@@ -830,8 +830,8 @@ gitlab.com/distributed_lab/logan v3.8.1+incompatible/go.mod h1:25oL/FPFXmyYzWeA6
 gitlab.com/distributed_lab/running v0.0.0-20200706131153-4af0e83eb96c/go.mod h1:4TnADX84dQjQMRHKIMPCVL0L97rD/Jxv0xDbrN6aKzk=
 gitlab.com/rarimo/go-merkle v0.0.0-20221212103215-4a9612e1bed1 h1:/NTsZ61HpUSxJuzZp9nUbeVeMIIlmFGygFuVOBsUqlY=
 gitlab.com/rarimo/go-merkle v0.0.0-20221212103215-4a9612e1bed1/go.mod h1:O4/lUka2v/6HvcxNielMJ2HsTZaizQN6uBYimSIithE=
-gitlab.com/rarimo/rarimo-core v0.0.0-20230413151730-4a7d038f32fa h1:XD0w3RVegipShKCl0LagU+Kap621OBblghb80n3AK4U=
-gitlab.com/rarimo/rarimo-core v0.0.0-20230413151730-4a7d038f32fa/go.mod h1:49hIWqUaVtmJYdOzKy5TgLnsi7yDiKbp4Wci/8p+gq0=
+gitlab.com/rarimo/rarimo-core v0.0.0-20230524115651-8139eca542ad h1:3OeIBT5kRdqEAwiynCtoizTldAPn90EbzWrR4IcrBEE=
+gitlab.com/rarimo/rarimo-core v0.0.0-20230524115651-8139eca542ad/go.mod h1:+ErLFqLXCqNYhlR0pVbLVzif43bJlGzzhTjoYFMWSv0=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.5/go.mod h1:G5EMThwa9y8QZGBClrRx5EY+Yw9kAhnjy3bSjsnlVTQ=
