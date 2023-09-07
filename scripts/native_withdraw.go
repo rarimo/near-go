@@ -31,7 +31,6 @@ func NativeWithdraw(ctx context.Context, cli client.Client, txHash, eventID stri
 	act := action.NativeWithdrawArgs{
 		Amount: amnt,
 		WithdrawArgs: action.WithdrawArgs{
-			Chain:      chainTo,
 			ReceiverID: receiver,
 			SignArgs: action.SignArgs{
 				Origin:     origin,

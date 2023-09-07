@@ -16,7 +16,6 @@ type SignArgs struct {
 type WithdrawArgs struct {
 	SignArgs
 	ReceiverID types.AccountID `json:"receiver_id"`
-	Chain      string          `json:"chain"`
 }
 
 type TransferArgs struct {
