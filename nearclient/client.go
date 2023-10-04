@@ -3,8 +3,8 @@ package nearclient
 import (
 	"context"
 	"encoding/json"
-	"github.com/rarimo/near-go/client/jsonrpc"
 	"github.com/rarimo/near-go/common"
+	"github.com/rarimo/near-go/nearclient/jsonrpc"
 	"time"
 
 	"gitlab.com/distributed_lab/logan/v3"
@@ -16,7 +16,7 @@ type Client struct {
 	Log       *logan.Entry
 }
 
-func NewClient(rpcUrl string) (client Client, err error) {
+func New(rpcUrl string) (client *Client, err error) {
 	client.RPCClient, err = jsonrpc.New(rpcUrl)
 	if err != nil {
 		return

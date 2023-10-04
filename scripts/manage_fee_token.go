@@ -2,8 +2,8 @@ package scripts
 
 import (
 	"context"
-	nearclient2 "github.com/rarimo/near-go/client"
 	"github.com/rarimo/near-go/common"
+	nearclient2 "github.com/rarimo/near-go/nearclient"
 	"lukechampine.com/uint128"
 )
 

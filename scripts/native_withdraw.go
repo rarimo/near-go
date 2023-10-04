@@ -2,9 +2,9 @@ package scripts
 
 import (
 	"context"
-	nearclient2 "github.com/rarimo/near-go/client"
 	"github.com/rarimo/near-go/common"
 	"github.com/rarimo/near-go/constants"
+	nearclient2 "github.com/rarimo/near-go/nearclient"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/data"
 )
 

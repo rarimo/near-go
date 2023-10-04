@@ -2,8 +2,8 @@ package scripts
 
 import (
 	"encoding/json"
-	"github.com/rarimo/near-go/client/models"
 	"github.com/rarimo/near-go/common"
+	"github.com/rarimo/near-go/nearclient/models"
 	"strings"
 
 	"gitlab.com/distributed_lab/logan/v3/errors"

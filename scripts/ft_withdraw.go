@@ -2,9 +2,9 @@ package scripts
 
 import (
 	"context"
-	nearclient2 "github.com/rarimo/near-go/client"
 	"github.com/rarimo/near-go/common"
 	"github.com/rarimo/near-go/constants"
+	nearclient2 "github.com/rarimo/near-go/nearclient"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"

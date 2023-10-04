@@ -3,8 +3,8 @@ package scripts
 import (
 	"context"
 	"encoding/json"
-	nearclient2 "github.com/rarimo/near-go/client"
 	"github.com/rarimo/near-go/common"
+	nearclient2 "github.com/rarimo/near-go/nearclient"
 )
 
 func NftChargeCommission(ctx context.Context, cli nearclient2.Client, feeTokenAddr, tokenAddr, sender, receiver, tokenId string, feer string) (string, string) {

@@ -6,7 +6,7 @@ package tests
 import (
 	"context"
 	"encoding/json"
-	"github.com/rarimo/near-go/client/models"
+	"github.com/rarimo/near-go/nearclient/models"
 	"testing"
 
 	"github.com/rarimo/near-go/scripts"

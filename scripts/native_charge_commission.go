@@ -3,8 +3,8 @@ package scripts
 import (
 	"context"
 	"encoding/json"
-	nearclient2 "github.com/rarimo/near-go/client"
 	"github.com/rarimo/near-go/common"
+	nearclient2 "github.com/rarimo/near-go/nearclient"
 )
 
 func NativeChargeCommission(ctx context.Context, cli nearclient2.Client, tokenAddr, sender, receiver, amount string, feer string) (string, string) {

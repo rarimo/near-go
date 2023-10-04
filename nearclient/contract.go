@@ -2,8 +2,8 @@ package nearclient
 
 import (
 	"context"
-	"github.com/rarimo/near-go/client/models"
 	"github.com/rarimo/near-go/common"
+	"github.com/rarimo/near-go/nearclient/models"
 )
 
 // ContractViewState https://docs.near.org/docs/api/rpc#view-contract-state

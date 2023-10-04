@@ -2,9 +2,9 @@ package scripts
 
 import (
 	"context"
-	nearclient2 "github.com/rarimo/near-go/client"
-	"github.com/rarimo/near-go/client/models"
 	"github.com/rarimo/near-go/common"
+	nearclient2 "github.com/rarimo/near-go/nearclient"
+	"github.com/rarimo/near-go/nearclient/models"
 )
 
 func NativeDeposit(ctx context.Context, cli nearclient2.Client, sender, receiver, chainTo, amount, bridge string) (string, string) {

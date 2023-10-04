@@ -2,8 +2,8 @@ package tests
 
 import (
 	"context"
-	nearclient2 "github.com/rarimo/near-go/client"
 	"github.com/rarimo/near-go/common"
+	nearclient2 "github.com/rarimo/near-go/nearclient"
 	"gitlab.com/distributed_lab/figure"
 	"gitlab.com/distributed_lab/kit/kv"
 	"gitlab.com/distributed_lab/logan/v3/errors"
@@ -45,7 +45,7 @@ func NewConfig(ctx context.Context, getter kv.Getter) Config {
 	}
 
 	cfg.Ctx = nearclient2.ContextWithKeyPair(ctx, keyPair)
-	cfg.Client, err = nearclient2.NewClient(cfg.RpcURL)
+	cfg.Client, err = nearclient2.New(cfg.RpcURL)
 	if err != nil {
 		panic(errors.Wrap(err, "failed to create rpc client"))
 	}

@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/rarimo/near-go/client/models"
 	"github.com/rarimo/near-go/common"
+	"github.com/rarimo/near-go/nearclient/models"
 )
 
 // AccessKeyView https://docs.near.org/docs/api/rpc#view-access-key
