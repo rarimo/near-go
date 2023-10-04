@@ -2,12 +2,11 @@ package scripts
 
 import (
 	"encoding/json"
+	"github.com/rarimo/near-go/client/models"
+	"github.com/rarimo/near-go/common"
 	"strings"
 
 	"gitlab.com/distributed_lab/logan/v3/errors"
-	"gitlab.com/rarimo/near-bridge-go/pkg/client"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/hash"
 )
 
 var (
@@ -15,8 +14,8 @@ var (
 	eventPrefix          = "EVENT_JSON:"
 )
 
-func GetDepositedReceiptID(tx client.FinalExecutionOutcomeView, eventType client.LogEventType, bridge string, token *string, tokenID *string, amount *types.Balance) (*hash.CryptoHash, error) {
-	var receiptID *hash.CryptoHash
+func GetDepositedReceiptID(tx models.FinalExecutionOutcomeView, eventType models.LogEventType, bridge string, token *string, tokenID *string, amount *common.Balance) (*common.Hash, error) {
+	var receiptID *common.Hash
 
 	for _, receipt := range tx.ReceiptsOutcome {
 		if receipt.Outcome.ExecutorID != bridge {
@@ -29,7 +28,7 @@ func GetDepositedReceiptID(tx client.FinalExecutionOutcomeView, eventType client
 		for _, outcome := range receipt.Outcome.Logs {
 			rawLog := strings.ReplaceAll(outcome, eventPrefix, "")
 
-			var log client.LogEvent
+			var log models.LogEvent
 			err := json.Unmarshal([]byte(rawLog), &log)
 			if err != nil {
 				return nil, errors.Wrap(err, "failed to unmarshal event")

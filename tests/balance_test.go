@@ -8,12 +8,12 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/rarimo/near-go/client"
+	"github.com/rarimo/near-go/common"
+	"github.com/rarimo/near-go/constants"
 	"testing"
 
 	"gitlab.com/distributed_lab/kit/kv"
-	"gitlab.com/rarimo/near-bridge-go/pkg/client/block"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
 )
 
 func TestFtBalance(t *testing.T) {
@@ -22,7 +22,7 @@ func TestFtBalance(t *testing.T) {
 	res := map[string]string{"account_id": cfg.AccountID}
 	r, _ := json.Marshal(res)
 
-	x, _ := cfg.Client.ContractViewCallFunction(context.Background(), cfg.FtAddress, action.FtBalanceOfMethod, base64.StdEncoding.EncodeToString(r), block.FinalityFinal())
+	x, _ := cfg.Client.ContractViewCallFunction(context.Background(), cfg.FtAddress, constants.ContractFtBalanceOf, base64.StdEncoding.EncodeToString(r), nearclient.FinalityFinal())
 	var result string
 
 	json.Unmarshal(x.Result, &result)
@@ -35,8 +35,8 @@ func TestNftBalance(t *testing.T) {
 	res := map[string]string{"account_id": cfg.AccountID}
 	r, _ := json.Marshal(res)
 
-	x, _ := cfg.Client.ContractViewCallFunction(context.Background(), cfg.NftAddress, action.NftTokensForOwnerMethod, base64.StdEncoding.EncodeToString(r), block.FinalityFinal())
-	var z []types.NftView
+	x, _ := cfg.Client.ContractViewCallFunction(context.Background(), cfg.NftAddress, constants.ContractNftTokensForOwner, base64.StdEncoding.EncodeToString(r), nearclient.FinalityFinal())
+	var z []common.NftView
 	json.Unmarshal(x.Result, &z)
 	fmt.Println(z)
 }

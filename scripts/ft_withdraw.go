@@ -2,17 +2,17 @@ package scripts
 
 import (
 	"context"
+	nearclient2 "github.com/rarimo/near-go/client"
+	"github.com/rarimo/near-go/common"
+	"github.com/rarimo/near-go/constants"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"gitlab.com/rarimo/near-bridge-go/pkg/client"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/data"
 	"lukechampine.com/uint128"
 )
 
-func FtWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender, receiver, chainFrom, chainTo, token, amount, bridge, privateKey string, isWrapped bool) string {
+func FtWithdraw(ctx context.Context, cli nearclient2.Client, txHash, eventID, sender, receiver, chainFrom, chainTo, token, amount, bridge, privateKey string, isWrapped bool) string {
 	amnt := parseAmount(amount)
 
 	content := data.NewTransferDataBuilder().
@@ -31,13 +31,13 @@ func FtWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender,
 		content,
 	)
 
-	act := action.FtWithdrawArgs{
+	act := common.FtWithdrawArgs{
 		Token:     token,
 		Amount:    amnt,
 		IsWrapped: isWrapped,
-		WithdrawArgs: action.WithdrawArgs{
+		WithdrawArgs: common.WithdrawArgs{
 			ReceiverID: receiver,
-			SignArgs: action.SignArgs{
+			SignArgs: common.SignArgs{
 				Origin:     origin,
 				Path:       path,
 				Signature:  signature,
@@ -46,27 +46,27 @@ func FtWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender,
 		},
 	}
 
-	deposit := types.OneYocto
+	deposit := constants.OneYocto
 
 	if isWrapped {
-		deposit = types.ZeroNEAR
+		deposit = constants.ZeroNEAR
 	}
 
-	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []action.Action{
-		action.NewFtWithdrawCall(act, MaxGas, deposit),
-	}, client.WithLatestBlock())
+	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []common.Action{
+		common.NewFtWithdrawCall(act, MaxGas, deposit),
+	}, nearclient2.WithLatestBlock())
 	if err != nil {
 		panic(err)
 	}
 	return withdrawResp.Transaction.Hash.String()
 }
 
-func parseAmount(amount string) types.Balance {
+func parseAmount(amount string) common.Balance {
 	bigAmount, ok := big.NewInt(0).SetString(amount, 10)
 	if !ok {
 		panic("invalid amount")
 	}
 
 	av := uint128.FromBig(bigAmount)
-	return types.Balance(av)
+	return common.Balance(av)
 }

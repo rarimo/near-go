@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/mr-tron/base58"
-	"gitlab.com/rarimo/near-bridge-go/scripts"
+	"github.com/rarimo/near-go/scripts"
 )
 
 func TestGenKey(t *testing.T) {

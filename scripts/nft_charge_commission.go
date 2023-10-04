@@ -3,15 +3,15 @@ package scripts
 import (
 	"context"
 	"encoding/json"
-	"gitlab.com/rarimo/near-bridge-go/pkg/client"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
+	nearclient2 "github.com/rarimo/near-go/client"
+	"github.com/rarimo/near-go/common"
 )
 
-func NftChargeCommission(ctx context.Context, cli client.Client, feeTokenAddr, tokenAddr, sender, receiver, tokenId string, feer string) (string, string) {
-	rawLog := action.FeerDepositArgs{
+func NftChargeCommission(ctx context.Context, cli nearclient2.Client, feeTokenAddr, tokenAddr, sender, receiver, tokenId string, feer string) (string, string) {
+	rawLog := common.FeerDepositArgs{
 		FeeTokenAddr: &feeTokenAddr,
 		TokenAddr:    &tokenAddr,
-		TokenType:    action.TokenType_NFT,
+		TokenType:    common.TokenType_NFT,
 		Receiver:     receiver,
 		ChainTo:      targetNetwork,
 		IsWrapped:    false,
@@ -19,30 +19,30 @@ func NftChargeCommission(ctx context.Context, cli client.Client, feeTokenAddr, t
 
 	rawFeeLog := rawLog
 	rawDepositLog := rawLog
-	rawFeeLog.TransferType = action.FeerTransferType_Fee
-	rawDepositLog.TransferType = action.FeerTransferType_Deposit
+	rawFeeLog.TransferType = common.FeerTransferType_Fee
+	rawDepositLog.TransferType = common.FeerTransferType_Deposit
 
 	feeLog, _ := json.Marshal(rawFeeLog)
 	depositLog, _ := json.Marshal(rawDepositLog)
 
-	depositResp, err := cli.TransactionSendAwait(ctx, sender, tokenAddr, []action.Action{
-		action.NewNftTransferCall(action.NftTransferArgs{
+	depositResp, err := cli.TransactionSendAwait(ctx, sender, tokenAddr, []common.Action{
+		common.NewNftTransferCall(common.NftTransferArgs{
 			ReceiverId: feer,
 			TokenID:    tokenId,
 			Msg:        string(depositLog),
 		}, MaxGas),
-	}, client.WithLatestBlock())
+	}, nearclient2.WithLatestBlock())
 	if err != nil {
 		panic(err)
 	}
 
-	feeResp, err := cli.TransactionSendAwait(ctx, sender, feeTokenAddr, []action.Action{
-		action.NewFtTransferCall(action.FtTransferArgs{
+	feeResp, err := cli.TransactionSendAwait(ctx, sender, feeTokenAddr, []common.Action{
+		common.NewFtTransferCall(common.FtTransferArgs{
 			ReceiverId: feer,
 			Amount:     parseAmount("1000"),
 			Msg:        string(feeLog),
 		}, MaxGas),
-	}, client.WithLatestBlock())
+	}, nearclient2.WithLatestBlock())
 	if err != nil {
 		panic(err)
 	}

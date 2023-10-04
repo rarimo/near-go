@@ -2,29 +2,28 @@ package scripts
 
 import (
 	"context"
-
-	"gitlab.com/rarimo/near-bridge-go/pkg/client"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
+	nearclient2 "github.com/rarimo/near-go/client"
+	"github.com/rarimo/near-go/client/models"
+	"github.com/rarimo/near-go/common"
 )
 
-func NativeDeposit(ctx context.Context, cli client.Client, sender, receiver, chainTo, amount, bridge string) (string, string) {
-	amnt, err := types.BalanceFromString(amount)
+func NativeDeposit(ctx context.Context, cli nearclient2.Client, sender, receiver, chainTo, amount, bridge string) (string, string) {
+	amnt, err := common.BalanceFromString(amount)
 	if err != nil {
 		panic(err)
 	}
 
-	depositResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []action.Action{
-		action.NewNativeDepositCall(action.NativeDepositArgs{
+	depositResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []common.Action{
+		common.NewNativeDepositCall(common.NativeDepositArgs{
 			ReceiverId: receiver,
 			Chain:      chainTo,
 		}, MaxGas, amnt),
-	}, client.WithLatestBlock())
+	}, nearclient2.WithLatestBlock())
 	if err != nil {
 		panic(err)
 	}
 
-	eventID, err := GetDepositedReceiptID(depositResp, client.LogEventTypeNativeDeposited, bridge, nil, nil, &amnt)
+	eventID, err := GetDepositedReceiptID(depositResp, models.LogEventTypeNativeDeposited, bridge, nil, nil, &amnt)
 	if err != nil {
 		panic(err)
 	}

@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/mr-tron/base58"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
+	"github.com/rarimo/near-go/common"
 	"math/big"
 	"time"
 )
 
-func getFeeManageOperationSignArgs(operationType action.FeeManageOperationType, token action.FeeToken, feeAmount, privateKey, receiver, bridgeAddr string) (
+func getFeeManageOperationSignArgs(operationType common.FeeManageOperationType, token common.FeeToken, feeAmount, privateKey, receiver, bridgeAddr string) (
 	originHash string,
 	signature string,
 	resultPath [][32]byte,
@@ -17,7 +17,7 @@ func getFeeManageOperationSignArgs(operationType action.FeeManageOperationType, 
 ) {
 	content := []byte{byte(operationType)}
 
-	if token.TokenType != action.TokenType_Native && token.TokenAddr != nil {
+	if token.TokenType != common.TokenType_Native && token.TokenAddr != nil {
 		content = append(content, hexutil.MustDecode(hexutil.Encode([]byte(*token.TokenAddr)))...)
 	}
 
