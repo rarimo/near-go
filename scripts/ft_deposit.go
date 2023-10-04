@@ -2,9 +2,9 @@ package scripts
 
 import (
 	"context"
-	nearclient2 "github.com/rarimo/near-go/client"
-	"github.com/rarimo/near-go/client/models"
 	"github.com/rarimo/near-go/common"
+	nearclient2 "github.com/rarimo/near-go/nearclient"
+	"github.com/rarimo/near-go/nearclient/models"
 )
 
 func FtDeposit(ctx context.Context, cli nearclient2.Client, sender, receiver, token string, amount string, bridge string, isWrapped bool) (string, string) {

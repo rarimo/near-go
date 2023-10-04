@@ -2,7 +2,7 @@ package nearclient
 
 import (
 	"context"
-	"github.com/rarimo/near-go/client/models"
+	"github.com/rarimo/near-go/nearclient/models"
 )
 
 // NetworkInfo https://docs.near.org/docs/api/rpc#network-info

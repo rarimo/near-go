@@ -2,7 +2,7 @@ package nearclient
 
 import (
 	"context"
-	"github.com/rarimo/near-go/client/models"
+	"github.com/rarimo/near-go/nearclient/models"
 )
 
 // https://docs.near.org/docs/api/rpc#gas-price

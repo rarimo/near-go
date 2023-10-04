@@ -3,8 +3,8 @@ package nearclient
 import (
 	"context"
 	"errors"
-	"github.com/rarimo/near-go/client/models"
 	"github.com/rarimo/near-go/common"
+	"github.com/rarimo/near-go/nearclient/models"
 )
 
 type transactionCtx struct {

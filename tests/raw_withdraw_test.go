@@ -2,8 +2,8 @@ package tests
 
 import (
 	"context"
-	nearclient2 "github.com/rarimo/near-go/client"
 	"github.com/rarimo/near-go/common"
+	nearclient2 "github.com/rarimo/near-go/nearclient"
 	"github.com/rarimo/near-go/scripts"
 	"gitlab.com/distributed_lab/logan/v3/errors"
 	"testing"
@@ -24,7 +24,7 @@ func getClient() (context.Context, *nearclient2.Client) {
 
 	ctx := nearclient2.ContextWithKeyPair(context.Background(), keyPair)
 
-	cli, err := nearclient2.NewClient("https://rpc.testnet.near.org")
+	cli, err := nearclient2.New("https://rpc.testnet.near.org")
 	if err != nil {
 		panic(errors.Wrap(err, "failed to create rpc client"))
 	}

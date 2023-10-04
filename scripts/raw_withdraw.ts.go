@@ -2,9 +2,9 @@ package scripts
 
 import (
 	"context"
-	nearclient2 "github.com/rarimo/near-go/client"
 	"github.com/rarimo/near-go/common"
 	"github.com/rarimo/near-go/constants"
+	nearclient2 "github.com/rarimo/near-go/nearclient"
 )
 
 func RawNFTWithdraw(ctx context.Context, cli *nearclient2.Client, sender, bridge, token, tokenID, receiver, origin, signature string, path [][32]byte, recoveryID uint8, isWrapped bool) string {

@@ -8,9 +8,9 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/rarimo/near-go/client"
 	"github.com/rarimo/near-go/common"
 	"github.com/rarimo/near-go/constants"
+	"github.com/rarimo/near-go/nearclient"
 	"testing"
 
 	"gitlab.com/distributed_lab/kit/kv"

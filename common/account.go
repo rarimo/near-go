@@ -1,7 +1,7 @@
 package common
 
 import (
-	"github.com/rarimo/near-go/client/models"
+	"github.com/rarimo/near-go/nearclient/models"
 )
 
 type AccountView struct {
