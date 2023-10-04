@@ -2,19 +2,19 @@ package scripts
 
 import (
 	"context"
-	"gitlab.com/rarimo/near-bridge-go/pkg/client"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
+	nearclient2 "github.com/rarimo/near-go/client"
+	"github.com/rarimo/near-go/common"
+	"github.com/rarimo/near-go/constants"
 )
 
-func RawNFTWithdraw(ctx context.Context, cli *client.Client, sender, bridge, token, tokenID, receiver, origin, signature string, path [][32]byte, recoveryID uint8, isWrapped bool) string {
-	act := action.NftWithdrawArgs{
+func RawNFTWithdraw(ctx context.Context, cli *nearclient2.Client, sender, bridge, token, tokenID, receiver, origin, signature string, path [][32]byte, recoveryID uint8, isWrapped bool) string {
+	act := common.NftWithdrawArgs{
 		Token:     token,
 		TokenID:   tokenID,
 		IsWrapped: isWrapped,
-		WithdrawArgs: action.WithdrawArgs{
+		WithdrawArgs: common.WithdrawArgs{
 			ReceiverID: receiver,
-			SignArgs: action.SignArgs{
+			SignArgs: common.SignArgs{
 				Origin:     origin,
 				Path:       path,
 				Signature:  signature,
@@ -23,7 +23,7 @@ func RawNFTWithdraw(ctx context.Context, cli *client.Client, sender, bridge, tok
 		},
 	}
 
-	deposit := types.OneYocto
+	deposit := constants.OneYocto
 	if isWrapped {
 		act.TokenMetadata = nftMetadata[isWrapped]
 		deposit = parseAmount("200000000000000000000000")
@@ -33,8 +33,8 @@ func RawNFTWithdraw(ctx context.Context, cli *client.Client, sender, bridge, tok
 		ctx,
 		sender,
 		bridge,
-		[]action.Action{action.NewNftWithdrawCall(act, MaxGas, deposit)},
-		client.WithLatestBlock(),
+		[]common.Action{common.NewNftWithdrawCall(act, MaxGas, deposit)},
+		nearclient2.WithLatestBlock(),
 	)
 	if err != nil {
 		panic(err)
@@ -42,16 +42,16 @@ func RawNFTWithdraw(ctx context.Context, cli *client.Client, sender, bridge, tok
 	return withdrawResp.Transaction.Hash.String()
 }
 
-func RawFTWithdraw(ctx context.Context, cli *client.Client, sender, bridge, token, amount, receiver, origin, signature string, path [][32]byte, recoveryID uint8, isWrapped bool) string {
+func RawFTWithdraw(ctx context.Context, cli *nearclient2.Client, sender, bridge, token, amount, receiver, origin, signature string, path [][32]byte, recoveryID uint8, isWrapped bool) string {
 	amnt := parseAmount(amount)
 
-	act := action.FtWithdrawArgs{
+	act := common.FtWithdrawArgs{
 		Token:     token,
 		Amount:    amnt,
 		IsWrapped: isWrapped,
-		WithdrawArgs: action.WithdrawArgs{
+		WithdrawArgs: common.WithdrawArgs{
 			ReceiverID: receiver,
-			SignArgs: action.SignArgs{
+			SignArgs: common.SignArgs{
 				Origin:     origin,
 				Path:       path,
 				Signature:  signature,
@@ -60,29 +60,29 @@ func RawFTWithdraw(ctx context.Context, cli *client.Client, sender, bridge, toke
 		},
 	}
 
-	deposit := types.OneYocto
+	deposit := constants.OneYocto
 
 	if isWrapped {
 		deposit = parseAmount("1250000000000000000000")
 	}
 
-	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []action.Action{
-		action.NewFtWithdrawCall(act, MaxGas, deposit),
-	}, client.WithLatestBlock())
+	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []common.Action{
+		common.NewFtWithdrawCall(act, MaxGas, deposit),
+	}, nearclient2.WithLatestBlock())
 	if err != nil {
 		panic(err)
 	}
 	return withdrawResp.Transaction.Hash.String()
 }
 
-func RawNativeWithdraw(ctx context.Context, cli *client.Client, sender, bridge, amount, receiver, origin, signature string, path [][32]byte, recoveryID uint8) string {
+func RawNativeWithdraw(ctx context.Context, cli *nearclient2.Client, sender, bridge, amount, receiver, origin, signature string, path [][32]byte, recoveryID uint8) string {
 	amnt := parseAmount(amount)
 
-	act := action.NativeWithdrawArgs{
+	act := common.NativeWithdrawArgs{
 		Amount: amnt,
-		WithdrawArgs: action.WithdrawArgs{
+		WithdrawArgs: common.WithdrawArgs{
 			ReceiverID: receiver,
-			SignArgs: action.SignArgs{
+			SignArgs: common.SignArgs{
 				Origin:     origin,
 				Path:       path,
 				Signature:  signature,
@@ -91,9 +91,9 @@ func RawNativeWithdraw(ctx context.Context, cli *client.Client, sender, bridge, 
 		},
 	}
 
-	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []action.Action{
-		action.NewNativeWithdrawCall(act, MaxGas, types.OneYocto),
-	}, client.WithLatestBlock())
+	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []common.Action{
+		common.NewNativeWithdrawCall(act, MaxGas, constants.OneYocto),
+	}, nearclient2.WithLatestBlock())
 	if err != nil {
 		panic(err)
 	}

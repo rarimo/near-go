@@ -5,10 +5,9 @@ package tests
 
 import (
 	"context"
+	"github.com/rarimo/near-go/common"
+	"github.com/rarimo/near-go/scripts"
 	"gitlab.com/distributed_lab/kit/kv"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
-	"gitlab.com/rarimo/near-bridge-go/scripts"
 	"lukechampine.com/uint128"
 	"testing"
 )
@@ -18,16 +17,16 @@ func TestUpdateFeeToken(t *testing.T) {
 
 	hash := scripts.ManageFeeToken(
 		cfg.Ctx,
-		action.FeeUpdateFeeToken,
+		common.FeeUpdateFeeToken,
 		cfg.Client,
 		cfg.AccountID,
 		cfg.FeerAddress,
 		cfg.BridgeAddress,
 		cfg.SignerPrivateKey,
-		action.FeeToken{
+		common.FeeToken{
 			TokenAddr: &cfg.FeeTokenAddress,
-			TokenType: action.TokenType_FT,
-			Fee:       types.Balance(uint128.From64(10000)),
+			TokenType: common.TokenType_FT,
+			Fee:       common.Balance(uint128.From64(10000)),
 		},
 	)
 	printExplorerURL(t, "Updated fee token", hash, nil)

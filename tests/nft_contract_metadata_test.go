@@ -7,19 +7,19 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/rarimo/near-go/client"
+	"github.com/rarimo/near-go/common"
+	"github.com/rarimo/near-go/constants"
 	"testing"
 
 	"gitlab.com/distributed_lab/kit/kv"
-	"gitlab.com/rarimo/near-bridge-go/pkg/client/block"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
 )
 
 func TestNftContractMetadata(t *testing.T) {
 	cfg := NewConfig(context.Background(), kv.MustFromEnv())
 
-	x, _ := cfg.Client.ContractViewCallFunction(context.Background(), cfg.NftAddress, action.NftContractMetadataMethod, "", block.FinalityFinal())
-	var z types.NftContractMetadataView
+	x, _ := cfg.Client.ContractViewCallFunction(context.Background(), cfg.NftAddress, constants.ContractNftMetadata, "", nearclient.FinalityFinal())
+	var z common.NftContractMetadataView
 	json.Unmarshal(x.Result, &z)
 	fmt.Println(string(x.Result))
 }

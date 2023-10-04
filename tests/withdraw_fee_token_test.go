@@ -5,10 +5,9 @@ package tests
 
 import (
 	"context"
+	"github.com/rarimo/near-go/common"
+	"github.com/rarimo/near-go/scripts"
 	"gitlab.com/distributed_lab/kit/kv"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
-	"gitlab.com/rarimo/near-bridge-go/scripts"
 	"lukechampine.com/uint128"
 	"testing"
 )
@@ -19,16 +18,16 @@ func TestWithdrawFeeToken(t *testing.T) {
 
 	hash := scripts.ManageFeeToken(
 		cfg.Ctx,
-		action.FeeWithdraw,
+		common.FeeWithdraw,
 		cfg.Client,
 		cfg.AccountID,
 		cfg.FeerAddress,
 		cfg.BridgeAddress,
 		cfg.SignerPrivateKey,
-		action.FeeToken{
+		common.FeeToken{
 			TokenAddr: &tokenAddr,
-			TokenType: action.TokenType_FT,
-			Fee:       types.Balance(uint128.From64(1000)),
+			TokenType: common.TokenType_FT,
+			Fee:       common.Balance(uint128.From64(1000)),
 		},
 	)
 	printExplorerURL(t, "Withdraw fee token", hash, nil)

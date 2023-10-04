@@ -2,10 +2,10 @@ package tests
 
 import (
 	"context"
+	nearclient2 "github.com/rarimo/near-go/client"
+	"github.com/rarimo/near-go/common"
+	"github.com/rarimo/near-go/scripts"
 	"gitlab.com/distributed_lab/logan/v3/errors"
-	"gitlab.com/rarimo/near-bridge-go/pkg/client"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/key"
-	"gitlab.com/rarimo/near-bridge-go/scripts"
 	"testing"
 )
 
@@ -16,15 +16,15 @@ func printExplorerURL(t *testing.T, msg string, hash string, receiptID *string) 
 	}
 }
 
-func getClient() (context.Context, *client.Client) {
-	keyPair, err := key.NewBase58KeyPair("ed25519:privatekey")
+func getClient() (context.Context, *nearclient2.Client) {
+	keyPair, err := common.NewBase58KeyPair("ed25519:privatekey")
 	if err != nil {
 		panic(errors.Wrap(err, "failed to get key pair"))
 	}
 
-	ctx := client.ContextWithKeyPair(context.Background(), keyPair)
+	ctx := nearclient2.ContextWithKeyPair(context.Background(), keyPair)
 
-	cli, err := client.NewClient("https://rpc.testnet.near.org")
+	cli, err := nearclient2.NewClient("https://rpc.testnet.near.org")
 	if err != nil {
 		panic(errors.Wrap(err, "failed to create rpc client"))
 	}

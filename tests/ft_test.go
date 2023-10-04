@@ -7,8 +7,8 @@ import (
 	"context"
 	"testing"
 
+	"github.com/rarimo/near-go/scripts"
 	"gitlab.com/distributed_lab/kit/kv"
-	"gitlab.com/rarimo/near-bridge-go/scripts"
 )
 
 func TestFt(t *testing.T) {

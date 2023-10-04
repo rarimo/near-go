@@ -2,13 +2,12 @@ package scripts
 
 import (
 	"context"
-	"gitlab.com/rarimo/near-bridge-go/pkg/client"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
+	nearclient2 "github.com/rarimo/near-go/client"
+	"github.com/rarimo/near-go/common"
 	"lukechampine.com/uint128"
 )
 
-func ManageFeeToken(ctx context.Context, operationType action.FeeManageOperationType, cli client.Client, sender, receiver, bridgeAddr, privateKey string, token action.FeeToken) string {
+func ManageFeeToken(ctx context.Context, operationType common.FeeManageOperationType, cli nearclient2.Client, sender, receiver, bridgeAddr, privateKey string, token common.FeeToken) string {
 	feeAmount := token.Fee.Big().String()
 
 	origin, signature, path, recoveryID := getFeeManageOperationSignArgs(
@@ -20,9 +19,9 @@ func ManageFeeToken(ctx context.Context, operationType action.FeeManageOperation
 		bridgeAddr,
 	)
 
-	op := action.FeeManageOperationArgs{
-		Operation: action.FeeManageOperation{
-			SignArgs: action.SignArgs{
+	op := common.FeeManageOperationArgs{
+		Operation: common.FeeManageOperation{
+			SignArgs: common.SignArgs{
 				Origin:     origin,
 				Signature:  signature,
 				Path:       path,
@@ -32,20 +31,20 @@ func ManageFeeToken(ctx context.Context, operationType action.FeeManageOperation
 		},
 	}
 
-	actions := make([]action.Action, 0, 1)
+	actions := make([]common.Action, 0, 1)
 
 	switch operationType {
-	case action.FeeAddFeeToken:
-		actions = append(actions, action.NewFeeTokenAddCall(op, MaxGas))
-	case action.FeeRemoveFeeToken:
-		actions = append(actions, action.NewFeeTokenRemoveCall(op, MaxGas))
-	case action.FeeUpdateFeeToken:
-		actions = append(actions, action.NewFeeTokenUpdateCall(op, MaxGas))
-	case action.FeeWithdraw:
-		actions = append(actions, action.NewFeeTokenWithdrawCall(op, sender, types.Balance(uint128.From64(1000)), MaxGas))
+	case actions.FeeAddFeeToken:
+		actions = append(actions, actions.NewFeeTokenAddCall(op, MaxGas))
+	case actions.FeeRemoveFeeToken:
+		actions = append(actions, actions.NewFeeTokenRemoveCall(op, MaxGas))
+	case actions.FeeUpdateFeeToken:
+		actions = append(actions, actions.NewFeeTokenUpdateCall(op, MaxGas))
+	case actions.FeeWithdraw:
+		actions = append(actions, actions.NewFeeTokenWithdrawCall(op, sender, common.Balance(uint128.From64(1000)), MaxGas))
 	}
 
-	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, receiver, actions, client.WithLatestBlock())
+	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, receiver, actions, nearclient2.WithLatestBlock())
 	if err != nil {
 		panic(err)
 	}

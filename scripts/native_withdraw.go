@@ -2,15 +2,14 @@ package scripts
 
 import (
 	"context"
-
-	"gitlab.com/rarimo/near-bridge-go/pkg/client"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
+	nearclient2 "github.com/rarimo/near-go/client"
+	"github.com/rarimo/near-go/common"
+	"github.com/rarimo/near-go/constants"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/data"
 )
 
-func NativeWithdraw(ctx context.Context, cli client.Client, txHash, eventID string, sender, receiver, chainFrom, chainTo, amount, bridge, privateKey string) string {
-	amnt, err := types.BalanceFromString(amount)
+func NativeWithdraw(ctx context.Context, cli nearclient2.Client, txHash, eventID string, sender, receiver, chainFrom, chainTo, amount, bridge, privateKey string) string {
+	amnt, err := common.BalanceFromString(amount)
 	if err != nil {
 		panic(err)
 	}
@@ -28,11 +27,11 @@ func NativeWithdraw(ctx context.Context, cli client.Client, txHash, eventID stri
 		content,
 	)
 
-	act := action.NativeWithdrawArgs{
+	act := common.NativeWithdrawArgs{
 		Amount: amnt,
-		WithdrawArgs: action.WithdrawArgs{
+		WithdrawArgs: common.WithdrawArgs{
 			ReceiverID: receiver,
-			SignArgs: action.SignArgs{
+			SignArgs: common.SignArgs{
 				Origin:     origin,
 				Path:       path,
 				Signature:  signature,
@@ -41,9 +40,9 @@ func NativeWithdraw(ctx context.Context, cli client.Client, txHash, eventID stri
 		},
 	}
 
-	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []action.Action{
-		action.NewNativeWithdrawCall(act, MaxGas, types.OneYocto),
-	}, client.WithLatestBlock())
+	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []common.Action{
+		common.NewNativeWithdrawCall(act, MaxGas, constants.OneYocto),
+	}, nearclient2.WithLatestBlock())
 	if err != nil {
 		panic(err)
 	}

@@ -2,15 +2,14 @@ package scripts
 
 import (
 	"context"
-
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"gitlab.com/rarimo/near-bridge-go/pkg/client"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
+	nearclient2 "github.com/rarimo/near-go/client"
+	"github.com/rarimo/near-go/common"
+	"github.com/rarimo/near-go/constants"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/data"
 )
 
-func NftWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender, receiver, chainFrom, chainTo, token, tokenID, bridge, privateKey string, isWrapped bool) string {
+func NftWithdraw(ctx context.Context, cli nearclient2.Client, txHash, eventID, sender, receiver, chainFrom, chainTo, token, tokenID, bridge, privateKey string, isWrapped bool) string {
 	content := data.NewTransferDataBuilder().
 		SetAddress(hexutil.Encode([]byte(token))).
 		SetId(hexutil.Encode(to32Bytes([]byte(tokenID)))).
@@ -31,13 +30,13 @@ func NftWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender
 		content,
 	)
 
-	act := action.NftWithdrawArgs{
+	act := common.NftWithdrawArgs{
 		Token:     token,
 		TokenID:   tokenID,
 		IsWrapped: isWrapped,
-		WithdrawArgs: action.WithdrawArgs{
+		WithdrawArgs: common.WithdrawArgs{
 			ReceiverID: receiver,
-			SignArgs: action.SignArgs{
+			SignArgs: common.SignArgs{
 				Origin:     origin,
 				Path:       path,
 				Signature:  signature,
@@ -46,18 +45,18 @@ func NftWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender
 		},
 	}
 
-	deposit := types.OneYocto
+	deposit := constants.OneYocto
 	if isWrapped {
 		act.TokenMetadata = nftMetadata[isWrapped]
-		deposit = types.NEARToYocto(1)
+		deposit = common.NEARToYocto(1)
 	}
 
 	withdrawResp, err := cli.TransactionSendAwait(
 		ctx,
 		sender,
 		bridge,
-		[]action.Action{action.NewNftWithdrawCall(act, MaxGas, deposit)},
-		client.WithLatestBlock(),
+		[]common.Action{common.NewNftWithdrawCall(act, MaxGas, deposit)},
+		nearclient2.WithLatestBlock(),
 	)
 
 	if err != nil {

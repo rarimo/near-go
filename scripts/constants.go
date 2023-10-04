@@ -3,8 +3,8 @@ package scripts
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"github.com/rarimo/near-go/common"
 
-	"gitlab.com/rarimo/near-bridge-go/pkg/types"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/bundle"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/data"
@@ -21,7 +21,7 @@ const (
 
 var MaxGas uint64 = 300000000000000
 
-var nftMetadata = map[bool]*types.NftMetadataView{
+var nftMetadata = map[bool]*common.NftMetadataView{
 	true: {
 		Title:         "Wrapped Rarimo Bridge NFT#1",
 		Description:   "Wrapped Rarimo Bridge Test Collection NFT#1",
