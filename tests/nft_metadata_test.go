@@ -1,3 +1,6 @@
+//go:build manual_test
+// +build manual_test
+
 package tests
 
 import (
@@ -19,7 +22,7 @@ func TestNftMetadata(t *testing.T) {
 	res := map[string]string{"token_id": cfg.TokenID}
 	r, _ := json.Marshal(res)
 
-	x, _ := cfg.Client.ContractViewCallFunction(context.Background(), cfg.NftAddressOriginal, action.NftGetMethod, base64.StdEncoding.EncodeToString(r), block.FinalityFinal())
+	x, _ := cfg.Client.ContractViewCallFunction(context.Background(), cfg.NftAddress, action.NftGetMethod, base64.StdEncoding.EncodeToString(r), block.FinalityFinal())
 	var z *types.NftView
 	json.Unmarshal(x.Result, &z)
 	fmt.Println(string(x.Result))

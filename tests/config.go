@@ -20,11 +20,13 @@ type Config struct {
 	TokenID              string          `fig:"token_id"`
 	AccountID            types.AccountID `fig:"account_id,required"`
 	BridgeAddress        types.AccountID `fig:"bridge_address,required"`
-	FtAddressOriginal    types.AccountID `fig:"ft_address_original,required"`
+	FtAddress            types.AccountID `fig:"ft_address_original,required"`
 	FtAddressWrapped     types.AccountID `fig:"ft_address_wrapped,required"`
-	NftAddressOriginal   types.AccountID `fig:"nft_address_original,required"`
+	NftAddress           types.AccountID `fig:"nft_address_original,required"`
 	NftAddressWrapped    types.AccountID `fig:"nft_address_wrapped,required"`
 	NativeAddressWrapped types.AccountID `fig:"native_address_wrapped,required"`
+	FeerAddress          types.AccountID `fig:"feer_address,required"`
+	FeeTokenAddress      types.AccountID `fig:"fee_token_address,required"`
 	Amount               string          `fig:"amount"`
 }
 

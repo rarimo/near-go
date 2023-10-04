@@ -1,3 +1,6 @@
+//go:build manual_test
+// +build manual_test
+
 package tests
 
 import (
@@ -15,7 +18,7 @@ import (
 func TestNftContractMetadata(t *testing.T) {
 	cfg := NewConfig(context.Background(), kv.MustFromEnv())
 
-	x, _ := cfg.Client.ContractViewCallFunction(context.Background(), cfg.NftAddressOriginal, action.NftContractMetadataMethod, "", block.FinalityFinal())
+	x, _ := cfg.Client.ContractViewCallFunction(context.Background(), cfg.NftAddress, action.NftContractMetadataMethod, "", block.FinalityFinal())
 	var z types.NftContractMetadataView
 	json.Unmarshal(x.Result, &z)
 	fmt.Println(string(x.Result))

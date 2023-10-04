@@ -38,13 +38,13 @@ func (cause *ErrorCause) UnmarshalJSON(b []byte) (err error) {
 	}
 
 	if err = json.Unmarshal(b, &data); err != nil {
-		err = fmt.Errorf("unable to unmarshal error cause: %w", err)
+		err = fmt.Errorf(string(b))
 		return
 	}
 
 	var info map[string]interface{}
 	if err = json.Unmarshal(data.Info, &info); err != nil {
-		err = fmt.Errorf("unable to unmarshal error cause info: %w", err)
+		err = fmt.Errorf(string(b))
 		return
 	}
 

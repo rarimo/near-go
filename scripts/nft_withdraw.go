@@ -7,7 +7,6 @@ import (
 	"gitlab.com/rarimo/near-bridge-go/pkg/client"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types"
 	"gitlab.com/rarimo/near-bridge-go/pkg/types/action"
-	"gitlab.com/rarimo/near-bridge-go/pkg/types/action/base"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/data"
 )
 
@@ -38,11 +37,12 @@ func NftWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender
 		IsWrapped: isWrapped,
 		WithdrawArgs: action.WithdrawArgs{
 			ReceiverID: receiver,
-			Chain:      chainTo,
-			Origin:     origin,
-			Path:       path,
-			Signatures: []string{signature},
-			RecoveryID: recoveryID,
+			SignArgs: action.SignArgs{
+				Origin:     origin,
+				Path:       path,
+				Signature:  signature,
+				RecoveryID: recoveryID,
+			},
 		},
 	}
 
@@ -56,7 +56,7 @@ func NftWithdraw(ctx context.Context, cli client.Client, txHash, eventID, sender
 		ctx,
 		sender,
 		bridge,
-		[]base.Action{action.NewNftWithdrawCall(act, MaxGas, deposit)},
+		[]action.Action{action.NewNftWithdrawCall(act, MaxGas, deposit)},
 		client.WithLatestBlock(),
 	)
 

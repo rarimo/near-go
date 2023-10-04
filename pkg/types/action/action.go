@@ -1,4 +1,4 @@
-package base
+package action
 
 import (
 	"encoding/json"
@@ -151,7 +151,7 @@ func (a *Action) UnmarshalJSON(b []byte) (err error) {
 type ActionCreateAccount struct {
 }
 
-// Create an (sub)account using a transaction `receiver_id` as an ID for a new account
+// NewCreateAccount Create an (sub)account using a transaction `receiver_id` as an ID for a new account
 func NewCreateAccount() Action {
 	return Action{
 		Enum:          borsh.Enum(ordCreateAccount),

@@ -1,3 +1,6 @@
+//go:build manual_test
+// +build manual_test
+
 package tests
 
 import (
@@ -16,7 +19,7 @@ func TestFt(t *testing.T) {
 		cfg.Client,
 		cfg.AccountID,
 		cfg.AccountID,
-		cfg.FtAddressOriginal,
+		cfg.FtAddress,
 		cfg.Amount,
 		cfg.BridgeAddress,
 		false,
@@ -61,7 +64,7 @@ func TestFt(t *testing.T) {
 		cfg.AccountID,
 		chainID,
 		chainID,
-		cfg.FtAddressOriginal,
+		cfg.FtAddress,
 		cfg.Amount,
 		cfg.BridgeAddress,
 		cfg.SignerPrivateKey,

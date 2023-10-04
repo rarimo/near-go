@@ -1,6 +1,8 @@
 package action
 
 const (
+	NewMethod = "new"
+
 	NftTransferMethod         = "nft_transfer_call"
 	NftWithdrawMethod         = "nft_withdraw"
 	NftTokensForOwnerMethod   = "nft_tokens_for_owner"
@@ -13,8 +15,16 @@ const (
 	FtStorageDepositMethod = "storage_deposit"
 	FtMintMethod           = "ft_mint"
 
-	NativeDepositMethod  = "native_deposit"
-	NativeWithdrawMethod = "native_withdraw"
+	BridgeNativeDepositMethod  = "native_deposit"
+	BridgeNativeWithdrawMethod = "native_withdraw"
 
-	NewMethod = "new"
+	FeerRegister       = "register"
+	FeerUnregister     = "unregister"
+	FeerChargeNative   = "charge_native"
+	FeerAddFeeToken    = "add_fee_token"
+	FeerUpdateFeeToken = "update_fee_token"
+	FeerRemoveFeeToken = "remove_fee_token"
+	FeerWithdraw       = "withdraw"
+	FeerGetFeeToken    = "get_fee_token"
+	FeerGetFeeTokens   = "get_fee_tokens"
 )

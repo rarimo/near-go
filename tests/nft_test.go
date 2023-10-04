@@ -1,3 +1,6 @@
+//go:build manual_test
+// +build manual_test
+
 package tests
 
 import (
@@ -25,7 +28,7 @@ func TestNft(t *testing.T) {
 		cfg.Client,
 		cfg.AccountID,
 		cfg.AccountID,
-		cfg.NftAddressOriginal,
+		cfg.NftAddress,
 		cfg.TokenID,
 		cfg.BridgeAddress,
 		false,
@@ -70,7 +73,7 @@ func TestNft(t *testing.T) {
 		cfg.AccountID,
 		chainID,
 		chainID,
-		cfg.NftAddressOriginal,
+		cfg.NftAddress,
 		cfg.TokenID,
 		cfg.BridgeAddress,
 		cfg.SignerPrivateKey,

@@ -1,3 +1,6 @@
+//go:build manual_test
+// +build manual_test
+
 package tests
 
 import (
@@ -19,7 +22,7 @@ func TestFtBalance(t *testing.T) {
 	res := map[string]string{"account_id": cfg.AccountID}
 	r, _ := json.Marshal(res)
 
-	x, _ := cfg.Client.ContractViewCallFunction(context.Background(), cfg.FtAddressOriginal, action.FtBalanceOfMethod, base64.StdEncoding.EncodeToString(r), block.FinalityFinal())
+	x, _ := cfg.Client.ContractViewCallFunction(context.Background(), cfg.FtAddress, action.FtBalanceOfMethod, base64.StdEncoding.EncodeToString(r), block.FinalityFinal())
 	var result string
 
 	json.Unmarshal(x.Result, &result)
@@ -32,7 +35,7 @@ func TestNftBalance(t *testing.T) {
 	res := map[string]string{"account_id": cfg.AccountID}
 	r, _ := json.Marshal(res)
 
-	x, _ := cfg.Client.ContractViewCallFunction(context.Background(), cfg.NftAddressOriginal, action.NftTokensForOwnerMethod, base64.StdEncoding.EncodeToString(r), block.FinalityFinal())
+	x, _ := cfg.Client.ContractViewCallFunction(context.Background(), cfg.NftAddress, action.NftTokensForOwnerMethod, base64.StdEncoding.EncodeToString(r), block.FinalityFinal())
 	var z []types.NftView
 	json.Unmarshal(x.Result, &z)
 	fmt.Println(z)
