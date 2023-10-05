@@ -1,4 +1,4 @@
-package models
+package common
 
 type ViewStateResult struct {
 	Values []StateItem   `json:"values"`

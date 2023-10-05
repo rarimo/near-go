@@ -3,11 +3,10 @@ package nearclient
 import (
 	"context"
 	"github.com/rarimo/near-go/common"
-	"github.com/rarimo/near-go/nearclient/models"
 )
 
 // BlockDetails https://docs.near.org/docs/api/rpc#block-details
-func (c *Client) BlockDetails(ctx context.Context, block BlockCharacteristic) (resp models.BlockView, err error) {
+func (c *Client) BlockDetails(ctx context.Context, block BlockCharacteristic) (resp common.BlockView, err error) {
 	_, err = c.doRPC(ctx, &resp, "block", block, map[string]interface{}{})
 
 	return

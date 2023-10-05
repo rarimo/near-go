@@ -1,9 +1,5 @@
 package common
 
-import (
-	"github.com/rarimo/near-go/nearclient/models"
-)
-
 type AccountView struct {
 	Amount        Balance      `json:"amount"`
 	Locked        Balance      `json:"locked"`
@@ -11,5 +7,5 @@ type AccountView struct {
 	StorageUsage  StorageUsage `json:"storage_usage"`
 	StoragePaidAt BlockHeight  `json:"storage_paid_at"`
 
-	models.QueryResponse
+	QueryResponse
 }

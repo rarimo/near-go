@@ -6,7 +6,7 @@ package tests
 import (
 	"context"
 	"encoding/json"
-	"github.com/rarimo/near-go/nearclient/models"
+	"github.com/rarimo/near-go/common"
 	"testing"
 
 	"github.com/rarimo/near-go/scripts"
@@ -266,7 +266,7 @@ var response = json.RawMessage(`{
     }`)
 
 func TestUtilGetReceiptId(t *testing.T) {
-	var resp models.FinalExecutionOutcomeView
+	var resp common.FinalExecutionOutcomeView
 	err := json.Unmarshal(response, &resp)
 	if !assert.NoError(t, err) {
 		return
@@ -276,7 +276,7 @@ func TestUtilGetReceiptId(t *testing.T) {
 
 	receiptId, err := scripts.GetDepositedReceiptID(
 		resp,
-		models.LogEventTypeNftDeposited,
+		common.LogEventTypeNftDeposited,
 		cfg.BridgeAddress,
 		&cfg.NftAddress,
 		&cfg.TokenID,

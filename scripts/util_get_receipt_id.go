@@ -3,7 +3,6 @@ package scripts
 import (
 	"encoding/json"
 	"github.com/rarimo/near-go/common"
-	"github.com/rarimo/near-go/nearclient/models"
 	"strings"
 
 	"gitlab.com/distributed_lab/logan/v3/errors"
@@ -14,7 +13,7 @@ var (
 	eventPrefix          = "EVENT_JSON:"
 )
 
-func GetDepositedReceiptID(tx models.FinalExecutionOutcomeView, eventType models.LogEventType, bridge string, token *string, tokenID *string, amount *common.Balance) (*common.Hash, error) {
+func GetDepositedReceiptID(tx common.FinalExecutionOutcomeView, eventType common.LogEventType, bridge string, token *string, tokenID *string, amount *common.Balance) (*common.Hash, error) {
 	var receiptID *common.Hash
 
 	for _, receipt := range tx.ReceiptsOutcome {
@@ -28,7 +27,7 @@ func GetDepositedReceiptID(tx models.FinalExecutionOutcomeView, eventType models
 		for _, outcome := range receipt.Outcome.Logs {
 			rawLog := strings.ReplaceAll(outcome, eventPrefix, "")
 
-			var log models.LogEvent
+			var log common.LogEvent
 			err := json.Unmarshal([]byte(rawLog), &log)
 			if err != nil {
 				return nil, errors.Wrap(err, "failed to unmarshal event")

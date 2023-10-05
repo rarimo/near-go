@@ -3,11 +3,10 @@ package nearclient
 import (
 	"context"
 	"github.com/rarimo/near-go/common"
-	"github.com/rarimo/near-go/nearclient/models"
 )
 
 // ContractViewState https://docs.near.org/docs/api/rpc#view-contract-state
-func (c *Client) ContractViewState(ctx context.Context, accountID common.AccountID, prefixBase64 string, block BlockCharacteristic) (res models.ViewStateResult, err error) {
+func (c *Client) ContractViewState(ctx context.Context, accountID common.AccountID, prefixBase64 string, block BlockCharacteristic) (res common.ViewStateResult, err error) {
 	_, err = c.doRPC(ctx, &res, "query", block, map[string]interface{}{
 		"request_type":  "view_state",
 		"account_id":    accountID,
@@ -41,7 +40,7 @@ func (c *Client) ContractViewCodeChanges(ctx context.Context, accountIDs []commo
 }
 
 // ContractViewCallFunction https://docs.near.org/docs/api/rpc#call-a-contract-function
-func (c *Client) ContractViewCallFunction(ctx context.Context, accountID, methodName, argsBase64 string, block BlockCharacteristic) (res models.CallResult, err error) {
+func (c *Client) ContractViewCallFunction(ctx context.Context, accountID, methodName, argsBase64 string, block BlockCharacteristic) (res common.CallResult, err error) {
 	_, err = c.doRPC(ctx, &res, "query", block, map[string]interface{}{
 		"request_type": "call_function",
 		"account_id":   accountID,

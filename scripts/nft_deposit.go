@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/rarimo/near-go/common"
 	nearclient2 "github.com/rarimo/near-go/nearclient"
-	"github.com/rarimo/near-go/nearclient/models"
 )
 
 func NftDeposit(ctx context.Context, cli nearclient2.Client, sender, receiver, token, tokenID, bridge string, isWrapped bool) (string, string) {
@@ -25,7 +24,7 @@ func NftDeposit(ctx context.Context, cli nearclient2.Client, sender, receiver, t
 		panic(err)
 	}
 
-	eventID, err := GetDepositedReceiptID(depositResp, models.LogEventTypeNftDeposited, bridge, &token, &tokenID, nil)
+	eventID, err := GetDepositedReceiptID(depositResp, common.LogEventTypeNftDeposited, bridge, &token, &tokenID, nil)
 	if err != nil {
 		panic(err)
 	}

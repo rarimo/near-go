@@ -4,13 +4,12 @@ import (
 	"context"
 	"github.com/rarimo/near-go/common"
 	"github.com/rarimo/near-go/nearclient"
-	"github.com/rarimo/near-go/nearclient/models"
 	"gitlab.com/distributed_lab/logan/v3/errors"
 )
 
 var ErrUnknownTx = errors.New("unknown tx")
 
-func (p *provider) GetTransaction(ctx context.Context, hash common.Hash, sender common.AccountID) (*models.FinalExecutionOutcomeWithReceiptView, error) {
+func (p *provider) GetTransaction(ctx context.Context, hash common.Hash, sender common.AccountID) (*common.FinalExecutionOutcomeWithReceiptView, error) {
 	resp, err := p.getTx(ctx, hash, sender)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get tx")
@@ -19,7 +18,7 @@ func (p *provider) GetTransaction(ctx context.Context, hash common.Hash, sender 
 	return resp, nil
 }
 
-func (p *provider) getTx(ctx context.Context, hash common.Hash, sender common.AccountID) (*models.FinalExecutionOutcomeWithReceiptView, error) {
+func (p *provider) getTx(ctx context.Context, hash common.Hash, sender common.AccountID) (*common.FinalExecutionOutcomeWithReceiptView, error) {
 	tx, err := p.tryToGetTxFromRPC(ctx, p.c, hash, sender)
 
 	if err != nil {
@@ -33,7 +32,7 @@ func (p *provider) getTx(ctx context.Context, hash common.Hash, sender common.Ac
 	return tx, nil
 }
 
-func (p *provider) tryToGetTxFromRPC(ctx context.Context, cli *nearclient.Client, hash common.Hash, sender common.AccountID) (*models.FinalExecutionOutcomeWithReceiptView, error) {
+func (p *provider) tryToGetTxFromRPC(ctx context.Context, cli *nearclient.Client, hash common.Hash, sender common.AccountID) (*common.FinalExecutionOutcomeWithReceiptView, error) {
 	tx, err := cli.TransactionStatusWithReceipts(ctx, hash, sender)
 	if err != nil {
 		if isErrUnknownTx(err) {

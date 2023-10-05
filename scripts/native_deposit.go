@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/rarimo/near-go/common"
 	nearclient2 "github.com/rarimo/near-go/nearclient"
-	"github.com/rarimo/near-go/nearclient/models"
 )
 
 func NativeDeposit(ctx context.Context, cli nearclient2.Client, sender, receiver, chainTo, amount, bridge string) (string, string) {
@@ -23,7 +22,7 @@ func NativeDeposit(ctx context.Context, cli nearclient2.Client, sender, receiver
 		panic(err)
 	}
 
-	eventID, err := GetDepositedReceiptID(depositResp, models.LogEventTypeNativeDeposited, bridge, nil, nil, &amnt)
+	eventID, err := GetDepositedReceiptID(depositResp, common.LogEventTypeNativeDeposited, bridge, nil, nil, &amnt)
 	if err != nil {
 		panic(err)
 	}

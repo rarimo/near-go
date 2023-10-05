@@ -1,8 +1,7 @@
-package models
+package common
 
 import (
 	"encoding/json"
-	"github.com/rarimo/near-go/common"
 	"time"
 )
 
@@ -27,9 +26,9 @@ type FullPeerInfo struct {
 
 // PeerInfo holds peer information
 type PeerInfo struct {
-	ID        common.PeerID     `json:"id"`
-	Addr      *string           `json:"addr"`
-	AccountID *common.AccountID `json:"account_id"`
+	ID        PeerID     `json:"id"`
+	Addr      *string    `json:"addr"`
+	AccountID *AccountID `json:"account_id"`
 }
 
 // PeerChainInfo contains peer chain information. This is derived from PeerCHainInfoV2 in nearcore
@@ -37,24 +36,24 @@ type PeerChainInfo struct {
 	// ChainTo Id and hash of genesis block.
 	GenesisID GenesisID `json:"genesis_id"`
 	// Last known chain height of the peer.
-	Height common.BlockHeight `json:"height"`
+	Height BlockHeight `json:"height"`
 	// Shards that the peer is tracking.
-	TrackedShards []common.ShardID `json:"tracked_shards"`
+	TrackedShards []ShardID `json:"tracked_shards"`
 	// Denote if a node is running in archival mode or not.
 	Archival bool `json:"archival"`
 }
 
 // EdgeInfo contains information that will be ultimately used to create a new edge. It contains nonce proposed for the edge with signature from peer.
 type EdgeInfo struct {
-	Nonce     common.Nonce     `json:"nonce"`
-	Signature common.Signature `json:"signature"`
+	Nonce     Nonce     `json:"nonce"`
+	Signature Signature `json:"signature"`
 }
 
 // KnownProducer is basically PeerInfo, but AccountID is known
 type KnownProducer struct {
-	AccountID common.AccountID `json:"account_id"`
-	Addr      *string          `json:"addr"`
-	PeerID    common.PeerID    `json:"peer_id"`
+	AccountID AccountID `json:"account_id"`
+	Addr      *string   `json:"addr"`
+	PeerID    PeerID    `json:"peer_id"`
 }
 
 // TODO: chain/network/src/recorder.rs
@@ -64,7 +63,7 @@ type GenesisID struct {
 	// ChainTo Id
 	ChainID string `json:"chain_id"`
 	// Hash of genesis block
-	Hash common.Hash `json:"hash"`
+	Hash Hash `json:"hash"`
 }
 
 type StatusResponse struct {
@@ -83,7 +82,7 @@ type StatusResponse struct {
 	// Sync status of the node.
 	SyncInfo StatusSyncInfo `json:"sync_info"`
 	// Validator id of the node
-	ValidatorAccountID *common.AccountID `json:"validator_account_id"`
+	ValidatorAccountID *AccountID `json:"validator_account_id"`
 }
 
 type NodeVersion struct {
@@ -92,15 +91,15 @@ type NodeVersion struct {
 }
 
 type ValidatorInfo struct {
-	AccountID common.AccountID `json:"account_id"`
-	Slashed   bool             `json:"is_slashed"`
+	AccountID AccountID `json:"account_id"`
+	Slashed   bool      `json:"is_slashed"`
 }
 
 type StatusSyncInfo struct {
-	LatestBlockHash   common.Hash        `json:"latest_block_hash"`
-	LatestBlockHeight common.BlockHeight `json:"latest_block_height"`
-	LatestBlockTime   time.Time          `json:"latest_block_time"`
-	Syncing           bool               `json:"syncing"`
+	LatestBlockHash   Hash        `json:"latest_block_hash"`
+	LatestBlockHeight BlockHeight `json:"latest_block_height"`
+	LatestBlockTime   time.Time   `json:"latest_block_time"`
+	Syncing           bool        `json:"syncing"`
 }
 
 type ValidatorsResponse struct {
@@ -109,9 +108,9 @@ type ValidatorsResponse struct {
 
 type CurrentEpochValidatorInfo struct {
 	ValidatorInfo
-	PublicKey         common.Base58PublicKey `json:"public_key"`
-	Stake             common.Balance         `json:"stake"`
-	Shards            []common.ShardID       `json:"shards"`
-	NumProducedBlocks common.NumBlocks       `json:"num_produced_blocks"`
-	NumExpectedBlocks common.NumBlocks       `json:"num_expected_blocks"`
+	PublicKey         Base58PublicKey `json:"public_key"`
+	Stake             Balance         `json:"stake"`
+	Shards            []ShardID       `json:"shards"`
+	NumProducedBlocks NumBlocks       `json:"num_produced_blocks"`
+	NumExpectedBlocks NumBlocks       `json:"num_expected_blocks"`
 }

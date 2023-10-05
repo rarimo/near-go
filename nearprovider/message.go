@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/rarimo/near-go/common"
-	"github.com/rarimo/near-go/nearclient/models"
 	"github.com/rarimo/near-go/nearprovider/s3"
 	"gitlab.com/distributed_lab/logan/v3"
 	"gitlab.com/distributed_lab/logan/v3/errors"
@@ -14,8 +13,8 @@ import (
 )
 
 type Message struct {
-	Block  *models.BlockView   `json:"block"`
-	Shards []*models.ShardView `json:"shards"`
+	Block  *common.BlockView   `json:"block"`
+	Shards []*common.ShardView `json:"shards"`
 }
 
 var ErrNoShardsAvailable = errors.New("No shards available")
@@ -52,13 +51,13 @@ func (p *provider) ListBlocks(ctx context.Context, limit uint64, fromBlock commo
 	return blocks, nil
 }
 
-func (p *provider) getBlock(ctx context.Context, blockHeight common.BlockHeight) (*models.BlockView, error) {
+func (p *provider) getBlock(ctx context.Context, blockHeight common.BlockHeight) (*common.BlockView, error) {
 	res, err := p.s3.GetObject(ctx, fmt.Sprintf("%s%sblock.json", normalizeBlockHeight(blockHeight), s3.Delimiter))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get block")
 	}
 
-	var block models.BlockView
+	var block common.BlockView
 
 	err = json.NewDecoder(res.Body).Decode(&block)
 	if err != nil {
@@ -72,13 +71,13 @@ func (p *provider) getBlock(ctx context.Context, blockHeight common.BlockHeight)
 	return &block, nil
 }
 
-func (p *provider) getShard(ctx context.Context, blockHeight common.BlockHeight, shardID uint64) (*models.ShardView, error) {
+func (p *provider) getShard(ctx context.Context, blockHeight common.BlockHeight, shardID uint64) (*common.ShardView, error) {
 	res, err := p.s3.GetObject(ctx, fmt.Sprintf("%s%sshard_%d.json", normalizeBlockHeight(blockHeight), s3.Delimiter, shardID))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get shard")
 	}
 
-	var shard models.ShardView
+	var shard common.ShardView
 	err = json.NewDecoder(res.Body).Decode(&shard)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to parse shard response")
@@ -92,12 +91,12 @@ func (p *provider) getShard(ctx context.Context, blockHeight common.BlockHeight,
 	return &shard, nil
 }
 
-func (p *provider) getShards(ctx context.Context, blockHeight common.BlockHeight, numberOfShards uint64) ([]*models.ShardView, error) {
+func (p *provider) getShards(ctx context.Context, blockHeight common.BlockHeight, numberOfShards uint64) ([]*common.ShardView, error) {
 	if numberOfShards == 0 {
 		return nil, ErrNoShardsAvailable
 	}
 
-	shards := make([]*models.ShardView, numberOfShards)
+	shards := make([]*common.ShardView, numberOfShards)
 
 	for i := uint64(0); i < numberOfShards; i++ {
 		shard, err := p.getShard(ctx, blockHeight, i)

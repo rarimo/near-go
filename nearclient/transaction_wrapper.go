@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"github.com/rarimo/near-go/common"
-	"github.com/rarimo/near-go/nearclient/models"
 )
 
 type transactionCtx struct {
@@ -43,7 +42,7 @@ func (c *Client) prepareTransaction(ctx context.Context, from, to common.Account
 
 	// Query the access key nonce, if not specified
 	if !txnCtx.keyNonceSet {
-		var accessKey models.AccessKeyView
+		var accessKey common.AccessKeyView
 		accessKey, err = c.AccessKeyView(ctx2, txnCtx.txn.SignerID, txnCtx.keyPair.PublicKey, FinalityFinal())
 		if err != nil {
 			return
@@ -70,7 +69,7 @@ func (c *Client) TransactionSend(ctx context.Context, from, to common.AccountID,
 }
 
 // TransactionSendAwait https://docs.near.org/docs/api/rpc#send-transaction-await
-func (c *Client) TransactionSendAwait(ctx context.Context, from, to common.AccountID, actions []common.Action, txnOpts ...TransactionOpt) (res models.FinalExecutionOutcomeView, err error) {
+func (c *Client) TransactionSendAwait(ctx context.Context, from, to common.AccountID, actions []common.Action, txnOpts ...TransactionOpt) (res common.FinalExecutionOutcomeView, err error) {
 	ctx2, blob, err := c.prepareTransaction(ctx, from, to, actions, txnOpts...)
 	if err != nil {
 		return
@@ -82,7 +81,7 @@ func WithBlockCharacteristic(block BlockCharacteristic) TransactionOpt {
 	return func(ctx context.Context, txnCtx *transactionCtx) (err error) {
 		client := ctx.Value(clientCtx).(*Client)
 
-		var res models.BlockView
+		var res common.BlockView
 		if res, err = client.BlockDetails(ctx, block); err != nil {
 			return
 		}
