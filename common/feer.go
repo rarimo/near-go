@@ -2,7 +2,6 @@ package common
 
 import (
 	"encoding/json"
-	"github.com/rarimo/near-go/constants"
 	"gitlab.com/distributed_lab/logan/v3/errors"
 )
 
@@ -57,15 +56,15 @@ type FeeManageOperationWithBorsh struct {
 }
 
 func NewFeeTokenAddCall(params FeeManageOperationArgs, gas Gas) Action {
-	return NewFunctionCall(constants.ContractFeerAddFeeToken, MustMarshalJson(params), gas, constants.ZeroNEAR)
+	return NewFunctionCall(ContractFeerAddFeeToken, MustMarshalJson(params), gas, ZeroNEAR)
 }
 
 func NewFeeTokenUpdateCall(params FeeManageOperationArgs, gas Gas) Action {
-	return NewFunctionCall(constants.ContractFeerUpdateFeeToken, MustMarshalJson(params), gas, constants.ZeroNEAR)
+	return NewFunctionCall(ContractFeerUpdateFeeToken, MustMarshalJson(params), gas, ZeroNEAR)
 }
 
 func NewFeeTokenRemoveCall(params FeeManageOperationArgs, gas Gas) Action {
-	return NewFunctionCall(constants.ContractFeerRemoveFeeToken, MustMarshalJson(params), gas, constants.ZeroNEAR)
+	return NewFunctionCall(ContractFeerRemoveFeeToken, MustMarshalJson(params), gas, ZeroNEAR)
 }
 
 func NewFeeTokenWithdrawCall(params FeeManageOperationArgs, receiver AccountID, amount Balance, gas Gas) Action {
@@ -74,7 +73,7 @@ func NewFeeTokenWithdrawCall(params FeeManageOperationArgs, receiver AccountID, 
 		"receiver": receiver,
 		"amount":   amount,
 	}
-	return NewFunctionCall(constants.ContractFeerWithdraw, MustMarshalJson(opts), gas, constants.ZeroNEAR)
+	return NewFunctionCall(ContractFeerWithdraw, MustMarshalJson(opts), gas, ZeroNEAR)
 }
 
 type FeeManageOperationArgsWithBorsh struct {
@@ -94,7 +93,7 @@ type FeerDepositArgs struct {
 }
 
 func NewFeeChargeNativeCall(params FeerDepositArgs, amount Balance, gas Gas) Action {
-	return NewFunctionCall(constants.ContractFeerChargeNative, MustMarshalJson(map[string]FeerDepositArgs{
+	return NewFunctionCall(ContractFeerChargeNative, MustMarshalJson(map[string]FeerDepositArgs{
 		"deposit": params,
 	}), gas, amount)
 }

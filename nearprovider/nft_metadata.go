@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/rarimo/near-go/common"
-	"github.com/rarimo/near-go/constants"
 	"github.com/rarimo/near-go/nearclient"
 	"gitlab.com/distributed_lab/logan/v3/errors"
 )
@@ -15,7 +14,7 @@ func (p *provider) GetNFTMetadata(ctx context.Context, token common.AccountID, t
 	resp, err := p.c.ContractViewCallFunction(
 		ctx,
 		token,
-		constants.ContractNftGet,
+		common.ContractNftGet,
 		base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("{\"token_id\":\"%s\"}", tokenID))),
 		nearclient.FinalityFinal(),
 	)

@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/mr-tron/base58"
-	"github.com/rarimo/near-go/constants"
 	"github.com/rarimo/near-go/errors"
 )
 
@@ -21,6 +20,16 @@ const (
 	RawKeyTypeED25519 byte = iota
 	RawKeyTypeSECP256K1
 )
+
+var KeyTypes = map[byte]PublicKeyType{
+	RawKeyTypeED25519:   KeyTypeED25519,
+	RawKeyTypeSECP256K1: KeyTypeSECP256K1,
+}
+
+var ReverseKeyTypeMapping = map[string]byte{
+	string(KeyTypeED25519):   RawKeyTypeED25519,
+	string(KeyTypeSECP256K1): RawKeyTypeSECP256K1,
+}
 
 // TODO: SECP256K1
 type PublicKey [33]byte
@@ -42,7 +51,7 @@ func (p PublicKey) MarshalJSON() ([]byte, error) {
 }
 
 func (p PublicKey) String() string {
-	return fmt.Sprintf("%s:%s", constants.KeyTypes[p.TypeByte()], base58.Encode(p.Value()))
+	return fmt.Sprintf("%s:%s", KeyTypes[p.TypeByte()], base58.Encode(p.Value()))
 }
 
 func (p *PublicKey) UnmarshalJSON(b []byte) error {
@@ -80,7 +89,7 @@ func (p *PublicKey) Verify(data []byte, signature Signature) (ok bool, err error
 
 func (p *PublicKey) ToBase58PublicKey() Base58PublicKey {
 	return Base58PublicKey{
-		Type:  constants.KeyTypes[p[0]],
+		Type:  KeyTypes[p[0]],
 		Value: base58.Encode(p[1:]),
 		Key:   *p,
 	}

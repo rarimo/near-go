@@ -9,7 +9,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/rarimo/near-go/common"
-	"github.com/rarimo/near-go/constants"
 	"github.com/rarimo/near-go/nearclient"
 	"testing"
 
@@ -22,7 +21,7 @@ func TestNftMetadata(t *testing.T) {
 	res := map[string]string{"token_id": cfg.TokenID}
 	r, _ := json.Marshal(res)
 
-	x, _ := cfg.Client.ContractViewCallFunction(context.Background(), cfg.NftAddress, constants.ContractNftGet, base64.StdEncoding.EncodeToString(r), nearclient.FinalityFinal())
+	x, _ := cfg.Client.ContractViewCallFunction(context.Background(), cfg.NftAddress, common.ContractNftGet, base64.StdEncoding.EncodeToString(r), nearclient.FinalityFinal())
 	var z *common.NftView
 	json.Unmarshal(x.Result, &z)
 	fmt.Println(string(x.Result))

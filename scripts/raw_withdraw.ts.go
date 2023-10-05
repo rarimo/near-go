@@ -3,7 +3,6 @@ package scripts
 import (
 	"context"
 	"github.com/rarimo/near-go/common"
-	"github.com/rarimo/near-go/constants"
 	nearclient2 "github.com/rarimo/near-go/nearclient"
 )
 
@@ -23,7 +22,7 @@ func RawNFTWithdraw(ctx context.Context, cli *nearclient2.Client, sender, bridge
 		},
 	}
 
-	deposit := constants.OneYocto
+	deposit := common.OneYocto
 	if isWrapped {
 		act.TokenMetadata = nftMetadata[isWrapped]
 		deposit = parseAmount("200000000000000000000000")
@@ -60,7 +59,7 @@ func RawFTWithdraw(ctx context.Context, cli *nearclient2.Client, sender, bridge,
 		},
 	}
 
-	deposit := constants.OneYocto
+	deposit := common.OneYocto
 
 	if isWrapped {
 		deposit = parseAmount("1250000000000000000000")
@@ -92,7 +91,7 @@ func RawNativeWithdraw(ctx context.Context, cli *nearclient2.Client, sender, bri
 	}
 
 	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []common.Action{
-		common.NewNativeWithdrawCall(act, MaxGas, constants.OneYocto),
+		common.NewNativeWithdrawCall(act, MaxGas, common.OneYocto),
 	}, nearclient2.WithLatestBlock())
 	if err != nil {
 		panic(err)

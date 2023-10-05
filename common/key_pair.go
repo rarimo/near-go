@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/mr-tron/base58"
-	"github.com/rarimo/near-go/constants"
 	"github.com/rarimo/near-go/errors"
 	"io"
 	"strings"
@@ -27,7 +26,7 @@ func NewKeyPair(keyType PublicKeyType, pub Base58PublicKey, priv ed25519.Private
 }
 
 func (kp *KeyPair) Sign(data []byte) (sig Signature) {
-	sigType := constants.ReverseKeyTypeMapping[string(kp.Type)]
+	sigType := ReverseKeyTypeMapping[string(kp.Type)]
 
 	switch sigType {
 	//case RawPublicKeyTypeSECP256K1:
@@ -52,7 +51,7 @@ func (kp *KeyPair) UnmarshalJSON(b []byte) (err error) {
 }
 
 func GenerateKeyPair(keyType PublicKeyType, rand io.Reader) (kp KeyPair, err error) {
-	if _, ok := constants.ReverseKeyTypeMapping[string(keyType)]; !ok {
+	if _, ok := ReverseKeyTypeMapping[string(keyType)]; !ok {
 		return kp, common.ErrInvalidKeyType
 	}
 
@@ -91,7 +90,7 @@ func NewBase58KeyPair(raw string) (kp KeyPair, err error) {
 	keyTypeRaw := split[0]
 	encodedKey := split[1]
 
-	keyType, ok := constants.ReverseKeyTypeMapping[keyTypeRaw]
+	keyType, ok := ReverseKeyTypeMapping[keyTypeRaw]
 	if !ok {
 		return kp, common.ErrInvalidKeyType
 	}
@@ -112,7 +111,7 @@ func NewBase58KeyPair(raw string) (kp KeyPair, err error) {
 
 	var pubKey PublicKey
 
-	theKeyType := constants.KeyTypes[keyType]
+	theKeyType := KeyTypes[keyType]
 	privKey := ed25519.PrivateKey(decoded)
 	pubKey, err = WrapRawKey(theKeyType, privKey[32:]) // See ed25519.Public()
 	if err != nil {

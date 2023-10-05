@@ -3,7 +3,6 @@ package scripts
 import (
 	"context"
 	"github.com/rarimo/near-go/common"
-	"github.com/rarimo/near-go/constants"
 	nearclient2 "github.com/rarimo/near-go/nearclient"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/data"
 )
@@ -41,7 +40,7 @@ func NativeWithdraw(ctx context.Context, cli nearclient2.Client, txHash, eventID
 	}
 
 	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []common.Action{
-		common.NewNativeWithdrawCall(act, MaxGas, constants.OneYocto),
+		common.NewNativeWithdrawCall(act, MaxGas, common.OneYocto),
 	}, nearclient2.WithLatestBlock())
 	if err != nil {
 		panic(err)

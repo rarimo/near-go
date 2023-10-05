@@ -3,7 +3,6 @@ package scripts
 import (
 	"context"
 	"github.com/rarimo/near-go/common"
-	"github.com/rarimo/near-go/constants"
 	nearclient2 "github.com/rarimo/near-go/nearclient"
 	"math/big"
 
@@ -46,10 +45,10 @@ func FtWithdraw(ctx context.Context, cli nearclient2.Client, txHash, eventID, se
 		},
 	}
 
-	deposit := constants.OneYocto
+	deposit := common.OneYocto
 
 	if isWrapped {
-		deposit = constants.ZeroNEAR
+		deposit = common.ZeroNEAR
 	}
 
 	withdrawResp, err := cli.TransactionSendAwait(ctx, sender, bridge, []common.Action{

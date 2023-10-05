@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/mr-tron/base58"
-	"github.com/rarimo/near-go/constants"
 	"github.com/rarimo/near-go/errors"
 	"strings"
 )
@@ -25,7 +24,7 @@ func NewBase58Signature(raw string) (pk Base58Signature, err error) {
 	sigTypeRaw := split[0]
 	encodedSig := split[1]
 
-	sigType, ok := constants.ReverseSignatureMapping[sigTypeRaw]
+	sigType, ok := ReverseSignatureMapping[sigTypeRaw]
 	if !ok {
 		return pk, common.ErrInvalidSignatureType
 	}
@@ -35,7 +34,7 @@ func NewBase58Signature(raw string) (pk Base58Signature, err error) {
 		return pk, fmt.Errorf("failed to decode signature: %w", err)
 	}
 
-	pk.Type = constants.SignatureTypes[sigType]
+	pk.Type = SignatureTypes[sigType]
 	pk.Value = encodedSig
 
 	// TODO

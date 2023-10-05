@@ -2,7 +2,6 @@ package common
 
 import (
 	"encoding/json"
-	"github.com/rarimo/near-go/constants"
 	"gitlab.com/distributed_lab/logan/v3/errors"
 )
 
@@ -54,7 +53,7 @@ type FtTransferArgs struct {
 }
 
 func NewFtTransferCall(params FtTransferArgs, gas Gas) Action {
-	return NewFunctionCall(constants.ContractFtTransfer, MustMarshalJson(params), gas, constants.OneYocto)
+	return NewFunctionCall(ContractFtTransfer, MustMarshalJson(params), gas, OneYocto)
 }
 
 type FtWithdrawArgs struct {
@@ -65,7 +64,7 @@ type FtWithdrawArgs struct {
 }
 
 func NewFtWithdrawCall(params FtWithdrawArgs, gas Gas, deposit Balance) Action {
-	return NewFunctionCall(constants.ContractFtWithdraw, MustMarshalJson(params), gas, deposit)
+	return NewFunctionCall(ContractFtWithdraw, MustMarshalJson(params), gas, deposit)
 }
 
 type NftTransferArgs struct {
@@ -75,7 +74,7 @@ type NftTransferArgs struct {
 }
 
 func NewNftTransferCall(params NftTransferArgs, gas Gas) Action {
-	return NewFunctionCall(constants.ContractNftTransfer, MustMarshalJson(params), gas, constants.OneYocto)
+	return NewFunctionCall(ContractNftTransfer, MustMarshalJson(params), gas, OneYocto)
 }
 
 type NftWithdrawArgs struct {
@@ -87,7 +86,7 @@ type NftWithdrawArgs struct {
 }
 
 func NewNftWithdrawCall(params NftWithdrawArgs, gas Gas, deposit Balance) Action {
-	return NewFunctionCall(constants.ContractNftWithdraw, MustMarshalJson(params), gas, deposit)
+	return NewFunctionCall(ContractNftWithdraw, MustMarshalJson(params), gas, deposit)
 }
 
 type NativeDepositArgs struct {
@@ -96,7 +95,7 @@ type NativeDepositArgs struct {
 }
 
 func NewNativeDepositCall(params NativeDepositArgs, gas Gas, deposit Balance) Action {
-	return NewFunctionCall(constants.ContractBridgeNativeDeposit, MustMarshalJson(params), gas, deposit)
+	return NewFunctionCall(ContractBridgeNativeDeposit, MustMarshalJson(params), gas, deposit)
 }
 
 type NativeWithdrawArgs struct {
@@ -105,5 +104,5 @@ type NativeWithdrawArgs struct {
 }
 
 func NewNativeWithdrawCall(params NativeWithdrawArgs, gas Gas, deposit Balance) Action {
-	return NewFunctionCall(constants.ContractBridgeNativeWithdraw, MustMarshalJson(params), gas, deposit)
+	return NewFunctionCall(ContractBridgeNativeWithdraw, MustMarshalJson(params), gas, deposit)
 }

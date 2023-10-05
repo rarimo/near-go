@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/rarimo/near-go/common"
-	"github.com/rarimo/near-go/constants"
 	nearclient2 "github.com/rarimo/near-go/nearclient"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/data"
 )
@@ -45,7 +44,7 @@ func NftWithdraw(ctx context.Context, cli nearclient2.Client, txHash, eventID, s
 		},
 	}
 
-	deposit := constants.OneYocto
+	deposit := common.OneYocto
 	if isWrapped {
 		act.TokenMetadata = nftMetadata[isWrapped]
 		deposit = common.NEARToYocto(1)

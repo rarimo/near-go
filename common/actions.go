@@ -4,8 +4,40 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/near/borsh-go"
-	"github.com/rarimo/near-go/constants"
 	"lukechampine.com/uint128"
+)
+
+var (
+	// 30 TGas
+	DefaultFunctionCallGas Gas = 30 * 1000000000000
+)
+
+var (
+	OrdMappings = map[string]uint8{
+		"CreateAccount":  OrdCreateAccount,
+		"DeployContract": OrdDeployContract,
+		"FunctionCall":   OrdFunctionCall,
+		"Transfer":       OrdTransfer,
+		"Stake":          OrdStake,
+		"AddKey":         OrdAddKey,
+		"DeleteKey":      OrdDeleteKey,
+		"DeleteAccount":  OrdDeleteAccount,
+	}
+
+	SimpleActions = map[string]bool{
+		"CreateAccount": true,
+	}
+)
+
+const (
+	OrdCreateAccount uint8 = iota
+	OrdDeployContract
+	OrdFunctionCall
+	OrdTransfer
+	OrdStake
+	OrdAddKey
+	OrdDeleteKey
+	OrdDeleteAccount
 )
 
 type Action struct {
@@ -20,17 +52,6 @@ type Action struct {
 	DeleteKey      ActionDeleteKey
 	DeleteAccount  ActionDeleteAccount
 }
-
-const (
-	OrdCreateAccount uint8 = iota
-	OrdDeployContract
-	OrdFunctionCall
-	OrdTransfer
-	OrdStake
-	OrdAddKey
-	OrdDeleteKey
-	OrdDeleteAccount
-)
 
 func (a *Action) PrepaidGas() Gas {
 	switch uint8(a.Enum) {
@@ -94,7 +115,7 @@ func (a *Action) UnmarshalJSON(b []byte) (err error) {
 			return
 		}
 
-		if _, ok := constants.SimpleActions[actionType]; !ok {
+		if _, ok := SimpleActions[actionType]; !ok {
 			err = fmt.Errorf("Action '%s' had no body", actionType)
 			return
 		}
@@ -118,7 +139,7 @@ func (a *Action) UnmarshalJSON(b []byte) (err error) {
 		break
 	}
 
-	ord := constants.OrdMappings[actionType]
+	ord := OrdMappings[actionType]
 	*a = Action{Enum: borsh.Enum(ord)}
 	ul := a.UnderlyingValue()
 

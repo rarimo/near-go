@@ -1,12 +1,8 @@
-package constants
-
-import (
-	"github.com/rarimo/near-go/common"
-)
+package common
 
 var (
-	NftMintStorageDeposit = common.MustBalanceFromString("0.2")
-	FtMintStorageDeposit  = common.MustBalanceFromString("0.00125")
+	NftMintStorageDeposit = MustBalanceFromString("0.2")
+	FtMintStorageDeposit  = MustBalanceFromString("0.00125")
 )
 
 const (

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/mr-tron/base58"
-	"github.com/rarimo/near-go/constants"
 	"github.com/rarimo/near-go/errors"
 	"strings"
 )
@@ -25,7 +24,7 @@ func NewBase58PublicKey(raw string) (pk Base58PublicKey, err error) {
 	keyTypeRaw := split[0]
 	encodedKey := split[1]
 
-	keyType, ok := constants.ReverseKeyTypeMapping[keyTypeRaw]
+	keyType, ok := ReverseKeyTypeMapping[keyTypeRaw]
 	if !ok {
 		return pk, common.ErrInvalidKeyType
 	}
@@ -35,7 +34,7 @@ func NewBase58PublicKey(raw string) (pk Base58PublicKey, err error) {
 		return pk, fmt.Errorf("failed to decode public key: %w", err)
 	}
 
-	pk.Type = constants.KeyTypes[keyType]
+	pk.Type = KeyTypes[keyType]
 	pk.Value = encodedKey
 
 	pk.Key, err = WrapRawKey(pk.Type, decoded)
