@@ -8,10 +8,10 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 	"github.com/mr-tron/base58"
-	merkle "gitlab.com/rarimo/go-merkle"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/bundle"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/origin"
+	merkle "github.com/rarimo/go-merkle"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/bundle"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/origin"
 )
 
 func getContent(

@@ -7,7 +7,7 @@ import (
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/data"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/data"
 	"lukechampine.com/uint128"
 )
 

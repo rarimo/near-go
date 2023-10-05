@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/rarimo/near-go/common"
 	nearclient2 "github.com/rarimo/near-go/nearclient"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/data"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/data"
 )
 
 func NativeWithdraw(ctx context.Context, cli nearclient2.Client, txHash, eventID string, sender, receiver, chainFrom, chainTo, amount, bridge, privateKey string) string {
