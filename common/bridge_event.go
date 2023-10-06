@@ -45,3 +45,8 @@ type BridgeDepositedEvent struct {
 	BridgeEvent
 	Data []BridgeDepositedEventData `json:"data"`
 }
+
+type BridgeWithdrawnEvent struct {
+	BridgeEvent
+	Data []BridgeWithdrawnEventData `json:"data"`
+}
