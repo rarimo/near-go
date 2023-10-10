@@ -16,15 +16,16 @@ type Client struct {
 	Log       *logan.Entry
 }
 
-func New(rpcUrl string) (client *Client, err error) {
-	client.RPCClient, err = jsonrpc.New(rpcUrl)
+func New(rpcUrl string) (*Client, error) {
+	cli, err := jsonrpc.New(rpcUrl)
 	if err != nil {
-		return
+		return nil, err
 	}
 
-	client.Log = logan.New().WithField("entry", "near-rpc-client")
-
-	return
+	return &Client{
+		RPCClient: cli,
+		Log:       logan.New().WithField("entry", "near-rpc-client"),
+	}, nil
 }
 
 func (c *Client) NetworkAddr() string {
