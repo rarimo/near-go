@@ -5,9 +5,10 @@ import (
 	"github.com/rarimo/near-go/nearclient"
 	"github.com/rarimo/near-go/nearprovider/s3"
 	"github.com/spf13/cast"
-	"gitlab.com/distributed_lab/figure"
+	"gitlab.com/distributed_lab/figure/v3"
 	"gitlab.com/distributed_lab/kit/comfig"
 	"gitlab.com/distributed_lab/kit/kv"
+
 	"gitlab.com/distributed_lab/logan/v3"
 	"gitlab.com/distributed_lab/logan/v3/errors"
 	"reflect"
