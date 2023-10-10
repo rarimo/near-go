@@ -72,7 +72,7 @@ func (s *nearer) Near() Provider {
 }
 
 var NearHooks = figure.Hooks{
-	"*client.Client": func(raw interface{}) (reflect.Value, error) {
+	"*nearclient.Client": func(raw interface{}) (reflect.Value, error) {
 		v, err := cast.ToStringE(raw)
 		if err != nil {
 			return reflect.Value{}, errors.Wrap(err, "expected string")
