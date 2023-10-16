@@ -3,15 +3,15 @@ package tests
 import (
 	"context"
 	"github.com/rarimo/near-go/common"
-	nearclient2 "github.com/rarimo/near-go/nearclient"
-	"gitlab.com/distributed_lab/figure"
+	"github.com/rarimo/near-go/nearclient"
+	"gitlab.com/distributed_lab/figure/v3"
 	"gitlab.com/distributed_lab/kit/kv"
 	"gitlab.com/distributed_lab/logan/v3/errors"
 )
 
 type Config struct {
 	Ctx                  context.Context    `fig:"-"` // context with key pair
-	Client               nearclient2.Client `fig:"-"`
+	Client               *nearclient.Client `fig:"-"`
 	RpcURL               string             `fig:"rpc_url,required"`
 	PrivateKey           string             `fig:"private_key,required"`
 	SignerPrivateKey     string             `fig:"signer_private_key,required"`
@@ -44,8 +44,8 @@ func NewConfig(ctx context.Context, getter kv.Getter) Config {
 		panic(errors.Wrap(err, "failed to get key pair"))
 	}
 
-	cfg.Ctx = nearclient2.ContextWithKeyPair(ctx, keyPair)
-	cfg.Client, err = nearclient2.New(cfg.RpcURL)
+	cfg.Ctx = nearclient.ContextWithKeyPair(ctx, keyPair)
+	cfg.Client, err = nearclient.New(cfg.RpcURL)
 	if err != nil {
 		panic(errors.Wrap(err, "failed to create rpc client"))
 	}
