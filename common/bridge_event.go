@@ -31,7 +31,7 @@ type BridgeWithdrawnEventData struct {
 	BridgeBaseEventData
 	Origin     string `json:"origin"`
 	Signature  string `json:"signature"`
-	Path       string `json:"path"`
+	Path       []byte `json:"path"`
 	RecoveryID uint8  `json:"recovery_id"`
 }
 
